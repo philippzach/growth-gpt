@@ -17,7 +17,6 @@ export default function Chat() {
     sendMessage,
     approveOutput,
     editOutput,
-    regenerateOutput,
     isAgentTyping,
     connectionStatus,
     streamingMessages,
@@ -94,12 +93,6 @@ export default function Chat() {
     } catch (error) {
       console.error('Failed to approve output:', error);
     }
-  };
-
-  const handleEditIdea = async (newIdea: string) => {
-    // This would update the business idea in the session
-    // For now, we'll just log it as the functionality would need backend support
-    console.log('Edit business idea:', newIdea);
   };
 
   const handleEditResponse = async (content: string) => {
@@ -275,7 +268,7 @@ export default function Chat() {
                 </Link>
 
                 <h1 className='text-lg font-semibold text-gray-900 dark:text-white'>
-                  Growth Strategy Session
+                  GrowthGPT Strategy Session
                 </h1>
               </div>
 
@@ -325,7 +318,7 @@ export default function Chat() {
                 </Link>
 
                 <h1 className='text-lg font-semibold text-gray-900 dark:text-white'>
-                  Growth Strategy Session
+                  GrowthGPT Strategy Session
                 </h1>
               </div>
 
@@ -348,8 +341,11 @@ export default function Chat() {
               Tell us about your business idea
             </h2>
             <p className='text-gray-600 dark:text-gray-300 mb-8'>
-              Be as specific as possible about your product, target market, and
-              goals. Our GTM Consultant will analyze your idea and create a
+              Be as specific as possible about your{' '}
+              <span className='font-bold'>
+                product, target market, and goals.
+              </span>
+              Our GTM Consultant will analyze your idea and create a
               comprehensive strategy foundation.
             </p>
 
@@ -423,15 +419,6 @@ export default function Chat() {
                 "I'm planning to start a premium dog walking and pet care
                 service in Austin, Texas, targeting busy professionals who want
                 app-based booking and real-time updates..."
-              </p>
-              <p className='text-sm text-blue-800 dark:text-blue-400 mt-2'>
-                <h4 className='font-medium text-blue-900 dark:text-blue-300 mb-2'>
-                  {' '}
-                  Marketplace Example
-                </h4>
-                "I want to create a marketplace connecting freelance graphic
-                designers with small businesses that need quick, affordable
-                design work, think 'Uber for design'..."
               </p>
             </div>
           </div>
@@ -534,9 +521,7 @@ export default function Chat() {
       )}
 
       {/* Headline Section */}
-      {session && (
-        <HeadlineSection session={session} onEditIdea={handleEditIdea} />
-      )}
+      {session && <HeadlineSection session={session} />}
 
       {/* Agent Response */}
       {session && (
@@ -570,7 +555,6 @@ export default function Chat() {
           agentOutput={session.agentOutputs[displayAgent]}
           onApprove={handleApprove}
           onNextAgent={handleNextAgent}
-          onRegenerate={regenerateOutput}
           onNavigateToNextAgent={handleAgentNavigation}
           isProcessing={isAgentTyping}
           canProceed={

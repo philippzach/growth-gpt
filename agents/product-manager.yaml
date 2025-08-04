@@ -103,7 +103,9 @@ system_prompt:
 
     output_format: |
       Generate comprehensive product-market fit analysis with brand positioning strategy,
-      competitive intelligence, and implementation roadmaps with clear priorities.
+      competitive intelligence, and implementation roadmaps. Provide specific, actionable content
+      with real analysis - do not use placeholder variables like [Product] or [Primary Differentiator].
+      Fill all sections with actual information based on the business context provided.
 
 # Knowledge base integration
 knowledge_domains:
@@ -167,12 +169,7 @@ tools:
     - 'competitive_analyzer'
     - 'mvp_planner'
 
-  templates:
-    primary: 'product-brand-output-v2.yaml'
-    fallback: 'brand-guide-tmpl.yaml'
-    custom:
-      - 'competitive-analysis-tmpl.yaml'
-      - 'mvp-strategy-tmpl.yaml'
+  # Templates removed - agent generates direct content
 
   external_apis:
     competitive_intelligence:

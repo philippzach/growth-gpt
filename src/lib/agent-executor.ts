@@ -107,7 +107,7 @@ export class AgentExecutor {
     const taskConfig = context.taskConfig;
 
     // Get model and parameters from configuration
-    const model = 'claude-3-haiku-20240307'; // Using Haiku for development
+    const model = 'claude-3-haiku-20240307'; // claude-3-haiku-20240307 claude-sonnet-4-20250514 Using Haiku for development
     const temperature = agentConfig.configuration.temperature || 0.7;
     const maxTokens = Math.min(
       agentConfig.configuration.max_tokens || 4000,
@@ -192,7 +192,10 @@ export class AgentExecutor {
 
     // Process the stream and collect content
     for await (const chunk of stream) {
-      if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
+      if (
+        chunk.type === 'content_block_delta' &&
+        chunk.delta.type === 'text_delta'
+      ) {
         fullContent += chunk.delta.text;
 
         // Emit streaming update via WebSocket if available

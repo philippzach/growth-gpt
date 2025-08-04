@@ -2,13 +2,17 @@
 
 What is the first significant action we want people to take? Sign up? Read specific information? Select a product?
 
-Urgency
-Social Proof
-Scarcity
-Abandonment
-Product Badging
-Welcome Message
-Free Delivery
+Use Persuasiont tecquiniques based on the persona.
+
+The highest converting persuasion percentage:
+
+1. Urgency
+2. Social Proof
+3. Scarcity
+4. Abandonment
+5. Product Badging
+6. Welcome Message
+7. Free Delivery
 
 ## Website Landing Page First Impression (3-sec Test)
 
@@ -40,5 +44,3 @@ The website speed is the most important for positive first impressions. (User an
    What can you do next on this page?
    Does the page seem trustworthy, and why?
    Does it seem easy to use, and why?
-
-## Form Optimization

@@ -16,7 +16,6 @@ interface SessionContextType {
   sendMessage: (content: string) => Promise<void>;
   approveOutput: (outputId: string, feedback?: string) => Promise<void>;
   editOutput: (outputId: string, editedContent: string) => Promise<void>;
-  regenerateOutput: (outputId: string, feedback: string) => Promise<void>;
   isAgentTyping: boolean;
   connectionStatus: 'connected' | 'connecting' | 'disconnected';
   streamingMessages: Record<string, string>;
@@ -373,49 +372,6 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     [session, user, supabase]
   );
 
-  const regenerateOutput = useCallback(
-    async (outputId: string, feedback: string) => {
-      if (!session || !user) {
-        throw new Error('No active session');
-      }
-
-      try {
-        setIsAgentTyping(true);
-
-        const token = (await supabase.auth.getSession()).data.session
-          ?.access_token;
-        if (!token) {
-          throw new Error('No authentication token');
-        }
-
-        const response = await fetch(`/api/chat/${session.id}/regenerate`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ outputId, feedback }),
-        });
-
-        if (!response.ok) {
-          throw new Error(
-            `Failed to regenerate output: ${response.statusText}`
-          );
-        }
-
-        const data = (await response.json()) as {
-          data: { session: UserSession };
-        };
-        setSession(data.data.session);
-      } catch (error) {
-        console.error('Error regenerating output:', error);
-        throw error;
-      } finally {
-        setIsAgentTyping(false);
-      }
-    },
-    [session, user, supabase]
-  );
 
   // Keep WebSocket alive with periodic pings
   useEffect(() => {
@@ -435,7 +391,6 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     sendMessage,
     approveOutput,
     editOutput,
-    regenerateOutput,
     isAgentTyping,
     connectionStatus,
     streamingMessages,
