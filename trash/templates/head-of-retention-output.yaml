@@ -1,0 +1,307 @@
+# =============================================================================
+# HEAD OF RETENTION OUTPUT TEMPLATE - Schema v2.0
+# =============================================================================
+
+---
+# Head of Retention Output Template - Schema v2.0 Implementation
+# Comprehensive template for Head of Retention agent output with lifecycle optimization and engagement programs
+
+template:
+  id: 'head-of-retention-output-v2'
+  name: 'Customer Retention & Lifecycle Optimization Results'
+  version: '2.0'
+  description: 'Comprehensive template for customer retention strategy with lifecycle optimization and engagement programs'
+  category: 'strategy'
+  type: 'output'
+  agent_compatibility: ['head-of-retention']
+  workflow_stages: ['strategy']
+
+# Key sections for Head of Retention
+sections:
+  # Document Header
+  - section_id: 'document_header'
+    title: null
+    order: 1
+    required: true
+    content_type: 'template'
+    content: |
+      # Customer Retention & Lifecycle Optimization: {{project_name}}
+
+      **Session Date:** {{session_date}}
+      **Facilitator:** {{agent_name}} ({{agent_role}})
+      **Project:** {{project_name}}
+
+    variables:
+      - variable_name: 'agent_name'
+        default_value: 'Elena'
+        description: 'Head of Retention agent name'
+      - variable_name: 'agent_role'
+        default_value: 'Head of Customer Retention'
+
+  # Executive Summary
+  - section_id: 'executive_summary'
+    title: 'Executive Summary'
+    order: 2
+    required: true
+    content_type: 'template'
+    content: |
+      **Current Retention Rate:** {{current_retention_rate}}
+
+      **Target Retention Rate:** {{target_retention_rate}}
+
+      **Customer Lifetime Value:** {{current_clv}}
+
+      **Primary Churn Driver:** {{primary_churn_driver}}
+
+      **Key Intervention Point:** {{key_intervention_point}}
+
+      **Expected Impact:** {{expected_impact}}
+
+  # Customer Lifecycle Mapping
+  - section_id: 'lifecycle_mapping'
+    title: 'Customer Lifecycle Mapping & Optimization'
+    order: 3
+    required: true
+
+    subsections:
+      - section_id: 'lifecycle_stages'
+        title: 'Lifecycle Stage Definitions'
+        order: 1
+        repeatable: true
+        content_type: 'template'
+        content: |
+          **Stage:** {{stage_name}}
+
+          **Duration:** {{stage_duration}}
+
+          **Key Behaviors:**
+          {{#key_behaviors}}
+          - {{behavior}}
+          {{/key_behaviors}}
+
+          **Success Metrics:**
+          {{#stage_metrics}}
+          - {{metric}}: {{current_value}} → {{target_value}}
+          {{/stage_metrics}}
+
+          **Risk Factors:**
+          {{#risk_factors}}
+          - {{risk}}: {{risk_level}}
+          {{/risk_factors}}
+
+          **Intervention Opportunities:**
+          {{#interventions}}
+          - {{intervention}}: {{expected_impact}}
+          {{/interventions}}
+
+      - section_id: 'churn_analysis'
+        title: 'Churn Analysis & Prevention'
+        order: 2
+        content_type: 'template'
+        content: |
+          **Churn Rate Analysis:**
+          - Overall Churn Rate: {{overall_churn_rate}}
+          - Early Stage Churn: {{early_churn_rate}}
+          - Mid-Stage Churn: {{mid_churn_rate}}
+          - Late Stage Churn: {{late_churn_rate}}
+
+          **Churn Drivers:**
+          {{#churn_drivers}}
+          - **{{driver}}**: {{impact_percentage}}%
+            - Addressability: {{addressability_score}}
+            - Intervention Cost: {{intervention_cost}}
+            - Expected Reduction: {{expected_reduction}}
+          {{/churn_drivers}}
+
+          **Churn Prediction Model:**
+          {{churn_prediction_approach}}
+
+          **Early Warning Signals:**
+          {{#warning_signals}}
+          - {{signal}}: {{signal_threshold}}
+          {{/warning_signals}}
+
+  # Engagement Programs
+  - section_id: 'engagement_programs'
+    title: 'Customer Engagement Programs'
+    order: 4
+    required: true
+
+    subsections:
+      - section_id: 'onboarding_program'
+        title: 'Customer Onboarding Program'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Program Objective:**
+          {{onboarding_objective}}
+
+          **Success Definition:**
+          {{onboarding_success_definition}}
+
+          **Program Flow:**
+          {{#onboarding_steps}}
+          - **Day {{day_number}}**: {{step_description}}
+            - Touchpoint: {{touchpoint_type}}
+            - Goal: {{step_goal}}
+            - Success Metric: {{step_metric}}
+          {{/onboarding_steps}}
+
+          **Personalization Elements:**
+          {{#personalization_elements}}
+          - {{element}}: {{personalization_logic}}
+          {{/personalization_elements}}
+
+          **Success Metrics:**
+          {{#onboarding_metrics}}
+          - {{metric}}: {{current_performance}} → {{target_performance}}
+          {{/onboarding_metrics}}
+
+      - section_id: 'engagement_campaigns'
+        title: 'Ongoing Engagement Campaigns'
+        order: 2
+        repeatable: true
+        content_type: 'template'
+        content: |
+          **Campaign Name:** {{campaign_name}}
+
+          **Target Audience:** {{target_audience}}
+
+          **Campaign Objective:** {{campaign_objective}}
+
+          **Trigger Conditions:**
+          {{#trigger_conditions}}
+          - {{trigger}}
+          {{/trigger_conditions}}
+
+          **Campaign Flow:**
+          {{#campaign_steps}}
+          - **{{step_name}}**: {{step_description}}
+            - Timing: {{step_timing}}
+            - Channel: {{step_channel}}
+            - Content: {{step_content}}
+          {{/campaign_steps}}
+
+          **Success Metrics:**
+          {{#campaign_metrics}}
+          - {{metric}}: {{target_value}}
+          {{/campaign_metrics}}
+
+  # Retention Strategies
+  - section_id: 'retention_strategies'
+    title: 'Retention Strategy Framework'
+    order: 5
+    required: true
+
+    subsections:
+      - section_id: 'value_delivery_optimization'
+        title: 'Value Delivery Optimization'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Value Delivery Framework:**
+          {{value_delivery_framework}}
+
+          **Key Value Moments:**
+          {{#value_moments}}
+          - **{{moment_name}}**: {{moment_description}}
+            - Frequency: {{moment_frequency}}
+            - Impact Score: {{impact_score}}
+            - Enhancement Opportunity: {{enhancement_opportunity}}
+          {{/value_moments}}
+
+          **Value Communication Strategy:**
+          {{value_communication_strategy}}
+
+          **Optimization Initiatives:**
+          {{#value_optimizations}}
+          - **{{initiative}}**: {{expected_impact}}
+            - Implementation Timeline: {{implementation_timeline}}
+            - Resources Required: {{resources_required}}
+          {{/value_optimizations}}
+
+      - section_id: 'loyalty_programs'
+        title: 'Customer Loyalty Programs'
+        order: 2
+        content_type: 'template'
+        content: |
+          **Loyalty Program Strategy:**
+          {{loyalty_strategy}}
+
+          **Program Structure:**
+          {{#loyalty_tiers}}
+          - **{{tier_name}}**: {{tier_requirements}}
+            - Benefits: {{tier_benefits}}
+            - Target Audience: {{tier_audience}}
+            - Expected Behavior Change: {{behavior_change}}
+          {{/loyalty_tiers}}
+
+          **Engagement Mechanics:**
+          {{#engagement_mechanics}}
+          - {{mechanic}}: {{mechanic_description}}
+          {{/engagement_mechanics}}
+
+          **Success Metrics:**
+          {{#loyalty_metrics}}
+          - {{metric}}: {{target_value}}
+          {{/loyalty_metrics}}
+
+  # Customer Success Framework
+  - section_id: 'customer_success'
+    title: 'Customer Success Framework'
+    order: 6
+    required: true
+
+    content_type: 'template'
+    content: |
+      **Customer Success Philosophy:**
+      {{customer_success_philosophy}}
+
+      **Success Milestones:**
+      {{#success_milestones}}
+      - **{{milestone}}**: {{milestone_definition}}
+        - Timeline: {{milestone_timeline}}
+        - Success Criteria: {{milestone_criteria}}
+        - Support Required: {{support_required}}
+      {{/success_milestones}}
+
+      **Proactive Support Strategy:**
+      {{proactive_support_strategy}}
+
+      **Health Score Framework:**
+      {{#health_score_components}}
+      - **{{component}}**: {{weight_percentage}}%
+        - Calculation: {{calculation_method}}
+        - Green/Yellow/Red Thresholds: {{thresholds}}
+      {{/health_score_components}}
+
+      **Intervention Protocols:**
+      {{#intervention_protocols}}
+      - **{{risk_level}}**: {{intervention_approach}}
+      {{/intervention_protocols}}
+
+  # Next Steps & Handoff
+  - section_id: 'next_steps'
+    title: 'Next Steps & Context for Viral Growth Strategy'
+    order: 7
+    required: true
+
+    content_type: 'template'
+    content: |
+      **Immediate Actions:**
+      {{#immediate_actions}}
+      - **{{action}}**: {{owner}} - {{timeline}}
+      {{/immediate_actions}}
+
+      **Context for Viral Growth Architect:**
+      {{viral_growth_context}}
+
+      **Retention Insights for Viral Strategy:**
+      {{#viral_insights}}
+      - {{insight}}
+      {{/viral_insights}}
+
+      **Customer Advocacy Opportunities:**
+      {{#advocacy_opportunities}}
+      - {{opportunity}}
+      {{/advocacy_opportunities}}

@@ -1,0 +1,413 @@
+# Runtime Configuration - Growth Strategy Agent System
+# Central configuration for system runtime behavior and integration settings
+
+config_version: "2.0"
+description: "Runtime configuration for Growth & Marketing Strategy AI Agent system"
+
+# System paths and directories
+paths:
+  # Core component directories
+  agents_path: "agents/"
+  workflows_path: "workflows/"
+  templates_path: "templates/"
+  tasks_path: "tasks/"
+  knowledge_base_path: "knowledge-base/"
+  
+  # Data directories
+  data_path: "data/"
+  docs_path: "docs/"
+  outputs_path: "outputs/"
+  
+  # Working directories
+  temp_path: "temp/"
+  cache_path: "cache/"
+  logs_path: "logs/"
+  state_path: "state/"
+  
+  # Configuration directories
+  config_path: "config/"
+  
+  # File patterns
+  file_patterns:
+    agent_configs: "*.yaml"
+    workflow_configs: "*.yaml"
+    template_configs: "*.yaml"
+    task_configs: "*.yaml"
+    knowledge_files: "*.md"
+
+# API configuration
+api:
+  # Primary AI provider configuration
+  primary_provider:
+    name: "anthropic"
+    base_url: "https://api.anthropic.com/v1"
+    model: "claude-3-5-sonnet-20241022"
+    api_key_env_var: "ANTHROPIC_API_KEY"
+    
+  # Default API parameters
+  default_parameters:
+    temperature: 0.7
+    max_tokens: 4000
+    top_p: 0.95
+    timeout: 120
+    
+  # Rate limiting
+  rate_limiting:
+    requests_per_minute: 50
+    tokens_per_minute: 40000
+    burst_allowance: 10
+    
+  # Retry configuration
+  retry_config:
+    max_retries: 3
+    base_delay: 1
+    max_delay: 60
+    backoff_factor: 2
+    retry_on_status: [429, 500, 502, 503, 504]
+    
+  # Circuit breaker
+  circuit_breaker:
+    failure_threshold: 5
+    recovery_timeout: 300
+    half_open_max_calls: 3
+
+# Agent system configuration
+agents:
+  # Agent discovery and loading
+  discovery:
+    auto_scan: true
+    validation_on_load: true
+    cache_configurations: true
+    
+  # Agent execution defaults
+  execution_defaults:
+    timeout: 1800  # 30 minutes
+    memory_limit: "2GB"
+    retry_attempts: 2
+    
+  # Agent coordination
+  coordination:
+    max_concurrent_agents: 1
+    context_passing_enabled: true
+    quality_gates_enabled: true
+    
+  # Agent-specific overrides
+  agent_overrides:
+    gtm_consultant:
+      timeout: 2700  # 45 minutes
+      temperature: 0.7
+    persona_strategist:
+      timeout: 1800  # 30 minutes
+      temperature: 0.8
+    growth_hacker:
+      timeout: 3600  # 60 minutes
+      temperature: 0.6
+
+# Workflow system configuration
+workflows:
+  # Workflow execution
+  execution:
+    default_mode: "sequential"
+    checkpoint_enabled: true
+    resume_capability: true
+    
+  # State management
+  state_management:
+    persistence_enabled: true
+    backup_frequency: "after_each_agent"
+    cleanup_after_completion: false
+    state_retention_days: 30
+    
+  # Quality gates
+  quality_gates:
+    enabled: true
+    enforcement_level: "strict"
+    auto_retry_on_failure: true
+    max_retry_attempts: 2
+    
+  # Progress tracking
+  progress_tracking:
+    enabled: true
+    granularity: "step_level"
+    notifications_enabled: true
+
+# Template system configuration
+templates:
+  # Template processing
+  processing:
+    engine: "nunjucks"
+    auto_variable_extraction: true
+    quality_enhancement: true
+    multi_format_generation: true
+    
+  # Output generation
+  output:
+    default_format: "markdown"
+    supported_formats: ["markdown", "html", "pdf", "docx"]
+    compression_enabled: true
+    
+  # Caching
+  caching:
+    template_compilation_cache: true
+    variable_extraction_cache: true
+    output_generation_cache: false
+    cache_duration: "2h"
+
+# Knowledge base configuration
+knowledge_base:
+  # Knowledge injection
+  injection:
+    auto_injection_enabled: true
+    relevance_threshold: 0.7
+    max_tokens_per_injection: 2000
+    
+  # Knowledge processing
+  processing:
+    preprocessing_enabled: true
+    semantic_indexing: false
+    caching_enabled: true
+    
+  # Knowledge sources
+  sources:
+    primary_sources: ["knowledge-base/method/", "knowledge-base/resources/"]
+    secondary_sources: ["knowledge-base/glossary/", "data/"]
+    dynamic_sources: []
+
+# Performance and optimization
+performance:
+  # Resource limits
+  resource_limits:
+    max_memory_usage: "4GB"
+    max_cpu_usage: "80%"
+    max_disk_usage: "10GB"
+    max_execution_time: 7200  # 2 hours
+    
+  # Caching strategy
+  caching:
+    global_cache_enabled: true
+    cache_backend: "file_system"
+    cache_compression: true
+    cache_encryption: false
+    
+  # Optimization features
+  optimization:
+    lazy_loading: true
+    parallel_processing: false
+    batch_processing: true
+    compression: true
+    
+  # Performance monitoring
+  monitoring:
+    enabled: true
+    metrics_collection: true
+    performance_alerts: true
+    optimization_suggestions: true
+
+# Logging and monitoring
+logging:
+  # Log configuration
+  log_config:
+    level: "INFO"
+    format: "structured_json"
+    rotation: "daily"
+    retention_days: 30
+    
+  # Log categories
+  categories:
+    system: true
+    agents: true
+    workflows: true
+    templates: true
+    api_calls: true
+    user_interactions: true
+    errors: true
+    performance: true
+    
+  # Log outputs
+  outputs:
+    console: true
+    file: true
+    remote_logging: false
+    
+  # Monitoring
+  monitoring:
+    health_checks: true
+    metrics_export: false
+    alerting: true
+    dashboard: false
+
+# Security configuration
+security:
+  # Data protection
+  data_protection:
+    encryption_at_rest: true
+    encryption_in_transit: true
+    data_sanitization: true
+    
+  # Access control
+  access_control:
+    authentication_enabled: false
+    authorization_enabled: false
+    audit_logging: true
+    
+  # API security
+  api_security:
+    api_key_validation: true
+    request_signing: false
+    rate_limiting: true
+    ip_whitelisting: false
+    
+  # Content security
+  content_security:
+    input_sanitization: true
+    output_sanitization: true
+    template_injection_prevention: true
+
+# Error handling and recovery
+error_handling:
+  # Global error handling
+  global:
+    log_all_errors: true
+    notify_on_critical_errors: true
+    auto_recovery_enabled: true
+    
+  # Component-specific error handling
+  components:
+    agents:
+      retry_on_failure: true
+      fallback_behavior: "graceful_degradation"
+    workflows:
+      checkpoint_on_error: true
+      rollback_on_critical_failure: true
+    templates:
+      fallback_templates: true
+      partial_generation_allowed: true
+    
+  # Recovery procedures
+  recovery:
+    auto_recovery_attempts: 3
+    manual_intervention_threshold: "critical_errors"
+    recovery_validation: true
+
+# User experience configuration
+user_experience:
+  # Interaction settings
+  interaction:
+    default_timeout: 300  # 5 minutes
+    progress_updates: true
+    confirmation_prompts: true
+    
+  # Interface preferences
+  interface:
+    style: "conversational"
+    verbosity: "standard"
+    progress_visualization: true
+    
+  # Notifications
+  notifications:
+    enabled: true
+    channels: ["system_output"]
+    frequency: "important_events_only"
+
+# Integration configuration
+integrations:
+  # External services
+  external_services:
+    enabled: false
+    timeout: 30
+    retry_attempts: 2
+    
+  # Webhooks
+  webhooks:
+    enabled: false
+    timeout: 10
+    retry_attempts: 3
+    
+  # File system integration
+  file_system:
+    auto_backup: true
+    version_control: false
+    sync_enabled: false
+
+# Development and debugging
+development:
+  # Debug settings
+  debug:
+    enabled: false
+    verbose_logging: false
+    trace_execution: false
+    
+  # Testing
+  testing:
+    test_mode: false
+    mock_api_calls: false
+    validation_strict: true
+    
+  # Development tools
+  tools:
+    hot_reload: false
+    configuration_validation: true
+    performance_profiling: false
+
+# Environment-specific configurations
+environments:
+  # Development environment
+  development:
+    debug_enabled: true
+    verbose_logging: true
+    mock_api_calls: true
+    cache_disabled: true
+    
+  # Staging environment
+  staging:
+    debug_enabled: false
+    monitoring_enhanced: true
+    rate_limiting_relaxed: true
+    
+  # Production environment
+  production:
+    debug_enabled: false
+    security_enhanced: true
+    performance_optimized: true
+    monitoring_comprehensive: true
+
+# Feature flags
+features:
+  # Experimental features
+  experimental:
+    advanced_analytics: false
+    ml_optimization: false
+    distributed_processing: false
+    
+  # Beta features
+  beta:
+    enhanced_templates: true
+    improved_error_handling: true
+    performance_monitoring: true
+    
+  # Stable features
+  stable:
+    multi_agent_workflows: true
+    template_processing: true
+    knowledge_injection: true
+    quality_gates: true
+
+# Metadata and governance
+metadata:
+  # Version information
+  version:
+    config_version: "2.0"
+    system_version: "2.0"
+    last_updated: "2024-01-15"
+    
+  # Governance
+  governance:
+    owner: "system_administration"
+    maintainers: ["system_architects", "devops_team"]
+    approval_required_for_changes: true
+    
+  # Documentation
+  documentation:
+    config_guide: "docs/configuration-guide.md"
+    troubleshooting: "docs/troubleshooting.md"
+    best_practices: "docs/configuration-best-practices.md"

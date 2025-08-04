@@ -1,0 +1,310 @@
+# =============================================================================
+# VIRAL GROWTH ARCHITECT OUTPUT TEMPLATE - Schema v2.0
+# =============================================================================
+
+---
+# Viral Growth Architect Output Template - Schema v2.0 Implementation
+
+template:
+  id: 'viral-growth-architect-output-v2'
+  name: 'Viral Growth Strategy & Network Effects Results'
+  version: '2.0'
+  description: 'Comprehensive template for viral growth strategy with network effects and referral mechanisms'
+  category: 'strategy'
+  type: 'output'
+  agent_compatibility: ['viral-growth-architect']
+  workflow_stages: ['strategy']
+
+# Key sections for Viral Growth Architect
+sections:
+  # Document Header
+  - section_id: 'document_header'
+    title: null
+    order: 1
+    required: true
+    content_type: 'template'
+    content: |
+      # Viral Growth Strategy & Network Effects: {{project_name}}
+
+      **Session Date:** {{session_date}}
+      **Facilitator:** {{agent_name}} ({{agent_role}})
+      **Project:** {{project_name}}
+
+    variables:
+      - variable_name: 'agent_name'
+        default_value: 'Viktor'
+        description: 'Viral Growth Architect agent name'
+      - variable_name: 'agent_role'
+        default_value: 'Viral Growth Architect'
+
+  # Executive Summary
+  - section_id: 'executive_summary'
+    title: 'Executive Summary'
+    order: 2
+    required: true
+    content_type: 'template'
+    content: |
+      **Viral Coefficient Target:** {{viral_coefficient_target}}
+
+      **Primary Viral Loop:** {{primary_viral_loop}}
+
+      **Network Effect Type:** {{network_effect_type}}
+
+      **Sharing Motivation:** {{primary_sharing_motivation}}
+
+      **Expected CAC Reduction:** {{expected_cac_reduction}}
+
+      **Implementation Complexity:** {{implementation_complexity}}
+
+  # Viral Loop Design
+  - section_id: 'viral_loops'
+    title: 'Viral Loop Design & Mechanics'
+    order: 3
+    required: true
+
+    subsections:
+      - section_id: 'primary_viral_loop'
+        title: 'Primary Viral Loop'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Loop Name:** {{loop_name}}
+
+          **Loop Mechanics:**
+          {{#loop_steps}}
+          - **Step {{step_number}}**: {{step_description}}
+            - User Action: {{user_action}}
+            - Trigger: {{step_trigger}}
+            - Conversion Rate: {{step_conversion_rate}}
+          {{/loop_steps}}
+
+          **Viral Coefficient Calculation:**
+          - Current K-Factor: {{current_k_factor}}
+          - Target K-Factor: {{target_k_factor}}
+          - Cycle Time: {{cycle_time}}
+
+          **Optimization Opportunities:**
+          {{#optimization_opportunities}}
+          - **{{opportunity}}**: {{expected_impact}}
+          {{/optimization_opportunities}}
+
+      - section_id: 'secondary_viral_loops'
+        title: 'Secondary Viral Loops'
+        order: 2
+        repeatable: true
+        content_type: 'template'
+        content: |
+          **Loop Name:** {{secondary_loop_name}}
+
+          **Loop Type:** {{loop_type}}
+
+          **Target Audience:** {{loop_target_audience}}
+
+          **Mechanics Summary:**
+          {{loop_mechanics_summary}}
+
+          **Expected Contribution:** {{expected_contribution}}
+
+          **Implementation Priority:** {{implementation_priority}}
+
+  # Network Effects Strategy
+  - section_id: 'network_effects'
+    title: 'Network Effects Strategy'
+    order: 4
+    required: true
+
+    subsections:
+      - section_id: 'network_effect_design'
+        title: 'Network Effect Design'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Network Effect Type:** {{network_effect_type}}
+
+          **Value Creation Mechanism:**
+          {{value_creation_mechanism}}
+
+          **Network Density Requirements:**
+          {{network_density_requirements}}
+
+          **Critical Mass Threshold:**
+          - User Count: {{critical_mass_users}}
+          - Connections: {{critical_mass_connections}}
+          - Activity Level: {{critical_mass_activity}}
+
+          **Defensibility Analysis:**
+          {{#defensibility_factors}}
+          - **{{factor}}**: {{defensibility_score}}
+          {{/defensibility_factors}}
+
+      - section_id: 'network_growth_strategy'
+        title: 'Network Growth Strategy'
+        order: 2
+        content_type: 'template'
+        content: |
+          **Growth Strategy Framework:**
+          {{network_growth_framework}}
+
+          **Seeding Strategy:**
+          {{#seeding_tactics}}
+          - **{{tactic}}**: {{tactic_description}}
+            - Target Audience: {{seeding_audience}}
+            - Expected Impact: {{seeding_impact}}
+          {{/seeding_tactics}}
+
+          **Activation Strategy:**
+          {{network_activation_strategy}}
+
+          **Scaling Mechanisms:**
+          {{#scaling_mechanisms}}
+          - {{mechanism}}: {{mechanism_description}}
+          {{/scaling_mechanisms}}
+
+  # Referral Program Strategy
+  - section_id: 'referral_programs'
+    title: 'Referral Program Strategy'
+    order: 5
+    required: true
+
+    subsections:
+      - section_id: 'referral_program_design'
+        title: 'Referral Program Design'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Program Objective:** {{referral_objective}}
+
+          **Incentive Structure:**
+          - Referrer Reward: {{referrer_reward}}
+          - Referee Reward: {{referee_reward}}
+          - Reward Type: {{reward_type}}
+          - Reward Timing: {{reward_timing}}
+
+          **Referral Flow:**
+          {{#referral_steps}}
+          - **{{step_name}}**: {{step_description}}
+            - Conversion Rate: {{step_conversion}}
+            - Drop-off Risk: {{drop_off_risk}}
+          {{/referral_steps}}
+
+          **Program Mechanics:**
+          {{referral_mechanics}}
+
+          **Success Metrics:**
+          {{#referral_metrics}}
+          - {{metric}}: {{target_value}}
+          {{/referral_metrics}}
+
+      - section_id: 'referral_optimization'
+        title: 'Referral Optimization Strategy'
+        order: 2
+        content_type: 'template'
+        content: |
+          **Optimization Framework:**
+          {{referral_optimization_framework}}
+
+          **A/B Testing Roadmap:**
+          {{#referral_tests}}
+          - **{{test_name}}**: {{test_hypothesis}}
+            - Variable: {{test_variable}}
+            - Timeline: {{test_timeline}}
+            - Success Criteria: {{test_success_criteria}}
+          {{/referral_tests}}
+
+          **Persona-Specific Strategies:**
+          {{#persona_referral_strategies}}
+          - **{{persona_name}}**: {{referral_strategy}}
+          {{/persona_referral_strategies}}
+
+  # Viral Content Strategy
+  - section_id: 'viral_content'
+    title: 'Viral Content Strategy'
+    order: 6
+    required: true
+
+    content_type: 'template'
+    content: |
+      **Content Virality Framework:**
+      {{content_virality_framework}}
+
+      **Viral Content Types:**
+      {{#viral_content_types}}
+      - **{{content_type}}**: {{content_description}}
+        - Sharing Motivation: {{sharing_motivation}}
+        - Expected Reach Multiplier: {{reach_multiplier}}
+        - Production Complexity: {{production_complexity}}
+      {{/viral_content_types}}
+
+      **Content Distribution Strategy:**
+      {{content_distribution_strategy}}
+
+      **Amplification Tactics:**
+      {{#amplification_tactics}}
+      - {{tactic}}: {{tactic_description}}
+      {{/amplification_tactics}}
+
+      **Measurement Framework:**
+      {{#viral_content_metrics}}
+      - {{metric}}: {{metric_definition}}
+      {{/viral_content_metrics}}
+
+  # Implementation Roadmap
+  - section_id: 'implementation_roadmap'
+    title: 'Viral Growth Implementation Roadmap'
+    order: 7
+    required: true
+
+    content_type: 'template'
+    content: |
+      **Phase 1 - Foundation (0-2 months):**
+      {{#phase1_initiatives}}
+      - **{{initiative}}**: {{description}}
+        - Timeline: {{timeline}}
+        - Resources: {{resources}}
+        - Success Criteria: {{success_criteria}}
+      {{/phase1_initiatives}}
+
+      **Phase 2 - Optimization (2-4 months):**
+      {{#phase2_initiatives}}
+      - **{{initiative}}**: {{description}}
+        - Timeline: {{timeline}}
+        - Dependencies: {{dependencies}}
+      {{/phase2_initiatives}}
+
+      **Phase 3 - Scale (4+ months):**
+      {{#phase3_initiatives}}
+      - **{{initiative}}**: {{description}}
+        - Timeline: {{timeline}}
+        - Expected Impact: {{expected_impact}}
+      {{/phase3_initiatives}}
+
+      **Risk Mitigation:**
+      {{#viral_risks}}
+      - **{{risk}}**: {{mitigation_strategy}}
+      {{/viral_risks}}
+
+  # Next Steps & Handoff
+  - section_id: 'next_steps'
+    title: 'Next Steps & Context for Growth Experimentation'
+    order: 8
+    required: true
+
+    content_type: 'template'
+    content: |
+      **Immediate Actions:**
+      {{#immediate_actions}}
+      - **{{action}}**: {{owner}} - {{timeline}}
+      {{/immediate_actions}}
+
+      **Context for Growth Hacker:**
+      {{growth_hacker_context}}
+
+      **Priority Viral Experiments:**
+      {{#priority_viral_experiments}}
+      - {{experiment}}
+      {{/priority_viral_experiments}}
+
+      **Viral Hypotheses for Testing:**
+      {{#viral_hypotheses}}
+      - {{hypothesis}}
+      {{/viral_hypotheses}}

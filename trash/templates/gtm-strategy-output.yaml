@@ -1,0 +1,911 @@
+# GTM Strategy Output Template - Schema v2.0 Implementation
+# Comprehensive template for GTM Consultant agent output with API integration
+
+schema_version: "2.0"
+description: "Professional GTM strategy output template with dynamic content generation and quality validation"
+
+# Core template identification
+template:
+  id: "gtm-strategy-output-v2"
+  name: "GTM Strategy Development Results"
+  version: "2.0"
+  description: "Comprehensive template for Go-To-Market strategy development results including value proposition, market analysis, and strategic recommendations"
+  category: "strategy"
+  type: "output"
+  
+  use_cases:
+    - "gtm_strategy_development"
+    - "market_entry_planning"
+    - "value_proposition_design"
+    - "business_model_validation"
+    - "strategic_planning_sessions"
+  
+  agent_compatibility: ["gtm-consultant"]
+  workflow_stages: ["foundation"]
+  complexity_level: "complex"
+
+# Output configuration
+output:
+  format: "markdown"
+  secondary_formats: ["pdf", "html"]
+  filename: "docs/gtm-strategy-{{project_name}}-{{date}}.md"
+  title: "GTM Strategy Development Results: {{project_name}}"
+  
+  storage:
+    default_location: "docs/"
+    organization_pattern: "date/agent"
+    versioning: true
+    backup_copies: true
+    
+  format_specific:
+    markdown:
+      syntax_highlighting: true
+      table_formatting: "github"
+      link_handling: "relative"
+    
+    pdf:
+      page_layout: "a4"
+      font_family: "Arial"
+      include_toc: true
+      
+    html:
+      css_framework: "bootstrap"
+      responsive: true
+      interactive_elements: false
+
+# Workflow integration
+workflow:
+  mode: "non-interactive"
+  execution_context: "post_agent"
+  
+  user_interaction:
+    elicitation_required: false
+    approval_required: true
+    
+  agent_integration:
+    prompt_integration: true
+    context_injection: true
+    validation_integration: true
+    
+  processing:
+    pre_processing: ["validate_agent_output", "extract_variables"]
+    post_processing: ["quality_check", "format_optimization", "save_backup"]
+    error_handling: "graceful_degradation"
+    fallback_template: "project-brief-tmpl"
+
+# Section structure and hierarchy
+sections:
+  # Document Header
+  - section_id: "document_header"
+    title: null
+    description: "Document metadata and session information"
+    order: 1
+    required: true
+    conditional: null
+    repeatable: false
+    collapsible: false
+    content_type: "template"
+    content: |
+      # {{title}}
+      
+      **Session Date:** {{session_date}}
+      **Facilitator:** {{agent_name}} ({{agent_role}})
+      **Participant:** {{user_name}}
+      **Project:** {{project_name}}
+      **Business Stage:** {{business_stage}}
+    
+    variables:
+      - variable_name: "session_date"
+        data_type: "string"
+        required: true
+        default_value: "{{current_date}}"
+        description: "Date of strategy development session"
+      - variable_name: "agent_name"
+        data_type: "string" 
+        required: true
+        default_value: "Angelina"
+        description: "Name of the GTM consultant agent"
+      - variable_name: "agent_role"
+        data_type: "string"
+        required: true
+        default_value: "Go-To-Market Consultant"
+        description: "Role of the facilitating agent"
+      - variable_name: "user_name"
+        data_type: "string"
+        required: false
+        default_value: "Strategy Team"
+        description: "Name of the user or team"
+      - variable_name: "project_name"
+        data_type: "string"
+        required: true
+        description: "Name of the project or business"
+      - variable_name: "business_stage"
+        data_type: "string"
+        required: true
+        description: "Current stage of business development"
+        examples: ["Pre-launch", "MVP", "Growth", "Scale"]
+    
+    formatting:
+      type: "paragraph"
+      styling: {"header_level": 1}
+
+  # Executive Summary
+  - section_id: "executive_summary"
+    title: "Executive Summary"
+    description: "High-level overview of GTM strategy and key insights"
+    order: 2
+    required: true
+    content_type: "dynamic"
+    
+    subsections:
+      - section_id: "strategy_overview"
+        title: "Strategy Overview"
+        order: 1
+        content_type: "template"
+        content: |
+          **GTM Focus Area:** {{gtm_focus_area}}
+          
+          **Target Customer:** {{target_customer}}
+          
+          **Core Value Proposition:** {{core_value_proposition}}
+          
+          **Primary Go-to-Market Channel:** {{primary_channel}}
+          
+          **Expected Timeline:** {{launch_timeline}}
+        
+        variables:
+          - variable_name: "gtm_focus_area"
+            data_type: "string"
+            required: true
+            description: "Primary focus area for GTM strategy"
+            examples: ["Product Launch", "Market Expansion", "Customer Acquisition"]
+          - variable_name: "target_customer"
+            data_type: "string"
+            required: true
+            description: "Primary target customer segment"
+          - variable_name: "core_value_proposition"
+            data_type: "string"
+            required: true
+            description: "Core value proposition statement"
+          - variable_name: "primary_channel"
+            data_type: "string"
+            required: true
+            description: "Primary go-to-market channel"
+          - variable_name: "launch_timeline"
+            data_type: "string"
+            required: true
+            description: "Expected timeline for market launch"
+      
+      - section_id: "key_insights"
+        title: "Key Strategic Insights"
+        order: 2
+        content_type: "template"
+        formatting:
+          type: "bullet-list"
+        content: "{{#key_insights}}\n- {{insight}}\n{{/key_insights}}"
+        
+        variables:
+          - variable_name: "key_insights"
+            data_type: "array"
+            required: true
+            description: "Array of key strategic insights"
+            validation_rules: ["min_items:3", "max_items:7"]
+
+  # Market & Customer Analysis
+  - section_id: "market_customer_analysis"
+    title: "Market & Customer Analysis"
+    description: "Detailed analysis of market opportunity and customer segments"
+    order: 3
+    required: true
+    
+    subsections:
+      - section_id: "market_opportunity"
+        title: "Market Opportunity"
+        order: 1
+        content_type: "template"
+        content: |
+          **Total Addressable Market (TAM):** {{tam}}
+          
+          **Serviceable Addressable Market (SAM):** {{sam}}
+          
+          **Serviceable Obtainable Market (SOM):** {{som}}
+          
+          **Market Growth Rate:** {{market_growth_rate}}
+          
+          **Key Market Drivers:**
+          {{#market_drivers}}
+          - {{driver}}
+          {{/market_drivers}}
+        
+        variables:
+          - variable_name: "tam"
+            data_type: "string"
+            required: true
+            description: "Total Addressable Market size and description"
+          - variable_name: "sam"
+            data_type: "string"
+            required: true
+            description: "Serviceable Addressable Market size and description"
+          - variable_name: "som"
+            data_type: "string"
+            required: true
+            description: "Serviceable Obtainable Market size and description"
+          - variable_name: "market_growth_rate"
+            data_type: "string"
+            required: true
+            description: "Annual market growth rate with context"
+          - variable_name: "market_drivers"
+            data_type: "array"
+            required: true
+            description: "Key factors driving market growth"
+      
+      - section_id: "customer_segments"
+        title: "Customer Segments"
+        order: 2
+        repeatable: true
+        content_type: "template"
+        content: |
+          ### {{segment_name}}
+          
+          **Segment Size:** {{segment_size}}
+          
+          **Key Characteristics:**
+          {{#characteristics}}
+          - {{characteristic}}
+          {{/characteristics}}
+          
+          **Pain Points:**
+          {{#pain_points}}
+          - {{pain}} ({{urgency}}/{{frequency}})
+          {{/pain_points}}
+          
+          **Willingness to Pay:** {{willingness_to_pay}}
+          
+          **Current Solutions:**
+          {{#current_solutions}}
+          - {{solution}}: {{pros_cons}}
+          {{/current_solutions}}
+        
+        variables:
+          - variable_name: "segment_name"
+            data_type: "string"
+            required: true
+            description: "Name of the customer segment"
+          - variable_name: "segment_size"
+            data_type: "string"
+            required: true
+            description: "Size and accessibility of segment"
+          - variable_name: "characteristics"
+            data_type: "array"
+            required: true
+            description: "Key characteristics of the segment"
+          - variable_name: "pain_points"
+            data_type: "array"
+            required: true
+            description: "Customer pain points with urgency/frequency ratings"
+          - variable_name: "willingness_to_pay"
+            data_type: "string"
+            required: true
+            description: "Price sensitivity and willingness to pay"
+          - variable_name: "current_solutions"
+            data_type: "array"
+            required: true
+            description: "Current solutions and their pros/cons"
+
+  # Value Proposition Design
+  - section_id: "value_proposition"
+    title: "Value Proposition Design"
+    description: "Comprehensive value proposition with pain relievers and gain creators"
+    order: 4
+    required: true
+    
+    subsections:
+      - section_id: "core_offering"
+        title: "Core Offering"
+        order: 1
+        content_type: "template"
+        content: |
+          **Products/Services:** {{products_services}}
+          
+          **Primary Job Addressed:** {{primary_job}}
+          
+          **Unique Value Proposition:** {{unique_value_proposition}}
+          
+          **Key Differentiators:**
+          {{#differentiators}}
+          - {{differentiator}}
+          {{/differentiators}}
+        
+        variables:
+          - variable_name: "products_services"
+            data_type: "string"
+            required: true
+            description: "Description of core products or services"
+          - variable_name: "primary_job"
+            data_type: "string"
+            required: true
+            description: "Primary job-to-be-done that solution addresses"
+          - variable_name: "unique_value_proposition"
+            data_type: "string"
+            required: true
+            description: "Unique value proposition statement"
+          - variable_name: "differentiators"
+            data_type: "array"
+            required: true
+            description: "Key differentiators from competition"
+      
+      - section_id: "pain_relievers"
+        title: "Pain Relievers"
+        order: 2
+        repeatable: true
+        content_type: "template"
+        formatting:
+          type: "numbered-list"
+        content: |
+          **{{pain_reliever_name}}**
+          - Pain addressed: {{pain_addressed}}
+          - How it works: {{mechanism}}
+          - Proof point: {{evidence}}
+          - Impact level: {{impact_level}}
+        
+        variables:
+          - variable_name: "pain_reliever_name"
+            data_type: "string"
+            required: true
+            description: "Name of the pain reliever"
+          - variable_name: "pain_addressed"
+            data_type: "string"
+            required: true
+            description: "Specific pain point being addressed"
+          - variable_name: "mechanism"
+            data_type: "string"
+            required: true
+            description: "How the solution relieves the pain"
+          - variable_name: "evidence"
+            data_type: "string"
+            required: true
+            description: "Proof point or evidence of effectiveness"
+          - variable_name: "impact_level"
+            data_type: "string"
+            required: true
+            description: "Level of impact (High/Medium/Low)"
+            examples: ["High", "Medium", "Low"]
+      
+      - section_id: "gain_creators"
+        title: "Gain Creators"
+        order: 3
+        repeatable: true
+        content_type: "template"
+        formatting:
+          type: "numbered-list"
+        content: |
+          **{{gain_creator_name}}**
+          - Gain delivered: {{gain_delivered}}
+          - Customer impact: {{customer_impact}}
+          - Differentiation: {{unique_aspect}}
+          - Measurability: {{measurement_approach}}
+        
+        variables:
+          - variable_name: "gain_creator_name"
+            data_type: "string"
+            required: true
+            description: "Name of the gain creator"
+          - variable_name: "gain_delivered"
+            data_type: "string"
+            required: true
+            description: "Specific gain delivered to customer"
+          - variable_name: "customer_impact"
+            data_type: "string"
+            required: true
+            description: "Impact on customer's business or life"
+          - variable_name: "unique_aspect"
+            data_type: "string"
+            required: true
+            description: "What makes this gain creator unique"
+          - variable_name: "measurement_approach"
+            data_type: "string"
+            required: true
+            description: "How the gain can be measured"
+
+  # Business Model Framework
+  - section_id: "business_model"
+    title: "Business Model Framework"
+    description: "Core business model components and revenue strategy"
+    order: 5
+    required: true
+    
+    subsections:
+      - section_id: "revenue_model"
+        title: "Revenue Model"
+        order: 1
+        content_type: "template"
+        content: |
+          **Primary Revenue Stream:** {{primary_revenue_stream}}
+          
+          **Pricing Model:** {{pricing_model}}
+          
+          **Price Points:** {{price_points}}
+          
+          **Revenue Projections:**
+          - Year 1: {{revenue_year_1}}
+          - Year 2: {{revenue_year_2}}
+          - Year 3: {{revenue_year_3}}
+          
+          **Secondary Revenue Streams:**
+          {{#secondary_streams}}
+          - {{stream}}: {{description}}
+          {{/secondary_streams}}
+        
+        variables:
+          - variable_name: "primary_revenue_stream"
+            data_type: "string"
+            required: true
+            description: "Primary way the business generates revenue"
+          - variable_name: "pricing_model"
+            data_type: "string"
+            required: true
+            description: "How pricing is structured"
+            examples: ["Subscription", "One-time", "Freemium", "Usage-based"]
+          - variable_name: "price_points"
+            data_type: "string"
+            required: true
+            description: "Specific price points and tiers"
+          - variable_name: "revenue_year_1"
+            data_type: "string"
+            required: true
+            description: "Year 1 revenue projection"
+          - variable_name: "revenue_year_2"
+            data_type: "string"
+            required: true
+            description: "Year 2 revenue projection"
+          - variable_name: "revenue_year_3"
+            data_type: "string"
+            required: true
+            description: "Year 3 revenue projection"
+          - variable_name: "secondary_streams"
+            data_type: "array"
+            required: false
+            description: "Additional revenue streams"
+      
+      - section_id: "key_partnerships"
+        title: "Key Partnerships"
+        order: 2
+        content_type: "template"
+        content: |
+          **Strategic Partners:**
+          {{#strategic_partners}}
+          - **{{partner_name}}**: {{value_exchange}}
+          {{/strategic_partners}}
+          
+          **Channel Partners:**
+          {{#channel_partners}}
+          - **{{partner_name}}**: {{channel_role}}
+          {{/channel_partners}}
+          
+          **Technology Partners:**
+          {{#tech_partners}}
+          - **{{partner_name}}**: {{integration_value}}
+          {{/tech_partners}}
+        
+        variables:
+          - variable_name: "strategic_partners"
+            data_type: "array"
+            required: false
+            description: "Strategic business partnerships"
+          - variable_name: "channel_partners"
+            data_type: "array"
+            required: false
+            description: "Channel and distribution partners"
+          - variable_name: "tech_partners"
+            data_type: "array"
+            required: false
+            description: "Technology integration partners"
+
+  # Go-to-Market Strategy
+  - section_id: "gtm_strategy"
+    title: "Go-to-Market Strategy"
+    description: "Comprehensive go-to-market execution plan"
+    order: 6
+    required: true
+    
+    subsections:
+      - section_id: "launch_sequence"
+        title: "Launch Sequence"
+        order: 1
+        repeatable: true
+        content_type: "template"
+        formatting:
+          type: "numbered-list"
+        content: |
+          **Phase {{phase_number}}: {{phase_name}}**
+          - Timeline: {{timeline}}
+          - Goals: {{goals}}
+          - Key Activities: {{key_activities}}
+          - Success Metrics: {{success_metrics}}
+          - Budget Allocation: {{budget_allocation}}
+        
+        variables:
+          - variable_name: "phase_number"
+            data_type: "integer"
+            required: true
+            description: "Phase number in sequence"
+          - variable_name: "phase_name"
+            data_type: "string"
+            required: true
+            description: "Name of the launch phase"
+          - variable_name: "timeline"
+            data_type: "string"
+            required: true
+            description: "Timeline for this phase"
+          - variable_name: "goals"
+            data_type: "string"
+            required: true
+            description: "Key goals for this phase"
+          - variable_name: "key_activities"
+            data_type: "string"
+            required: true
+            description: "Key activities to be completed"
+          - variable_name: "success_metrics"
+            data_type: "string"
+            required: true
+            description: "Metrics to measure success"
+          - variable_name: "budget_allocation"
+            data_type: "string"
+            required: true
+            description: "Budget allocated to this phase"
+      
+      - section_id: "channel_strategy"
+        title: "Channel Strategy"
+        order: 2
+        content_type: "template"
+        content: |
+          **Primary Channels:**
+          {{#primary_channels}}
+          - **{{channel_name}}**: {{channel_description}}
+            - Target Audience: {{target_audience}}
+            - Expected CAC: {{expected_cac}}
+            - Conversion Rate: {{conversion_rate}}
+            - Monthly Budget: {{monthly_budget}}
+          {{/primary_channels}}
+          
+          **Channel Mix Strategy:** {{channel_mix_rationale}}
+          
+          **Attribution Model:** {{attribution_approach}}
+        
+        variables:
+          - variable_name: "primary_channels"
+            data_type: "array"
+            required: true
+            description: "Primary marketing and sales channels"
+          - variable_name: "channel_mix_rationale"
+            data_type: "string"
+            required: true
+            description: "Rationale for channel mix decisions"
+          - variable_name: "attribution_approach"
+            data_type: "string" 
+            required: true
+            description: "How attribution will be tracked and measured"
+
+  # Success Metrics & KPIs
+  - section_id: "success_metrics"
+    title: "Success Metrics & KPIs"
+    description: "Key performance indicators and measurement framework"
+    order: 7
+    required: true
+    content_type: "template"
+    content: |
+      **North Star Metric:** {{north_star_metric}}
+      
+      **Primary KPIs:**
+      {{#primary_kpis}}
+      - **{{kpi_name}}**: {{kpi_description}}
+        - Target: {{target_value}}
+        - Measurement Frequency: {{measurement_frequency}}
+        - Data Source: {{data_source}}
+      {{/primary_kpis}}
+      
+      **Secondary KPIs:**
+      {{#secondary_kpis}}
+      - **{{kpi_name}}**: {{target_value}}
+      {{/secondary_kpis}}
+      
+      **Reporting Dashboard:** {{dashboard_approach}}
+    
+    variables:
+      - variable_name: "north_star_metric"
+        data_type: "string"
+        required: true
+        description: "Primary metric that indicates business success"
+      - variable_name: "primary_kpis"
+        data_type: "array"
+        required: true
+        description: "Primary key performance indicators"
+      - variable_name: "secondary_kpis"
+        data_type: "array"
+        required: false
+        description: "Secondary supporting KPIs"
+      - variable_name: "dashboard_approach"
+        data_type: "string"
+        required: true
+        description: "How metrics will be tracked and reported"
+
+  # Risk Analysis & Mitigation
+  - section_id: "risk_analysis"
+    title: "Risk Analysis & Mitigation"
+    description: "Identified risks and mitigation strategies"
+    order: 8
+    required: true
+    
+    subsections:
+      - section_id: "market_risks"
+        title: "Market Risks"
+        order: 1
+        content_type: "template"
+        formatting:
+          type: "bullet-list"
+        content: "{{#market_risks}}\n- **{{risk}}**: {{mitigation_strategy}}\n{{/market_risks}}"
+        
+        variables:
+          - variable_name: "market_risks"
+            data_type: "array"
+            required: true
+            description: "Market-related risks and mitigation strategies"
+      
+      - section_id: "execution_risks"
+        title: "Execution Risks"
+        order: 2
+        content_type: "template"
+        formatting:
+          type: "bullet-list"
+        content: "{{#execution_risks}}\n- **{{risk}}**: {{mitigation_strategy}}\n{{/execution_risks}}"
+        
+        variables:
+          - variable_name: "execution_risks"
+            data_type: "array"
+            required: true
+            description: "Execution-related risks and mitigation strategies"
+      
+      - section_id: "competitive_risks"
+        title: "Competitive Risks"
+        order: 3
+        content_type: "template"
+        formatting:
+          type: "bullet-list"
+        content: "{{#competitive_risks}}\n- **{{risk}}**: {{mitigation_strategy}}\n{{/competitive_risks}}"
+        
+        variables:
+          - variable_name: "competitive_risks"
+            data_type: "array"
+            required: true
+            description: "Competition-related risks and mitigation strategies"
+
+  # Next Steps & Action Plan
+  - section_id: "action_plan"
+    title: "Next Steps & Action Plan"
+    description: "Immediate actions and implementation roadmap"
+    order: 9
+    required: true
+    
+    subsections:
+      - section_id: "immediate_actions"
+        title: "Immediate Actions (Next 30 Days)"
+        order: 1
+        repeatable: true
+        content_type: "template"
+        formatting:
+          type: "numbered-list"
+        content: |
+          **{{action_name}}**
+          - Owner: {{owner}}
+          - Due Date: {{due_date}}
+          - Resources Needed: {{resources_needed}}
+          - Success Criteria: {{success_criteria}}
+          - Dependencies: {{dependencies}}
+        
+        variables:
+          - variable_name: "action_name"
+            data_type: "string"
+            required: true
+            description: "Name of the action item"
+          - variable_name: "owner"
+            data_type: "string"
+            required: true
+            description: "Person responsible for the action"
+          - variable_name: "due_date"
+            data_type: "string"
+            required: true
+            description: "When the action should be completed"
+          - variable_name: "resources_needed"
+            data_type: "string"
+            required: true
+            description: "Resources required to complete action"
+          - variable_name: "success_criteria"
+            data_type: "string"
+            required: true
+            description: "How success will be measured"
+          - variable_name: "dependencies"
+            data_type: "string"
+            required: false
+            description: "Other actions or resources this depends on"
+      
+      - section_id: "quarterly_milestones"
+        title: "Quarterly Milestones"
+        order: 2
+        content_type: "template"
+        content: |
+          **Q1 Goals:** {{q1_goals}}
+          
+          **Q2 Goals:** {{q2_goals}}
+          
+          **Q3 Goals:** {{q3_goals}}
+          
+          **Q4 Goals:** {{q4_goals}}
+          
+          **Annual Success Vision:** {{annual_vision}}
+        
+        variables:
+          - variable_name: "q1_goals"
+            data_type: "string"
+            required: true
+            description: "First quarter goals and milestones"
+          - variable_name: "q2_goals"
+            data_type: "string"
+            required: true
+            description: "Second quarter goals and milestones"
+          - variable_name: "q3_goals"
+            data_type: "string"
+            required: true
+            description: "Third quarter goals and milestones"
+          - variable_name: "q4_goals"
+            data_type: "string"
+            required: true
+            description: "Fourth quarter goals and milestones"
+          - variable_name: "annual_vision"
+            data_type: "string"
+            required: true
+            description: "Vision for success at end of year"
+
+  # Document Footer
+  - section_id: "document_footer"
+    title: null
+    description: "Document footer with methodology and next steps"
+    order: 10
+    required: true
+    content_type: "static"
+    content: |
+      ---
+      
+      ## Methodology & Frameworks Used
+      
+      This GTM strategy was developed using the following frameworks:
+      - Value Proposition Canvas
+      - Business Model Canvas  
+      - Problem-Solution Fit Analysis
+      - Jobs-to-be-Done Framework
+      - Go-to-Market Strategy Framework
+      
+      ## Recommended Next Session
+      
+      **Focus Area:** {{next_session_focus}}
+      
+      **Preparation Needed:** {{next_session_prep}}
+      
+      **Expected Outcomes:** {{next_session_outcomes}}
+      
+      ---
+      
+      *GTM Strategy developed by {{agent_name}} using Growth & Marketing Strategy AI Framework*
+    
+    variables:
+      - variable_name: "next_session_focus"
+        data_type: "string"
+        required: false
+        default_value: "Persona Development and Customer Journey Mapping"
+        description: "Focus area for next strategy session"
+      - variable_name: "next_session_prep"
+        data_type: "string"
+        required: false
+        default_value: "Customer interviews and market research data"
+        description: "What should be prepared for next session"
+      - variable_name: "next_session_outcomes"
+        data_type: "string"
+        required: false
+        default_value: "Detailed customer personas and journey optimization"
+        description: "Expected outcomes from next session"
+
+# Variable management and data binding
+variables:
+  global_variables:
+    current_date: "{{current_timestamp}}"
+    agent_version: "2.0"
+    template_version: "2.0"
+  
+  sources:
+    agent_outputs: true
+    user_inputs: true
+    workflow_context: true
+    external_apis: false
+    
+  processing:
+    auto_extraction: true
+    type_conversion: true
+    validation: true
+    sanitization: true
+    
+  binding:
+    late_binding: true
+    dynamic_binding: true
+    context_awareness: true
+    
+  defaults:
+    strategy: "context_based"
+    placeholder_pattern: "[{{variable_name}}]"
+    missing_variable_behavior: "substitute"
+
+# Content generation and AI integration
+content_generation:
+  ai_generation:
+    enabled: true
+    model_preferences: ["claude-3-5-sonnet-20241022"]
+    quality_thresholds:
+      completeness: 0.9
+      relevance: 0.8
+      actionability: 0.85
+    
+  enhancement:
+    grammar_checking: true
+    style_consistency: true
+    fact_checking: false
+    readability_optimization: true
+    
+  validation:
+    schema_validation: true
+    content_completeness: true
+    variable_consistency: true
+    format_compliance: true
+
+# Quality assurance and validation
+quality_assurance:
+  quality_checks:
+    completeness: true
+    consistency: true
+    accuracy: true
+    relevance: true
+    
+  validation_rules:
+    required_sections: ["executive_summary", "value_proposition", "business_model", "gtm_strategy", "action_plan"]
+    minimum_content_length:
+      executive_summary: 200
+      value_proposition: 500
+      business_model: 300
+      gtm_strategy: 600
+    
+  scoring:
+    enabled: true
+    scoring_criteria: ["completeness", "actionability", "strategic_value", "implementation_feasibility"]
+    minimum_score: 0.8
+    improvement_suggestions: true
+
+# Metadata and governance
+metadata:
+  version_info:
+    major_version: 2
+    minor_version: 0
+    patch_version: 0
+    release_date: "2024-01-15"
+    
+  governance:
+    owner: "gtm_strategy_team"
+    maintainers: ["gtm_consultant_agent"]
+    contributors: ["strategy_specialists"]
+    
+  lifecycle:
+    status: "active"
+    deprecation_date: null
+    replacement_template: null
+    
+  classification:
+    tags: ["gtm", "strategy", "business-model", "value-proposition", "market-analysis"]
+    categories: ["strategy_templates", "output_templates"]
+    maturity_level: "stable"
+    usage_frequency: "frequent"

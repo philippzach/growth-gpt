@@ -1,0 +1,388 @@
+# Execute Workflow Task - Workflow Orchestration Engine
+# Central orchestrator for managing multi-agent workflow execution
+
+schema_version: "2.0"
+description: "Workflow orchestration engine for executing multi-agent growth strategy workflows"
+
+# Core task identification
+task:
+  id: "execute-workflow-orchestrator"
+  name: "Workflow Execution Engine"
+  version: "2.0"
+  description: "Central orchestration engine that manages the execution of multi-agent workflows, handles agent transitions, and coordinates context passing"
+  category: "workflow-orchestration"
+  type: "workflow-task"
+  
+  use_cases:
+    - "multi_agent_workflow_execution"
+    - "agent_coordination"
+    - "context_management"
+    - "workflow_state_tracking"
+  
+  complexity_level: "complex"
+  estimated_duration: "variable"
+  requires_user_interaction: true
+
+# Workflow orchestration configuration
+orchestration:
+  # Workflow loading and initialization
+  initialization:
+    workflow_discovery: "auto_scan_workflows_directory"
+    workflow_validation: "validate_against_workflow_schema"
+    dependency_resolution: "resolve_agent_and_template_dependencies"
+    state_initialization: "create_workflow_state_tracking"
+  
+  # Agent management
+  agent_management:
+    agent_loading: "dynamic_agent_loading"
+    agent_validation: "validate_agent_configurations"
+    agent_coordination: "sequential_with_quality_gates"
+    agent_communication: "context_passing_protocol"
+  
+  # Execution control
+  execution_control:
+    execution_mode: "sequential"  # "sequential", "parallel", "hybrid"
+    quality_gates: "enforce_at_each_step"
+    error_handling: "graceful_degradation_with_recovery"
+    state_persistence: "checkpoint_after_each_agent"
+  
+  # Context and state management
+  context_management:
+    context_aggregation: "cumulative_with_compression"
+    context_validation: "validate_before_agent_execution"
+    context_transformation: "agent_specific_preparation"
+    state_tracking: "persistent_workflow_state"
+
+# Workflow execution configuration
+execution:
+  # Pre-execution setup
+  pre_execution:
+    setup_steps:
+      - "load_workflow_configuration"
+      - "validate_system_dependencies"
+      - "initialize_workflow_state"
+      - "prepare_execution_environment"
+    context_preparation: "initialize_global_context"
+    validation_checks:
+      - "workflow_configuration_valid"
+      - "all_agents_available"
+      - "all_templates_accessible"
+      - "user_input_requirements_clear"
+  
+  # Main execution loop
+  main_execution:
+    execution_method: "agent_task_orchestration"
+    orchestration_pattern: "sequential_with_gates"
+    processing_options:
+      parallel_where_possible: false
+      checkpoint_frequency: "after_each_agent"
+      recovery_points: "before_each_agent"
+    error_handling: "continue_with_recovery"
+  
+  # Post-execution cleanup
+  post_execution:
+    cleanup_steps:
+      - "aggregate_all_outputs"
+      - "generate_workflow_summary"
+      - "cleanup_temporary_resources"
+      - "persist_final_state"
+    output_processing: "consolidate_and_format"
+    state_finalization: "mark_workflow_complete"
+
+# Agent coordination and transitions
+agent_coordination:
+  # Agent discovery and loading
+  agent_discovery:
+    discovery_method: "configuration_based"
+    agent_registry: "agents/"
+    task_registry: "tasks/agent-tasks/"
+    validation_on_load: true
+  
+  # Agent execution management
+  execution_management:
+    execution_pattern: "sequential"
+    timeout_handling: "configurable_per_agent"
+    resource_management: "shared_pool"
+    isolation_level: "context_isolated"
+  
+  # Inter-agent communication
+  communication:
+    context_passing_protocol: "structured_handoff"
+    data_transformation: "agent_specific_preparation"
+    validation_between_agents: "quality_gate_validation"
+    conflict_resolution: "latest_wins_with_history"
+  
+  # Quality gates and validation
+  quality_gates:
+    gate_enforcement: "mandatory_between_agents"
+    validation_criteria: "agent_specific_success_criteria"
+    failure_handling: "retry_with_escalation"
+    quality_scoring: "cumulative_workflow_score"
+
+# State management and persistence
+state_management:
+  # Workflow state tracking
+  state_tracking:
+    state_storage: "persistent_json_files"
+    state_components:
+      - "workflow_progress"
+      - "agent_outputs"
+      - "user_interactions"
+      - "quality_scores"
+      - "execution_metadata"
+    update_frequency: "real_time"
+    backup_frequency: "after_each_agent"
+  
+  # Context persistence
+  context_persistence:
+    context_storage: "hierarchical_context_files"
+    context_compression: true
+    context_versioning: true
+    context_cleanup: "after_workflow_completion"
+  
+  # Recovery and resume capabilities
+  recovery:
+    checkpoint_strategy: "after_each_successful_agent"
+    resume_capability: true
+    recovery_validation: "validate_state_integrity_on_resume"
+    failure_recovery: "rollback_to_last_checkpoint"
+
+# User interaction management
+user_interaction:
+  # Interaction points
+  interaction_points:
+    workflow_start: "confirm_workflow_and_gather_requirements"
+    agent_transitions: "optional_review_and_approval"
+    quality_gates: "mandatory_validation_points"
+    workflow_completion: "final_review_and_approval"
+  
+  # Interaction management
+  interaction_management:
+    interaction_tracking: "log_all_user_interactions"
+    timeout_handling: "configurable_timeouts_with_defaults"
+    input_validation: "validate_user_inputs"
+    feedback_incorporation: "immediate_workflow_updates"
+  
+  # Progress communication
+  progress_communication:
+    progress_reporting: "real_time_progress_updates"
+    status_notifications: "milestone_and_error_notifications"
+    completion_reporting: "comprehensive_workflow_summary"
+
+# Error handling and recovery
+error_handling:
+  # Error detection and classification
+  error_detection:
+    error_monitoring: "continuous_during_execution"
+    error_classification: "by_severity_and_recovery_potential"
+    error_logging: "comprehensive_error_logging"
+  
+  # Recovery strategies
+  recovery_strategies:
+    agent_failures: "retry_with_alternative_approach"
+    template_failures: "fallback_template_application"
+    api_failures: "exponential_backoff_with_circuit_breaker"
+    user_input_issues: "guided_correction_with_help"
+  
+  # Escalation procedures
+  escalation:
+    escalation_triggers:
+      - "repeated_agent_failures"
+      - "user_input_timeout"
+      - "system_resource_exhaustion"
+      - "quality_gate_repeated_failures"
+    escalation_actions:
+      - "notify_system_administrator"
+      - "save_workflow_state_for_manual_recovery"
+      - "provide_detailed_error_report"
+      - "offer_alternative_workflow_paths"
+
+# Integration with external systems
+external_integration:
+  # API integrations
+  api_integrations:
+    claude_api: "primary_ai_processing"
+    monitoring_apis: "optional_performance_monitoring" 
+    notification_apis: "optional_status_notifications"
+  
+  # File system integration
+  file_system:
+    input_directories:
+      - "workflows/"
+      - "agents/"
+      - "templates/"
+      - "tasks/"
+      - "knowledge-base/"
+    output_directories:
+      - "docs/"
+      - "outputs/"
+      - "logs/"
+    working_directories:
+      - "temp/"
+      - "cache/"
+      - "state/"
+  
+  # External tool integration
+  tools:
+    required_tools: []
+    optional_tools: ["monitoring_dashboard", "notification_service"]
+    plugin_support: true
+
+# Performance optimization
+performance:
+  # Resource management
+  resource_management:
+    memory_optimization: "efficient_context_management"
+    cpu_optimization: "optimized_agent_scheduling"
+    storage_optimization: "compressed_state_storage"
+    network_optimization: "connection_pooling_for_apis"
+  
+  # Caching strategies
+  caching:
+    agent_response_caching: "session_based_caching"
+    template_caching: "persistent_template_compilation"
+    knowledge_base_caching: "intelligent_knowledge_caching"
+    state_caching: "incremental_state_updates"
+  
+  # Optimization techniques
+  optimization:
+    lazy_loading: "load_agents_on_demand"
+    parallel_processing: "parallel_where_workflow_allows"
+    batch_processing: "batch_similar_operations"
+    compression: "compress_large_contexts_and_outputs"
+
+# Quality assurance
+quality_assurance:
+  # Workflow validation
+  workflow_validation:
+    pre_execution_validation: "comprehensive_configuration_check"
+    runtime_validation: "continuous_quality_monitoring"
+    post_execution_validation: "final_output_quality_assessment"
+  
+  # Quality metrics
+  quality_metrics:
+    workflow_completion_rate: "track_successful_completions"
+    agent_success_rate: "track_individual_agent_performance"
+    output_quality_scores: "aggregate_quality_scores"
+    user_satisfaction: "collect_user_feedback"
+  
+  # Quality gates
+  quality_gates:
+    mandatory_gates:
+      - "agent_output_validation"
+      - "template_application_success"
+      - "context_integrity_check"
+    configurable_gates:
+      - "user_approval_points"
+      - "quality_score_thresholds"
+      - "business_logic_validation"
+
+# Monitoring and analytics
+monitoring:
+  # Execution monitoring
+  execution_monitoring:
+    real_time_monitoring: true
+    performance_metrics: "execution_time_resource_usage_quality_scores"
+    progress_tracking: "detailed_workflow_progress"
+    error_monitoring: "comprehensive_error_tracking"
+  
+  # Analytics and reporting
+  analytics:
+    workflow_analytics: "execution_patterns_and_performance"
+    agent_analytics: "individual_agent_performance_tracking"
+    user_analytics: "user_interaction_patterns_and_satisfaction"
+    system_analytics: "resource_usage_and_optimization_opportunities"
+  
+  # Alerting and notifications
+  alerting:
+    performance_alerts: "execution_time_and_resource_thresholds"
+    quality_alerts: "quality_score_degradation"
+    error_alerts: "critical_error_notifications"
+    completion_notifications: "workflow_completion_status"
+
+# Security and compliance
+security:
+  # Data protection
+  data_protection:
+    context_encryption: "encrypt_sensitive_context_data"
+    state_encryption: "encrypt_workflow_state"
+    transmission_security: "secure_api_communications"
+    access_logging: "comprehensive_access_audit_trail"
+  
+  # Access control
+  access_control:
+    workflow_access: "role_based_workflow_access"
+    agent_permissions: "agent_specific_permission_validation"
+    resource_protection: "protect_sensitive_configurations"
+    audit_compliance: "maintain_detailed_audit_logs"
+
+# Configuration and customization
+configuration:
+  # Runtime configuration
+  runtime_config:
+    default_timeouts: "configurable_per_operation_type"
+    resource_limits: "configurable_resource_constraints"
+    quality_thresholds: "configurable_quality_gates"
+    notification_preferences: "user_configurable_notifications"
+  
+  # Workflow customization
+  customization:
+    workflow_variants: "support_multiple_workflow_configurations"
+    agent_customization: "runtime_agent_behavior_overrides"
+    template_customization: "dynamic_template_selection"
+    user_preferences: "persistent_user_preference_storage"
+
+# Documentation and help
+documentation:
+  usage_guide: |
+    The Workflow Execution Engine orchestrates multi-agent workflows by:
+    1. Loading and validating workflow configurations
+    2. Managing agent execution sequences
+    3. Handling context passing between agents
+    4. Enforcing quality gates and validation
+    5. Providing recovery and resume capabilities
+    
+    To execute a workflow:
+    1. Specify the workflow configuration file
+    2. Provide initial user requirements
+    3. Monitor progress through the execution
+    4. Review and approve outputs at quality gates
+    5. Receive final consolidated results
+  
+  best_practices:
+    - "Always validate workflow configurations before execution"
+    - "Monitor resource usage during long-running workflows"
+    - "Implement proper error handling and recovery procedures"
+    - "Use quality gates to ensure output quality"
+    - "Maintain detailed logs for debugging and optimization"
+  
+  troubleshooting:
+    - "If workflow fails to start, check configuration validity"
+    - "If agents timeout, increase timeout values or check resources"
+    - "If quality gates fail, review agent outputs and requirements"
+    - "If resume fails, validate state file integrity"
+
+# Metadata and governance
+metadata:
+  version_info:
+    major_version: 2
+    minor_version: 0
+    patch_version: 0
+    release_date: "2024-01-15"
+  
+  governance:
+    owner: "workflow_orchestration_team"
+    maintainers: ["system_architect", "workflow_specialists"]
+    contributors: ["agent_developers", "infrastructure_team"]
+  
+  lifecycle:
+    status: "active"
+    created_date: "2024-01-15"
+    last_modified: "2024-01-15"
+  
+  classification:
+    tags: ["orchestration", "workflow", "coordination", "multi-agent"]
+    categories: ["workflow-management", "system-core"]
+    priority: "critical"
+    complexity_rating: 9
+    maturity_level: "stable"

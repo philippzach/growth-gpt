@@ -1,0 +1,898 @@
+# Product Manager Output Template - Schema v2.0 Implementation
+# Comprehensive template for Product Manager agent output with product-market fit validation and brand positioning
+
+schema_version: '2.0'
+description: 'Professional product manager output template with product-market fit analysis and brand positioning strategy'
+
+# Core template identification
+template:
+  id: 'product-manager-output-v2'
+  name: 'Product-Market Fit & Brand Positioning Results'
+  version: '2.0'
+  description: 'Comprehensive template for product-market fit validation with brand positioning strategy and messaging framework'
+  category: 'strategy'
+  type: 'output'
+
+  use_cases:
+    - 'product_market_fit_validation'
+    - 'brand_positioning_strategy'
+    - 'messaging_framework_development'
+    - 'competitive_differentiation'
+    - 'product_strategy_development'
+
+  agent_compatibility: ['product-manager']
+  workflow_stages: ['foundation']
+  complexity_level: 'complex'
+
+# Output configuration
+output:
+  format: 'markdown'
+  secondary_formats: ['pdf', 'html']
+  filename: 'docs/product-brand-strategy-{{project_name}}-{{date}}.md'
+  title: 'Product-Market Fit & Brand Positioning Results: {{project_name}}'
+
+  storage:
+    default_location: 'docs/'
+    organization_pattern: 'date/agent'
+    versioning: true
+    backup_copies: true
+
+  format_specific:
+    markdown:
+      syntax_highlighting: true
+      table_formatting: 'github'
+      link_handling: 'relative'
+
+    pdf:
+      page_layout: 'a4'
+      font_family: 'Arial'
+      include_toc: true
+
+    html:
+      css_framework: 'bootstrap'
+      responsive: true
+      interactive_elements: false
+
+# Workflow integration
+workflow:
+  mode: 'non-interactive'
+  execution_context: 'post_agent'
+
+  user_interaction:
+    elicitation_required: false
+    approval_required: true
+
+  agent_integration:
+    prompt_integration: true
+    context_injection: true
+    validation_integration: true
+
+  processing:
+    pre_processing: ['validate_agent_output', 'extract_variables']
+    post_processing: ['quality_check', 'format_optimization', 'save_backup']
+    error_handling: 'graceful_degradation'
+    fallback_template: 'brand-guide-tmpl'
+
+# Section structure and hierarchy
+sections:
+  # Document Header
+  - section_id: 'document_header'
+    title: null
+    description: 'Document metadata and session information'
+    order: 1
+    required: true
+    content_type: 'template'
+    content: |
+      # {{title}}
+
+      **Session Date:** {{session_date}}
+      **Facilitator:** {{agent_name}} ({{agent_role}})
+      **Participant:** {{user_name}}
+      **Project:** {{project_name}}
+      **Business Stage:** {{business_stage}}
+
+    variables:
+      - variable_name: 'session_date'
+        data_type: 'string'
+        required: true
+        default_value: '{{current_date}}'
+        description: 'Date of product strategy session'
+      - variable_name: 'agent_name'
+        data_type: 'string'
+        required: true
+        default_value: 'Alex'
+        description: 'Name of the product manager agent'
+      - variable_name: 'agent_role'
+        data_type: 'string'
+        required: true
+        default_value: 'Product Strategy Manager'
+        description: 'Role of the facilitating agent'
+      - variable_name: 'user_name'
+        data_type: 'string'
+        required: false
+        default_value: 'Product Team'
+        description: 'Name of the user or team'
+      - variable_name: 'project_name'
+        data_type: 'string'
+        required: true
+        description: 'Name of the project or business'
+      - variable_name: 'business_stage'
+        data_type: 'string'
+        required: true
+        description: 'Current stage of business development'
+
+  # Executive Summary
+  - section_id: 'executive_summary'
+    title: 'Executive Summary'
+    description: 'High-level overview of product-market fit assessment and positioning strategy'
+    order: 2
+    required: true
+    content_type: 'template'
+    content: |
+      **Product-Market Fit Score:** {{pmf_score}}/10
+
+      **Primary Market Position:** {{primary_market_position}}
+
+      **Core Differentiation:** {{core_differentiation}}
+
+      **Brand Promise:** {{brand_promise}}
+
+      **Target Market Size:** {{target_market_size}}
+
+      **Readiness Assessment:** {{readiness_assessment}}
+
+    variables:
+      - variable_name: 'pmf_score'
+        data_type: 'integer'
+        required: true
+        description: 'Product-market fit score out of 10'
+      - variable_name: 'primary_market_position'
+        data_type: 'string'
+        required: true
+        description: 'Primary position in the market'
+      - variable_name: 'core_differentiation'
+        data_type: 'string'
+        required: true
+        description: 'Primary competitive differentiation'
+      - variable_name: 'brand_promise'
+        data_type: 'string'
+        required: true
+        description: 'Core brand promise or value statement'
+      - variable_name: 'target_market_size'
+        data_type: 'string'
+        required: true
+        description: 'Size of addressable market'
+      - variable_name: 'readiness_assessment'
+        data_type: 'string'
+        required: true
+        description: 'Overall readiness for market launch'
+
+  # Product-Market Fit Analysis
+  - section_id: 'pmf_analysis'
+    title: 'Product-Market Fit Analysis'
+    description: 'Comprehensive assessment of product-market fit across key dimensions'
+    order: 3
+    required: true
+
+    subsections:
+      - section_id: 'market_demand_analysis'
+        title: 'Market Demand Analysis'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Demand Intensity:** {{demand_intensity}}
+
+          **Market Urgency:** {{market_urgency}}
+
+          **Problem Frequency:** {{problem_frequency}}
+
+          **Current Solution Gaps:**
+          {{#solution_gaps}}
+          - **Gap:** {{gap}}
+          - **Impact:** {{impact}}
+          - **Opportunity Size:** {{opportunity_size}}
+          {{/solution_gaps}}
+
+          **Market Validation Evidence:**
+          {{#validation_evidence}}
+          - {{evidence_type}}: {{evidence_details}}
+          {{/validation_evidence}}
+
+        variables:
+          - variable_name: 'demand_intensity'
+            data_type: 'string'
+            required: true
+            description: 'Level of market demand intensity'
+          - variable_name: 'market_urgency'
+            data_type: 'string'
+            required: true
+            description: 'Urgency of the problem in the market'
+          - variable_name: 'problem_frequency'
+            data_type: 'string'
+            required: true
+            description: 'How often the target problem occurs'
+          - variable_name: 'solution_gaps'
+            data_type: 'array'
+            required: true
+            description: 'Gaps in current market solutions'
+          - variable_name: 'validation_evidence'
+            data_type: 'array'
+            required: true
+            description: 'Evidence supporting market validation'
+
+      - section_id: 'product_fit_assessment'
+        title: 'Product Fit Assessment'
+        order: 2
+        content_type: 'template'
+        content: |
+          **Solution Alignment Score:** {{solution_alignment}}/10
+
+          **Feature-Problem Mapping:**
+          {{#feature_mapping}}
+          - **Feature:** {{feature_name}}
+          - **Addresses:** {{problem_addressed}}
+          - **Fit Quality:** {{fit_quality}}
+          - **Priority:** {{priority_level}}
+          {{/feature_mapping}}
+
+          **Product Strengths:**
+          {{#product_strengths}}
+          - {{strength}}: {{strength_details}}
+          {{/product_strengths}}
+
+          **Product Gaps:**
+          {{#product_gaps}}
+          - **Gap:** {{gap}}
+          - **Impact:** {{gap_impact}}
+          - **Resolution Timeline:** {{resolution_timeline}}
+          {{/product_gaps}}
+
+        variables:
+          - variable_name: 'solution_alignment'
+            data_type: 'integer'
+            required: true
+            description: 'How well product aligns with market needs'
+          - variable_name: 'feature_mapping'
+            data_type: 'array'
+            required: true
+            description: 'Mapping of features to problems solved'
+          - variable_name: 'product_strengths'
+            data_type: 'array'
+            required: true
+            description: 'Key product strengths'
+          - variable_name: 'product_gaps'
+            data_type: 'array'
+            required: true
+            description: 'Areas where product needs improvement'
+
+      - section_id: 'customer_satisfaction_metrics'
+        title: 'Customer Satisfaction Metrics'
+        order: 3
+        content_type: 'template'
+        content: |
+          **Customer Satisfaction Score:** {{satisfaction_score}}/10
+
+          **Net Promoter Score:** {{nps_score}}
+
+          **Customer Retention Indicators:**
+          - Usage Frequency: {{usage_frequency}}
+          - Feature Adoption: {{feature_adoption}}
+          - Support Ticket Volume: {{support_volume}}
+
+          **Customer Feedback Themes:**
+          {{#feedback_themes}}
+          - **Theme:** {{theme}}
+          - **Sentiment:** {{sentiment}}
+          - **Frequency:** {{theme_frequency}}
+          - **Action Needed:** {{action_needed}}
+          {{/feedback_themes}}
+
+        variables:
+          - variable_name: 'satisfaction_score'
+            data_type: 'integer'
+            required: true
+            description: 'Overall customer satisfaction score'
+          - variable_name: 'nps_score'
+            data_type: 'integer'
+            required: true
+            description: 'Net Promoter Score'
+          - variable_name: 'usage_frequency'
+            data_type: 'string'
+            required: true
+            description: 'How frequently customers use the product'
+          - variable_name: 'feature_adoption'
+            data_type: 'string'
+            required: true
+            description: 'Rate of feature adoption'
+          - variable_name: 'support_volume'
+            data_type: 'string'
+            required: true
+            description: 'Volume of support requests'
+          - variable_name: 'feedback_themes'
+            data_type: 'array'
+            required: true
+            description: 'Common themes in customer feedback'
+
+  # Brand Positioning Strategy
+  - section_id: 'brand_positioning'
+    title: 'Brand Positioning Strategy'
+    description: 'Comprehensive brand positioning framework and market differentiation'
+    order: 4
+    required: true
+
+    subsections:
+      - section_id: 'positioning_statement'
+        title: 'Brand Positioning Statement'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Target Customer:** {{positioning_target_customer}}
+
+          **Market Category:** {{market_category}}
+
+          **Point of Difference:** {{point_of_difference}}
+
+          **Reason to Believe:** {{reason_to_believe}}
+
+          **Complete Positioning Statement:**
+
+          "For {{positioning_target_customer}} who need {{customer_need}}, {{product_name}} is the {{market_category}} that {{point_of_difference}} because {{reason_to_believe}}."
+
+        variables:
+          - variable_name: 'positioning_target_customer'
+            data_type: 'string'
+            required: true
+            description: 'Specific target customer for positioning'
+          - variable_name: 'market_category'
+            data_type: 'string'
+            required: true
+            description: 'Market category the product competes in'
+          - variable_name: 'point_of_difference'
+            data_type: 'string'
+            required: true
+            description: 'Key differentiating factor'
+          - variable_name: 'reason_to_believe'
+            data_type: 'string'
+            required: true
+            description: 'Credible reason why the difference matters'
+          - variable_name: 'customer_need'
+            data_type: 'string'
+            required: true
+            description: 'Primary customer need being addressed'
+          - variable_name: 'product_name'
+            data_type: 'string'
+            required: true
+            description: 'Product or brand name'
+
+      - section_id: 'competitive_differentiation'
+        title: 'Competitive Differentiation'
+        order: 2
+        content_type: 'template'
+        content: |
+          **Competitive Landscape:**
+          {{#competitors}}
+          - **Competitor:** {{competitor_name}}
+          - **Their Position:** {{competitor_position}}
+          - **Their Strength:** {{competitor_strength}}
+          - **Their Weakness:** {{competitor_weakness}}
+          - **Our Advantage:** {{our_advantage}}
+          {{/competitors}}
+
+          **Differentiation Pillars:**
+          {{#differentiation_pillars}}
+          - **Pillar:** {{pillar_name}}
+          - **Description:** {{pillar_description}}
+          - **Evidence:** {{supporting_evidence}}
+          - **Messaging:** {{pillar_messaging}}
+          {{/differentiation_pillars}}
+
+          **Competitive Moats:**
+          {{#competitive_moats}}
+          - **Moat Type:** {{moat_type}}
+          - **Description:** {{moat_description}}
+          - **Defensibility:** {{defensibility_rating}}
+          {{/competitive_moats}}
+
+        variables:
+          - variable_name: 'competitors'
+            data_type: 'array'
+            required: true
+            description: 'Key competitors and competitive analysis'
+          - variable_name: 'differentiation_pillars'
+            data_type: 'array'
+            required: true
+            description: 'Core pillars of differentiation'
+          - variable_name: 'competitive_moats'
+            data_type: 'array'
+            required: true
+            description: 'Sustainable competitive advantages'
+
+      - section_id: 'brand_personality'
+        title: 'Brand Personality & Voice'
+        order: 3
+        content_type: 'template'
+        content: |
+          **Brand Personality:**
+          - **Primary Traits:** {{primary_personality_traits}}
+          - **Secondary Traits:** {{secondary_personality_traits}}
+          - **Brand Archetype:** {{brand_archetype}}
+
+          **Brand Voice:**
+          - **Tone:** {{brand_tone}}
+          - **Style:** {{communication_style}}
+          - **Language:** {{language_characteristics}}
+
+          **Brand Values:**
+          {{#brand_values}}
+          - **Value:** {{value_name}}
+          - **Expression:** {{value_expression}}
+          - **Customer Connection:** {{customer_connection}}
+          {{/brand_values}}
+
+          **Visual Identity Direction:**
+          - **Color Psychology:** {{color_psychology}}
+          - **Typography Style:** {{typography_style}}
+          - **Imagery Style:** {{imagery_style}}
+
+        variables:
+          - variable_name: 'primary_personality_traits'
+            data_type: 'string'
+            required: true
+            description: 'Main personality traits of the brand'
+          - variable_name: 'secondary_personality_traits'
+            data_type: 'string'
+            required: true
+            description: 'Supporting personality traits'
+          - variable_name: 'brand_archetype'
+            data_type: 'string'
+            required: true
+            description: 'Primary brand archetype'
+          - variable_name: 'brand_tone'
+            data_type: 'string'
+            required: true
+            description: 'Overall tone of communication'
+          - variable_name: 'communication_style'
+            data_type: 'string'
+            required: true
+            description: 'Style of communication'
+          - variable_name: 'language_characteristics'
+            data_type: 'string'
+            required: true
+            description: 'Language and vocabulary characteristics'
+          - variable_name: 'brand_values'
+            data_type: 'array'
+            required: true
+            description: 'Core brand values and their expression'
+          - variable_name: 'color_psychology'
+            data_type: 'string'
+            required: false
+            description: 'Color psychology recommendations'
+          - variable_name: 'typography_style'
+            data_type: 'string'
+            required: false
+            description: 'Typography style recommendations'
+          - variable_name: 'imagery_style'
+            data_type: 'string'
+            required: false
+            description: 'Imagery style recommendations'
+
+  # Messaging Framework
+  - section_id: 'messaging_framework'
+    title: 'Messaging Framework'
+    description: 'Core messaging strategy and communication framework'
+    order: 5
+    required: true
+
+    subsections:
+      - section_id: 'core_messages'
+        title: 'Core Messages'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Primary Message:**
+          {{primary_message}}
+
+          **Supporting Messages:**
+          {{#supporting_messages}}
+          - **Message:** {{message}}
+          - **Context:** {{message_context}}
+          - **Audience:** {{target_audience}}
+          - **Channel:** {{preferred_channel}}
+          {{/supporting_messages}}
+
+          **Proof Points:**
+          {{#proof_points}}
+          - **Claim:** {{claim}}
+          - **Evidence:** {{evidence}}
+          - **Source:** {{evidence_source}}
+          {{/proof_points}}
+
+        variables:
+          - variable_name: 'primary_message'
+            data_type: 'string'
+            required: true
+            description: 'Primary brand message'
+          - variable_name: 'supporting_messages'
+            data_type: 'array'
+            required: true
+            description: 'Supporting messages for different contexts'
+          - variable_name: 'proof_points'
+            data_type: 'array'
+            required: true
+            description: 'Evidence supporting key claims'
+
+      - section_id: 'audience_specific_messaging'
+        title: 'Audience-Specific Messaging'
+        order: 2
+        repeatable: true
+        content_type: 'template'
+        content: |
+          **Audience:** {{audience_name}}
+
+          **Key Message:** {{audience_key_message}}
+
+          **Pain Points Addressed:**
+          {{#audience_pain_points}}
+          - {{pain_point}}
+          {{/audience_pain_points}}
+
+          **Benefits Emphasized:**
+          {{#audience_benefits}}
+          - {{benefit}}
+          {{/audience_benefits}}
+
+          **Tone Adjustments:** {{audience_tone_adjustments}}
+
+          **Channel Preferences:** {{audience_channel_preferences}}
+
+        variables:
+          - variable_name: 'audience_name'
+            data_type: 'string'
+            required: true
+            description: 'Name of specific audience segment'
+          - variable_name: 'audience_key_message'
+            data_type: 'string'
+            required: true
+            description: 'Key message for this audience'
+          - variable_name: 'audience_pain_points'
+            data_type: 'array'
+            required: true
+            description: 'Pain points this audience cares about'
+          - variable_name: 'audience_benefits'
+            data_type: 'array'
+            required: true
+            description: 'Benefits that resonate with this audience'
+          - variable_name: 'audience_tone_adjustments'
+            data_type: 'string'
+            required: true
+            description: 'How to adjust tone for this audience'
+          - variable_name: 'audience_channel_preferences'
+            data_type: 'string'
+            required: true
+            description: 'Preferred communication channels'
+
+  # Market Entry Strategy
+  - section_id: 'market_entry'
+    title: 'Market Entry Strategy'
+    description: 'Strategy for entering and establishing position in the market'
+    order: 6
+    required: true
+
+    subsections:
+      - section_id: 'market_entry_approach'
+        title: 'Market Entry Approach'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Entry Strategy:** {{entry_strategy}}
+
+          **Market Timing:** {{market_timing}}
+
+          **Launch Sequence:**
+          {{#launch_phases}}
+          - **Phase:** {{phase_name}}
+          - **Timeline:** {{phase_timeline}}
+          - **Objectives:** {{phase_objectives}}
+          - **Success Metrics:** {{phase_metrics}}
+          {{/launch_phases}}
+
+          **Resource Requirements:**
+          - Team: {{team_requirements}}
+          - Budget: {{budget_requirements}}
+          - Technology: {{technology_requirements}}
+          - Partnerships: {{partnership_requirements}}
+
+        variables:
+          - variable_name: 'entry_strategy'
+            data_type: 'string'
+            required: true
+            description: 'Overall market entry strategy'
+          - variable_name: 'market_timing'
+            data_type: 'string'
+            required: true
+            description: 'Optimal timing for market entry'
+          - variable_name: 'launch_phases'
+            data_type: 'array'
+            required: true
+            description: 'Phased approach to market entry'
+          - variable_name: 'team_requirements'
+            data_type: 'string'
+            required: true
+            description: 'Team resource requirements'
+          - variable_name: 'budget_requirements'
+            data_type: 'string'
+            required: true
+            description: 'Budget requirements for entry'
+          - variable_name: 'technology_requirements'
+            data_type: 'string'
+            required: true
+            description: 'Technology infrastructure needed'
+          - variable_name: 'partnership_requirements'
+            data_type: 'string'
+            required: false
+            description: 'Strategic partnerships needed'
+
+      - section_id: 'risk_mitigation'
+        title: 'Risk Assessment & Mitigation'
+        order: 2
+        content_type: 'template'
+        content: |
+          **Market Entry Risks:**
+          {{#entry_risks}}
+          - **Risk:** {{risk_description}}
+          - **Probability:** {{risk_probability}}
+          - **Impact:** {{risk_impact}}
+          - **Mitigation Strategy:** {{mitigation_strategy}}
+          {{/entry_risks}}
+
+          **Contingency Plans:**
+          {{#contingency_plans}}
+          - **Scenario:** {{scenario}}
+          - **Response Plan:** {{response_plan}}
+          - **Resources Needed:** {{resources_needed}}
+          {{/contingency_plans}}
+
+        variables:
+          - variable_name: 'entry_risks'
+            data_type: 'array'
+            required: true
+            description: 'Risks associated with market entry'
+          - variable_name: 'contingency_plans'
+            data_type: 'array'
+            required: true
+            description: 'Contingency plans for different scenarios'
+
+  # Success Metrics & KPIs
+  - section_id: 'success_metrics'
+    title: 'Success Metrics & KPIs'
+    description: 'Key performance indicators for product and brand success'
+    order: 7
+    required: true
+
+    content_type: 'template'
+    content: |
+      **Product-Market Fit Metrics:**
+      {{#pmf_metrics}}
+      - **Metric:** {{metric_name}}
+      - **Current Baseline:** {{current_value}}
+      - **Target:** {{target_value}}
+      - **Timeline:** {{timeline}}
+      - **Measurement Method:** {{measurement_method}}
+      {{/pmf_metrics}}
+
+      **Brand Positioning Metrics:**
+      {{#brand_metrics}}
+      - **Metric:** {{metric_name}}
+      - **Current Baseline:** {{current_value}}
+      - **Target:** {{target_value}}
+      - **Timeline:** {{timeline}}
+      - **Measurement Method:** {{measurement_method}}
+      {{/brand_metrics}}
+
+      **Leading Indicators:**
+      {{#leading_indicators}}
+      - {{indicator}}: {{indicator_description}}
+      {{/leading_indicators}}
+
+      **Lagging Indicators:**
+      {{#lagging_indicators}}
+      - {{indicator}}: {{indicator_description}}
+      {{/lagging_indicators}}
+
+    variables:
+      - variable_name: 'pmf_metrics'
+        data_type: 'array'
+        required: true
+        description: 'Key metrics for measuring product-market fit'
+      - variable_name: 'brand_metrics'
+        data_type: 'array'
+        required: true
+        description: 'Key metrics for measuring brand positioning success'
+      - variable_name: 'leading_indicators'
+        data_type: 'array'
+        required: true
+        description: 'Early indicators of success'
+      - variable_name: 'lagging_indicators'
+        data_type: 'array'
+        required: true
+        description: 'Later indicators confirming success'
+
+  # Next Steps & Handoff
+  - section_id: 'next_steps'
+    title: 'Next Steps & Context for Growth Strategy'
+    description: 'Action items and context preparation for growth manager'
+    order: 8
+    required: true
+
+    content_type: 'template'
+    content: |
+      **Immediate Actions:**
+      {{#immediate_actions}}
+      - **Action:** {{action}}
+      - **Owner:** {{owner}}
+      - **Timeline:** {{timeline}}
+      - **Dependencies:** {{dependencies}}
+      {{/immediate_actions}}
+
+      **Product Strategy Priorities:**
+      1. {{priority_1}}
+      2. {{priority_2}}
+      3. {{priority_3}}
+
+      **Context for Growth Manager:**
+      {{growth_manager_context}}
+
+      **Brand Foundation for Growth:**
+      {{#brand_foundation_elements}}
+      - {{element}}
+      {{/brand_foundation_elements}}
+
+      **Areas Requiring Growth Strategy Input:**
+      {{#growth_strategy_needs}}
+      - {{need}}
+      {{/growth_strategy_needs}}
+
+    variables:
+      - variable_name: 'immediate_actions'
+        data_type: 'array'
+        required: true
+        description: 'Actions to take based on product strategy'
+      - variable_name: 'priority_1'
+        data_type: 'string'
+        required: true
+        description: 'Top priority for product strategy implementation'
+      - variable_name: 'priority_2'
+        data_type: 'string'
+        required: true
+        description: 'Second priority for product strategy'
+      - variable_name: 'priority_3'
+        data_type: 'string'
+        required: true
+        description: 'Third priority for product strategy'
+      - variable_name: 'growth_manager_context'
+        data_type: 'string'
+        required: true
+        description: 'Context and insights for growth manager'
+      - variable_name: 'brand_foundation_elements'
+        data_type: 'array'
+        required: true
+        description: 'Brand foundation elements for growth strategy'
+      - variable_name: 'growth_strategy_needs'
+        data_type: 'array'
+        required: true
+        description: 'Areas where growth strategy input is needed'
+
+# Variable management and data binding
+variables:
+  global_variables:
+    current_date: '{{current_timestamp}}'
+    agent_version: '2.0'
+    template_version: '2.0'
+
+  sources:
+    agent_outputs: true
+    user_inputs: true
+    workflow_context: true
+    external_apis: false
+
+  processing:
+    auto_extraction: true
+    type_conversion: true
+    validation: true
+    sanitization: true
+
+  binding:
+    late_binding: true
+    dynamic_binding: true
+    context_awareness: true
+
+  defaults:
+    strategy: 'context_based'
+    placeholder_pattern: '[{{variable_name}}]'
+    missing_variable_behavior: 'substitute'
+
+# Content generation and AI integration
+content_generation:
+  ai_generation:
+    enabled: true
+    model_preferences: ['claude-3-5-sonnet-20241022']
+    quality_thresholds:
+      completeness: 0.9
+      strategic_depth: 0.85
+      actionability: 0.8
+
+  enhancement:
+    grammar_checking: true
+    style_consistency: true
+    fact_checking: false
+    readability_optimization: true
+
+  validation:
+    schema_validation: true
+    content_completeness: true
+    variable_consistency: true
+    format_compliance: true
+
+# Quality assurance and validation
+quality_assurance:
+  quality_checks:
+    completeness: true
+    consistency: true
+    strategic_depth: true
+    actionability: true
+
+  validation_rules:
+    required_sections:
+      [
+        'pmf_analysis',
+        'brand_positioning',
+        'messaging_framework',
+        'success_metrics',
+      ]
+    minimum_content_length:
+      pmf_analysis: 400
+      brand_positioning: 350
+      messaging_framework: 300
+
+  scoring:
+    enabled: true
+    scoring_criteria:
+      [
+        'pmf_accuracy',
+        'positioning_clarity',
+        'messaging_effectiveness',
+        'strategic_value',
+      ]
+    minimum_score: 0.8
+    improvement_suggestions: true
+
+# Metadata and governance
+metadata:
+  version_info:
+    major_version: 2
+    minor_version: 0
+    patch_version: 0
+    release_date: '2024-01-15'
+
+  governance:
+    owner: 'product_strategy_team'
+    maintainers: ['product_manager_agent']
+    contributors: ['brand_strategy_specialists']
+
+  lifecycle:
+    status: 'active'
+    deprecation_date: null
+    replacement_template: null
+
+  classification:
+    tags:
+      [
+        'product-market-fit',
+        'brand-positioning',
+        'messaging',
+        'competitive-analysis',
+        'market-entry',
+      ]
+    categories: ['strategy_templates', 'output_templates']
+    maturity_level: 'stable'
+    usage_frequency: 'frequent'

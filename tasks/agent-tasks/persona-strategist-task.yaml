@@ -1,0 +1,687 @@
+# Persona Strategist Agent Task - Psychographic Persona Development
+# Links Persona Strategist agent with workflow and template processing
+
+schema_version: '2.0'
+description: 'Agent task configuration for Persona Strategist execution with psychographic analysis and customer journey mapping'
+
+# Core task identification
+task:
+  id: 'persona-strategist-execution'
+  name: 'Psychographic Persona Development & Customer Journey Mapping'
+  version: '2.0'
+  description: 'Execute Persona Strategist agent to develop detailed psychographic personas with behavioral insights and customer journey mapping based on GTM strategy foundation'
+  category: 'agent-execution'
+  type: 'agent-task'
+
+  use_cases:
+    - 'psychographic_persona_development'
+    - 'customer_behavior_analysis'
+    - 'journey_mapping'
+    - 'segmentation_strategy'
+    - 'targeting_optimization'
+
+  complexity_level: 'complex'
+  estimated_duration: '25-35 minutes'
+  requires_user_interaction: false
+
+# Agent integration configuration
+agent_integration:
+  agent_config_path: 'agents/persona-strategist.yaml'
+  agent_id: 'persona-strategist'
+  agent_role: 'Persona Strategist'
+
+  behavior_overrides:
+    temperature: 0.8
+    max_tokens: 4000
+    system_prompt_additions: |
+      You are executing in the foundation stage after the GTM Consultant.
+      Your personas will directly inform product positioning and all marketing strategies.
+      Focus on creating actionable, psychographically-rich personas that enable precise targeting.
+    knowledge_focus:
+      - 'psychographic-persona'
+      - 'customer-behavior'
+      - 'market-segmentation'
+      - 'journey-mapping'
+
+  capabilities:
+    tools_available:
+      - 'psychographic_analyzer'
+      - 'persona_generator'
+      - 'journey_mapper'
+      - 'behavioral_insights_tool'
+    apis_accessible:
+      - 'anthropic_claude_api'
+    permissions:
+      - 'read_knowledge_base'
+      - 'access_gtm_brief_context'
+      - 'generate_persona_documents'
+    restrictions:
+      - 'no_demographic_assumptions_without_data'
+      - 'no_stereotypical_generalizations'
+
+# Workflow integration specifications
+workflow_integration:
+  workflow_id: 'master-workflow-v2'
+  workflow_stage: 'foundation'
+  step_id: 'persona_development'
+  sequence_order: 2
+
+  inputs:
+    required_inputs: ['gtm-brief.md']
+    optional_inputs: ['customer_interview_data', 'behavioral_analytics_data']
+    user_inputs: ['customer_insights', 'behavioral_observations']
+    context_requirements:
+      user_context: true
+      business_context: true
+      market_context: true
+
+  outputs:
+    primary_output: 'psychographic-personas.md'
+    secondary_outputs:
+      - 'persona-journey-maps.md'
+      - 'behavioral-insights.md'
+    output_format: 'markdown'
+    storage_location: 'docs/'
+
+  coordination:
+    depends_on: ['foundation_gtm']
+    blocks: ['product_brand_development', 'growth_funnel_design']
+    parallel_execution: false
+    timeout: '35 minutes'
+
+  quality_gates:
+    pre_execution:
+      - 'validate_gtm_brief_completeness'
+      - 'check_target_market_definition_quality'
+    post_execution:
+      - 'validate_persona_depth_and_specificity'
+      - 'check_behavioral_insights_actionability'
+      - 'verify_journey_mapping_completeness'
+    validation_rules:
+      - 'personas_must_be_psychographically_detailed'
+      - 'behavioral_patterns_must_be_specific_and_actionable'
+      - 'journey_maps_must_include_emotional_states'
+      - 'targeting_recommendations_must_be_platform_specific'
+    success_criteria:
+      - 'Detailed psychographic personas with behavioral depth'
+      - 'Actionable customer journey maps with touchpoints'
+      - 'Clear behavioral insights for marketing strategy'
+      - 'Specific targeting recommendations for each persona'
+
+# Task specification and requirements
+task_specification:
+  # Primary task definition
+  primary_objective: 'Develop comprehensive psychographic personas with deep behavioral insights and detailed customer journey mapping that enables precise targeting and messaging for all subsequent marketing and growth strategies'
+  secondary_objectives:
+    - 'Transform market segments into actionable customer personas'
+    - 'Identify key behavioral triggers and motivational factors'
+    - 'Map complete customer journey with emotional states and touchpoints'
+    - 'Provide specific targeting recommendations for marketing channels'
+
+  # Specific deliverables
+  deliverables:
+    primary_deliverables:
+      - 'Detailed psychographic persona profiles (2-4 primary personas)'
+      - 'Behavioral analysis with triggers, motivations, and barriers'
+      - 'Complete customer journey maps with touchpoints and emotional states'
+      - 'Channel-specific targeting recommendations for each persona'
+      - 'Messaging framework aligned with persona psychology'
+    secondary_deliverables:
+      - 'Persona validation framework and research recommendations'
+      - 'Competitive persona analysis (if data available)'
+      - 'Persona-based content strategy recommendations'
+      - 'Segmentation strategy for different business contexts'
+    deliverable_format: 'Structured markdown document'
+    quality_standards:
+      - 'Personas must include detailed psychographic profiles beyond demographics'
+      - 'Behavioral insights must be specific and directly actionable for marketing'
+      - 'Journey maps must include emotional states and specific touchpoints'
+      - 'Targeting recommendations must be platform and channel specific'
+
+  # Success criteria and constraints
+  success_criteria:
+    mandatory_criteria:
+      - 'Personas demonstrate deep psychographic understanding with specific values, attitudes, and lifestyle factors'
+      - 'Behavioral patterns are clearly identified with actionable triggers and barriers'
+      - 'Customer journey maps are complete with emotional states, touchpoints, and optimization opportunities'
+      - 'Targeting recommendations enable precise audience definition across marketing channels'
+      - 'All persona insights directly support product positioning and acquisition strategy development'
+    optional_criteria:
+      - 'Personas reveal non-obvious behavioral insights that provide competitive advantages'
+      - 'Journey mapping identifies unique optimization opportunities not commonly addressed'
+      - 'Targeting recommendations include innovative channel or platform approaches'
+      - 'Persona validation framework enables ongoing customer intelligence development'
+    measurement_approach: 'Quality scoring based on psychographic depth, behavioral specificity, journey completeness, and targeting actionability'
+    validation_method: 'Template compliance check, behavioral insights validation, journey mapping assessment, and handoff context preparation'
+
+  constraints:
+    scope_constraints:
+      - 'Do not create product features or specifications (product manager handles this)'
+      - 'Do not design specific marketing campaigns (acquisition agent handles this)'
+      - 'Do not develop retention programs (retention agent handles this)'
+      - 'Focus on persona foundation, not tactical execution'
+    resource_constraints:
+      - 'Maximum 35-minute execution time'
+      - 'Use GTM brief context and available customer insights'
+      - 'Generate comprehensive personas within token limits'
+    dependency_constraints:
+      - 'Depends on GTM brief for market definition and value proposition context'
+      - 'Must provide persona foundation for all subsequent marketing agents'
+      - 'Cannot contradict or undermine GTM brief strategic direction'
+    quality_constraints:
+      - 'All persona attributes must be supported by psychological reasoning'
+      - 'Behavioral insights must be specific enough for targeting implementation'
+      - 'Journey maps must reflect realistic customer experience patterns'
+      - 'Personas must maintain internal consistency and logical coherence'
+
+  # Context and workflow awareness
+  context_awareness:
+    workflow_stage: 'foundation'
+    stage_purpose: 'Establish detailed customer understanding foundation for all marketing and growth strategies'
+    previous_stage_outputs:
+      ['gtm_brief_with_market_definition_and_value_proposition']
+    next_stage_requirements:
+      - 'Detailed personas for product manager to align product-market fit'
+      - 'Behavioral insights for growth manager to design appropriate funnel stages'
+      - 'Journey touchpoints for acquisition manager to identify optimal channels'
+      - 'Psychographic profiles for all agents to inform strategy development'
+
+  handoff_requirements:
+    context_to_provide:
+      - 'Complete persona profiles with psychographic and behavioral details'
+      - 'Customer journey maps with touchpoints for channel strategy'
+      - 'Behavioral triggers and motivations for messaging development'
+      - 'Targeting recommendations for platform-specific strategy'
+    format_requirements:
+      - 'Structured persona profiles with consistent format for easy agent consumption'
+      - 'Journey maps with clear stages and touchpoint identification'
+      - 'Behavioral insights formatted for marketing strategy integration'
+      - 'Executive summary for quick context understanding by subsequent agents'
+    validation_requirements:
+      - 'All personas must pass psychographic depth validation'
+      - 'Behavioral insights must be actionable for marketing implementation'
+      - 'Journey maps must be complete with all major touchpoints identified'
+    transformation_needs:
+      - 'Extract targeting criteria for acquisition agent channel selection'
+      - 'Prepare messaging frameworks for product manager positioning work'
+      - 'Format journey insights for growth manager funnel optimization'
+
+# Prompt generation configuration
+prompt_generation:
+  # Prompt template configuration
+  templates:
+    system_prompt_template: |
+      {agent_identity}
+
+      TASK OBJECTIVE: {primary_objective}
+
+      SPECIFIC DELIVERABLES:
+      {primary_deliverables}
+
+      SUCCESS CRITERIA:
+      {mandatory_criteria}
+
+      CONSTRAINTS AND SCOPE:
+      {scope_constraints}
+
+      WORKFLOW CONTEXT:
+      - Stage: {workflow_stage} ({stage_purpose})
+      - Building on: GTM Brief with market definition and value proposition
+      - Next agents depend on: {next_stage_requirements}
+
+      GTM BRIEF CONTEXT: {gtm_brief_content}
+
+      KNOWLEDGE BASE: {injected_knowledge}
+
+      OUTPUT FORMAT: Generate comprehensive structured markdown document
+
+      QUALITY STANDARDS: {quality_standards}
+
+    user_prompt_template: |
+      Based on the GTM brief and target market definition, develop comprehensive psychographic personas following the specified deliverables and success criteria.
+
+      GTM Brief Summary: {gtm_brief_summary}
+      Target Market Definition: {target_market_definition}
+      Value Proposition: {value_proposition}
+
+      Additional Customer Insights: {customer_insights}
+      Behavioral Observations: {behavioral_observations}
+
+      Focus on creating personas that enable precise targeting and messaging for the marketing strategies that will follow.
+
+    context_injection_template: |
+      WORKFLOW CONTEXT:
+      Current Stage: {workflow_stage}
+      Stage Purpose: {stage_purpose}
+      Previous Outputs: GTM Brief with market foundation
+      Next Stage Needs: {next_stage_requirements}
+
+      GTM BRIEF CONTEXT:
+      Business Concept: {business_concept}
+      Target Market: {target_market_definition}
+      Value Proposition: {value_proposition}
+      Problem Statement: {problem_statement}
+
+      USER CONTEXT:
+      Business Stage: {business_stage}
+      Project Name: {project_name}
+      Industry/Market: {industry_context}
+
+    knowledge_injection_template: |
+      RELEVANT KNOWLEDGE BASE:
+
+      Psychographic Persona Development:
+      {psychographic_persona_knowledge}
+
+      Customer Behavior Analysis:
+      {customer_behavior_knowledge}
+
+      Market Segmentation:
+      {market_segmentation_knowledge}
+
+      Journey Mapping:
+      {journey_mapping_knowledge}
+
+  # Dynamic prompt generation
+  dynamic_generation:
+    context_injection_points:
+      - 'after_system_prompt_identity'
+      - 'before_deliverables_section'
+      - 'after_constraints_section'
+      - 'before_output_format_section'
+    variable_substitution:
+      agent_identity: 'from_agent_config.persona.identity'
+      primary_objective: 'from_task_spec.primary_objective'
+      primary_deliverables: 'from_task_spec.deliverables.primary_deliverables'
+      mandatory_criteria: 'from_task_spec.success_criteria.mandatory_criteria'
+      scope_constraints: 'from_task_spec.constraints.scope_constraints'
+      workflow_stage: 'from_task_spec.context_awareness.workflow_stage'
+      stage_purpose: 'from_task_spec.context_awareness.stage_purpose'
+      next_stage_requirements: 'from_task_spec.context_awareness.next_stage_requirements'
+      quality_standards: 'from_task_spec.deliverables.quality_standards'
+      gtm_brief_content: 'from_previous_agent_output.gtm_brief'
+    conditional_sections:
+      customer_interview_analysis: 'if_customer_interview_data_provided'
+      behavioral_data_synthesis: 'if_behavioral_analytics_available'
+      competitive_persona_analysis: 'if_competitor_data_mentioned'
+    personalization_options:
+      industry_specific_personas: 'based_on_user_industry'
+      business_stage_considerations: 'based_on_user_business_stage'
+      market_maturity_factors: 'based_on_market_context'
+
+  # Prompt optimization
+  optimization:
+    token_optimization: true
+    clarity_enhancement: true
+    context_compression: true
+    quality_instructions: true
+
+  # Prompt validation
+  validation:
+    prompt_validation: true
+    length_limits:
+      system_prompt_max_tokens: 3500
+      user_prompt_max_tokens: 1200
+      total_prompt_max_tokens: 4500
+    required_elements:
+      - 'task_objective_statement'
+      - 'deliverables_specification'
+      - 'success_criteria_definition'
+      - 'output_format_instruction'
+      - 'gtm_brief_context_injection'
+      - 'knowledge_base_injection'
+    quality_checks:
+      - 'all_variables_substituted'
+      - 'gtm_context_properly_injected'
+      - 'persona_requirements_clearly_specified'
+      - 'token_limits_respected'
+
+# Output configuration
+output_configuration:
+  format: 'structured_markdown'
+  sections:
+    - 'persona_profiles'
+    - 'behavioral_insights' 
+    - 'journey_maps'
+    - 'targeting_recommendations'
+  quality_requirements:
+    - 'psychographic_depth'
+    - 'actionable_insights'
+    - 'comprehensive_journey_mapping'
+
+# Execution configuration
+execution:
+  pre_execution:
+    setup_steps:
+      - 'load_agent_configuration'
+      - 'validate_gtm_brief_availability'
+      - 'prepare_knowledge_base'
+    context_preparation: 'inject_gtm_brief_context'
+    knowledge_injection: 'auto_inject_persona_knowledge'
+    validation_checks:
+      - 'gtm_brief_completeness'
+      - 'system_readiness'
+      - 'knowledge_base_availability'
+
+  main_execution:
+    execution_method: 'api_call'
+    api_configuration:
+      provider: 'anthropic'
+      model: 'claude-3-5-sonnet-20241022'
+      temperature: 0.8
+      max_tokens: 4000
+    processing_options:
+      streaming: false
+      parallel_processing: false
+      batch_size: 1
+    error_handling: 'retry_with_fallback'
+
+  post_execution:
+    output_processing:
+      - 'extract_key_insights'
+      - 'validate_persona_quality'
+      - 'apply_formatting'
+    output_formatting: 'structured_markdown'
+    quality_validation:
+      - 'persona_depth_check'
+      - 'behavioral_insights_validation'
+      - 'journey_mapping_completeness'
+    context_handoff: 'prepare_product_manager_context'
+
+  error_handling:
+    retry_strategy: 'exponential_backoff'
+    max_retries: 3
+    fallback_behavior: 'use_simplified_structure_and_notify'
+    escalation_rules:
+      - 'if_gtm_brief_context_insufficient_after_2_attempts'
+      - 'if_persona_quality_below_0.8_after_3_attempts'
+      - 'if_api_errors_persist_after_5_minutes'
+
+# API integration configuration
+api_integration:
+  primary_api:
+    provider: 'anthropic'
+    model: 'claude-3-5-sonnet-20241022'
+    endpoint: 'https://api.anthropic.com/v1/messages'
+    authentication:
+      type: 'api_key'
+      key_source: 'environment_variable'
+      key_name: 'ANTHROPIC_API_KEY'
+
+  request_config:
+    timeout: 120
+    rate_limiting:
+      requests_per_minute: 50
+      tokens_per_minute: 40000
+    request_headers:
+      content_type: 'application/json'
+      user_agent: 'GrowthStrategyAgent/2.0'
+    retry_config:
+      max_retries: 3
+      backoff_factor: 2
+      retry_on_status: [429, 500, 502, 503, 504]
+
+  response_processing:
+    response_validation: true
+    content_extraction: 'extract_assistant_message'
+    error_detection:
+      - 'check_api_error_codes'
+      - 'validate_response_format'
+      - 'detect_incomplete_responses'
+    quality_scoring: true
+
+# Knowledge base integration
+knowledge_integration:
+  knowledge_sources:
+    primary_sources:
+      - 'knowledge-base/method/04psychograhpic-persona.md'
+      - 'knowledge-base/resources/psychographic-segmentation.md'
+      - 'knowledge-base/resources/psychographics-socialmedia.md'
+    secondary_sources:
+      - 'knowledge-base/resources/ocean-personality.md'
+      - 'knowledge-base/resources/hierachy-of-engagement.md'
+      - 'knowledge-base/glossary/growth-hacking-dictionary.md'
+    dynamic_sources:
+      - 'gtm-brief.md'
+
+  injection_strategy:
+    method: 'context_aware'
+    relevance_threshold: 0.7
+    max_knowledge_tokens: 2000
+    prioritization: 'persona_relevant'
+
+  processing:
+    preprocessing:
+      - 'extract_persona_concepts'
+      - 'format_for_agent_consumption'
+    formatting: 'structured_sections'
+    context_integration: 'merge_with_gtm_context'
+    validation: true
+
+# Context management
+context_management:
+  context_sources:
+    workflow_context: true
+    previous_outputs: true
+    user_context: true
+    system_context: true
+
+  processing:
+    context_merging: 'gtm_brief_priority'
+    context_compression: true
+    context_prioritization: 'gtm_brief_first'
+    context_validation: true
+
+  handoff:
+    next_task_context:
+      product_manager:
+        - 'persona_profiles_for_product_positioning'
+        - 'behavioral_insights_for_market_fit'
+        - 'journey_touchpoints_for_user_experience'
+      growth_manager:
+        - 'personas_for_funnel_design'
+        - 'behavioral_triggers_for_optimization'
+        - 'journey_stages_for_metrics_alignment'
+    context_transformation: 'extract_relevant_for_product_positioning'
+    context_storage: true
+    context_cleanup:
+      - 'remove_sensitive_persona_data'
+      - 'compress_detailed_analysis'
+
+# Quality assurance and validation
+quality_assurance:
+  input_validation:
+    schema_validation: true
+    gtm_brief_validation: true
+    context_validation: true
+    prerequisite_validation: true
+
+  process_validation:
+    execution_monitoring: true
+    intermediate_validation: false
+    resource_monitoring: true
+    performance_tracking: true
+
+  output_validation:
+    format_validation: true
+    persona_quality: true
+    completeness_check: true
+    consistency_validation: true
+
+  scoring:
+    quality_metrics:
+      - 'psychographic_depth'
+      - 'behavioral_specificity'
+      - 'journey_completeness'
+      - 'targeting_actionability'
+      - 'strategic_alignment'
+    scoring_algorithm: 'weighted_average'
+    minimum_score: 0.8
+    improvement_suggestions: true
+
+# Performance and optimization
+performance:
+  resource_limits:
+    max_memory_usage: '2GB'
+    max_cpu_usage: '70%'
+    max_execution_time: 2100 # 35 minutes
+    max_api_calls: 5
+
+  caching:
+    cache_enabled: true
+    cache_scope: 'session'
+    cache_duration: '2h'
+    cache_invalidation:
+      - 'gtm_brief_changed'
+      - 'agent_config_updated'
+
+  optimization:
+    parallel_processing: false
+    lazy_loading: true
+    batch_processing: false
+    compression: true
+
+# Monitoring and analytics
+monitoring:
+  metrics:
+    execution_metrics: true
+    quality_metrics: true
+    persona_effectiveness_metrics: true
+    api_usage_metrics: true
+
+  logging:
+    log_level: 'info'
+    log_components:
+      - 'agent_execution'
+      - 'persona_generation'
+      - 'quality_validation'
+      - 'context_handoff'
+    log_format: 'structured_json'
+    log_storage: 'local_files'
+
+  alerting:
+    alert_conditions:
+      - 'execution_time_exceeds_30_minutes'
+      - 'persona_quality_score_below_0.8'
+      - 'api_error_rate_above_10_percent'
+    notification_channels:
+      - 'system_logs'
+      - 'admin_notifications'
+    escalation_procedures:
+      - 'notify_admin_after_3_failures'
+      - 'halt_workflow_after_critical_error'
+
+  reporting:
+    report_generation: true
+    report_frequency: 'per_execution'
+    report_recipients: ['system_admin', 'workflow_manager']
+    custom_reports:
+      - 'persona_quality_report'
+      - 'behavioral_insights_effectiveness'
+
+# Integration points and extensibility
+integration_points:
+  pre_execution_hooks:
+    validation_hooks:
+      - 'validate_gtm_brief_persona_requirements'
+    setup_hooks:
+      - 'prepare_persona_development_context'
+    notification_hooks:
+      - 'notify_persona_development_start'
+
+  post_execution_hooks:
+    cleanup_hooks:
+      - 'cleanup_temporary_analysis_files'
+    notification_hooks:
+      - 'notify_product_manager'
+    integration_hooks:
+      - 'save_personas_to_project_repository'
+
+  extensions:
+    custom_processors:
+      - 'persona_validation_enhancer'
+      - 'behavioral_insights_analyzer'
+    custom_validators:
+      - 'psychographic_depth_validator'
+      - 'journey_completeness_validator'
+    custom_formatters:
+      - 'persona_profile_formatter'
+      - 'targeting_recommendation_formatter'
+    plugin_support: true
+
+# Security and compliance
+security:
+  data_protection:
+    encryption_at_rest: true
+    encryption_in_transit: true
+    persona_data_sanitization: true
+    access_logging: true
+
+  access_control:
+    authentication_required: false
+    authorization_levels: ['user', 'agent', 'admin']
+    permission_validation: true
+    audit_trail: true
+
+  compliance:
+    compliance_frameworks: ['data_privacy']
+    data_retention_policies: ['delete_after_30_days']
+    privacy_protection: true
+    regulatory_requirements: []
+
+# Documentation and metadata
+documentation:
+  usage_docs:
+    description: |
+      This task executes the Persona Strategist agent to develop detailed psychographic personas
+      with behavioral insights and customer journey mapping. Builds on GTM brief to create
+      actionable customer intelligence for all subsequent marketing strategies.
+    usage_examples:
+      - 'B2B SaaS customer persona development'
+      - 'E-commerce psychographic segmentation'
+      - 'Consumer behavior analysis and targeting'
+    best_practices:
+      - 'Ensure GTM brief provides adequate market context'
+      - 'Focus on behavioral triggers over demographic features'
+      - 'Create personas that enable specific targeting actions'
+    troubleshooting:
+      - 'If personas are too generic, enhance GTM brief market definition'
+      - 'If behavioral insights lack depth, provide additional customer context'
+      - 'If journey maps are incomplete, review touchpoint identification process'
+
+  technical_docs:
+    implementation_details: 'Integrates with GTM brief context and applies psychographic analysis methodology'
+    api_documentation: 'Uses Anthropic Claude API with persona-specific prompt engineering'
+    configuration_guide: 'Configure via persona-strategist-v2.yaml and persona-output-v2.yaml files'
+    integration_examples:
+      - 'Context passing from GTM Consultant to Persona Strategist'
+      - 'Persona handoff to Product Manager and Growth Manager'
+
+# Metadata and governance
+metadata:
+  version_info:
+    major_version: 2
+    minor_version: 0
+    patch_version: 0
+    release_date: '2024-01-15'
+    build_number: '2024.01.15.002'
+
+  governance:
+    owner: 'growth_strategy_team'
+    maintainers: ['system_architect', 'persona_specialist']
+    contributors: ['agent_developers', 'template_designers']
+    reviewers: ['senior_strategist', 'marketing_lead']
+
+  lifecycle:
+    status: 'active'
+    created_date: '2024-01-15'
+    last_modified: '2024-01-15'
+    deprecation_date: null
+    replacement_task: null
+
+  classification:
+    tags: ['persona', 'psychographics', 'foundation', 'agent-execution']
+    categories: ['agent-tasks', 'workflow-foundation']
+    priority: 'high'
+    complexity_rating: 7
+    maturity_level: 'stable'

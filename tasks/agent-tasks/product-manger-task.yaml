@@ -1,0 +1,727 @@
+# Product Manager Agent Task - Product-Market Fit & Brand Positioning
+# Links Product Manager agent with workflow and template processing
+
+schema_version: '2.0'
+description: 'Agent task configuration for Product Manager execution with product-market fit validation and comprehensive brand positioning'
+
+# Core task identification
+task:
+  id: 'product-manager-execution'
+  name: 'Product-Market Fit Validation & Brand Positioning Strategy'
+  version: '2.0'
+  description: 'Execute Product Manager agent to validate product-market fit and develop comprehensive brand positioning based on GTM strategy and customer personas'
+  category: 'agent-execution'
+  type: 'agent-task'
+
+  use_cases:
+    - 'product_market_fit_validation'
+    - 'brand_positioning_development'
+    - 'competitive_differentiation'
+    - 'messaging_framework_creation'
+    - 'user_experience_optimization'
+
+  complexity_level: 'complex'
+  estimated_duration: '30-40 minutes'
+  requires_user_interaction: false
+
+# Agent integration configuration
+agent_integration:
+  agent_config_path: 'agents/product-manager-v2.yaml'
+  agent_id: 'product-manager'
+  agent_role: 'Product Manager'
+
+  behavior_overrides:
+    temperature: 0.7
+    max_tokens: 4000
+    system_prompt_additions: |
+      You are executing in the foundation stage after GTM Consultant and Persona Strategist.
+      Your product positioning and brand strategy will guide all subsequent marketing efforts.
+      Focus on creating distinctive positioning that leverages persona insights for competitive advantage.
+    knowledge_focus:
+      - 'product-market-fit'
+      - 'brand-positioning'
+      - 'competitive-analysis'
+      - 'messaging-strategy'
+
+  capabilities:
+    tools_available:
+      - 'product_market_fit_analyzer'
+      - 'brand_positioning_matrix'
+      - 'competitive_analysis_tool'
+      - 'messaging_framework_generator'
+    apis_accessible:
+      - 'anthropic_claude_api'
+    permissions:
+      - 'read_knowledge_base'
+      - 'access_gtm_brief_context'
+      - 'access_persona_context'
+      - 'generate_brand_documents'
+    restrictions:
+      - 'no_detailed_product_development_specs'
+      - 'no_technical_implementation_details'
+
+# Workflow integration specifications
+workflow_integration:
+  workflow_id: 'master-workflow-v2'
+  workflow_stage: 'foundation'
+  step_id: 'product_brand_development'
+  sequence_order: 3
+
+  inputs:
+    required_inputs: ['gtm-brief.md', 'psychographic-personas.md']
+    optional_inputs: ['competitive_analysis_data', 'user_research_data']
+    user_inputs: ['product_features', 'brand_preferences']
+    context_requirements:
+      user_context: true
+      business_context: true
+      market_context: true
+
+  outputs:
+    primary_output: 'product-brand-guide.md'
+    secondary_outputs:
+      - 'brand-messaging-framework.md'
+      - 'product-positioning.md'
+      - 'competitive-analysis.md'
+    output_format: 'markdown'
+    storage_location: 'docs/'
+
+  coordination:
+    depends_on: ['foundation_gtm', 'persona_development']
+    blocks: ['growth_funnel_design', 'acquisition_strategy']
+    parallel_execution: false
+    timeout: '40 minutes'
+
+  quality_gates:
+    pre_execution:
+      - 'validate_gtm_brief_and_personas_completeness'
+      - 'check_value_proposition_clarity'
+    post_execution:
+      - 'validate_product_market_fit_analysis'
+      - 'check_brand_positioning_differentiation'
+      - 'verify_messaging_framework_consistency'
+    validation_rules:
+      - 'product_market_fit_must_be_clearly_validated_with_evidence'
+      - 'brand_positioning_must_be_distinctive_and_defensible'
+      - 'messaging_framework_must_align_with_persona_psychology'
+      - 'competitive_differentiation_must_be_specific_and_measurable'
+    success_criteria:
+      - 'Clear product-market fit validation with supporting evidence'
+      - 'Distinctive brand positioning that leverages competitive advantages'
+      - 'Consistent messaging framework aligned with persona insights'
+      - 'Comprehensive competitive analysis with differentiation strategy'
+
+# Task specification and requirements
+task_specification:
+  # Primary task definition
+  primary_objective: 'Validate product-market fit and develop comprehensive brand positioning strategy with distinctive messaging framework that leverages persona insights and creates sustainable competitive advantages'
+  secondary_objectives:
+    - 'Validate and refine product-market fit based on persona analysis'
+    - 'Create distinctive brand positioning that resonates with target personas'
+    - 'Develop consistent messaging framework for all marketing communications'
+    - 'Establish competitive differentiation strategy and defensive moats'
+
+  # Specific deliverables
+  deliverables:
+    primary_deliverables:
+      - 'Product-market fit validation analysis with evidence and recommendations'
+      - 'Comprehensive brand positioning strategy with unique value articulation'
+      - 'Messaging framework with persona-aligned value propositions and proof points'
+      - 'Competitive analysis with differentiation strategy and positioning defense'
+      - 'Brand guidelines covering voice, tone, and visual identity direction'
+    secondary_deliverables:
+      - 'User experience optimization recommendations based on persona journey'
+      - 'Content strategy framework aligned with brand positioning'
+      - 'Brand perception measurement framework'
+      - 'Product positioning evolution roadmap'
+    deliverable_format: 'Structured markdown document following product-brand-output-v2 template'
+    quality_standards:
+      - 'Product-market fit analysis must include specific validation evidence and metrics'
+      - 'Brand positioning must be distinctive, defensible, and persona-aligned'
+      - 'Messaging framework must be consistent across all customer touchpoints'
+      - 'Competitive analysis must identify specific advantages and defensive strategies'
+
+  # Success criteria and constraints
+  success_criteria:
+    mandatory_criteria:
+      - 'Product-market fit is clearly validated with specific evidence and supporting metrics'
+      - 'Brand positioning creates distinctive market position that leverages unique advantages'
+      - 'Messaging framework consistently communicates value across all persona segments'
+      - 'Competitive differentiation strategy identifies specific advantages and defensive moats'
+      - 'All brand elements align with persona psychology and customer journey insights'
+    optional_criteria:
+      - 'Brand positioning reveals innovative market category or positioning approach'
+      - 'Messaging framework includes compelling emotional and rational value drivers'
+      - 'Competitive analysis identifies untapped market opportunities or whitespace'
+      - 'User experience recommendations provide significant optimization potential'
+    measurement_approach: 'Quality scoring based on market fit validation strength, brand distinctiveness, messaging consistency, and competitive advantage sustainability'
+    validation_method: 'Template compliance check, positioning differentiation assessment, messaging alignment validation, and competitive strategy evaluation'
+
+  constraints:
+    scope_constraints:
+      - 'Do not create detailed product roadmaps or feature specifications (outside scope)'
+      - 'Do not design specific marketing campaigns or tactics (acquisition agent handles this)'
+      - 'Do not develop growth metrics or funnel architecture (growth manager handles this)'
+      - 'Focus on strategic positioning foundation, not tactical execution'
+    resource_constraints:
+      - 'Maximum 40-minute execution time'
+      - 'Use GTM brief and persona context as primary strategic inputs'
+      - 'Generate comprehensive positioning within token limits'
+    dependency_constraints:
+      - 'Must align with GTM brief value proposition and market definition'
+      - 'Must leverage persona insights for positioning and messaging decisions'
+      - 'Cannot contradict established strategic direction from previous agents'
+    quality_constraints:
+      - 'All positioning claims must be supported by persona insights or competitive analysis'
+      - 'Brand strategy must be implementable across all marketing channels'
+      - 'Messaging must be testable and measurable for optimization'
+      - 'Competitive advantages must be sustainable and defensible'
+
+  # Context and workflow awareness
+  context_awareness:
+    workflow_stage: 'foundation'
+    stage_purpose: 'Complete strategic foundation with product positioning and brand strategy for marketing execution'
+    previous_stage_outputs:
+      ['gtm_brief_with_value_proposition', 'detailed_psychographic_personas']
+    next_stage_requirements:
+      - 'Clear product positioning for growth manager funnel design'
+      - 'Brand messaging framework for acquisition manager campaign development'
+      - 'Competitive differentiation for all marketing strategy development'
+      - 'User experience insights for retention and viral growth strategies'
+
+  handoff_requirements:
+    context_to_provide:
+      - 'Complete product positioning and brand strategy for all marketing agents'
+      - 'Messaging framework with persona-specific value propositions'
+      - 'Competitive advantages and differentiation strategy'
+      - 'User experience optimization opportunities and recommendations'
+    format_requirements:
+      - 'Structured brand guide with clear positioning statement and proof points'
+      - 'Messaging framework with modular components for different contexts'
+      - 'Competitive analysis with actionable strategic implications'
+      - 'Executive summary for quick context understanding by subsequent agents'
+    validation_requirements:
+      - 'Product-market fit validation must be evidence-based and convincing'
+      - 'Brand positioning must be distinctive and competitively defensible'
+      - 'Messaging framework must be internally consistent and persona-aligned'
+    transformation_needs:
+      - 'Extract positioning elements for growth manager metrics and funnel design'
+      - 'Prepare messaging components for acquisition manager campaign frameworks'
+      - 'Format competitive insights for retention and viral growth optimization'
+
+# Prompt generation configuration
+prompt_generation:
+  # Prompt template configuration
+  templates:
+    system_prompt_template: |
+      {agent_identity}
+
+      TASK OBJECTIVE: {primary_objective}
+
+      SPECIFIC DELIVERABLES:
+      {primary_deliverables}
+
+      SUCCESS CRITERIA:
+      {mandatory_criteria}
+
+      CONSTRAINTS AND SCOPE:
+      {scope_constraints}
+
+      WORKFLOW CONTEXT:
+      - Stage: {workflow_stage} ({stage_purpose})
+      - Building on: GTM Brief and detailed customer personas
+      - Next agents depend on: {next_stage_requirements}
+
+      GTM BRIEF CONTEXT: {gtm_brief_content}
+      PERSONA CONTEXT: {persona_profiles_content}
+
+      KNOWLEDGE BASE: {injected_knowledge}
+
+      OUTPUT FORMAT: Follow template structure exactly - {primary_template}
+
+      QUALITY STANDARDS: {quality_standards}
+
+    user_prompt_template: |
+      Based on the GTM brief and customer personas, validate product-market fit and develop comprehensive brand positioning following the specified deliverables and success criteria.
+
+      GTM Brief Summary: {gtm_brief_summary}
+      Value Proposition: {value_proposition}
+      Persona Insights: {key_persona_insights}
+      Behavioral Triggers: {persona_behavioral_triggers}
+
+      Product Features Context: {product_features}
+      Brand Preferences: {brand_preferences}
+
+      Focus on creating distinctive positioning that leverages persona psychology for competitive advantage and guides all subsequent marketing strategies.
+
+    context_injection_template: |
+      WORKFLOW CONTEXT:
+      Current Stage: {workflow_stage}
+      Stage Purpose: {stage_purpose}
+      Previous Outputs: GTM Brief and detailed personas
+      Next Stage Needs: {next_stage_requirements}
+
+      GTM BRIEF CONTEXT:
+      Business Concept: {business_concept}
+      Value Proposition: {value_proposition}
+      Target Market: {target_market_definition}
+      Business Model: {business_model_overview}
+
+      PERSONA CONTEXT:
+      Primary Personas: {primary_personas}
+      Key Behavioral Insights: {behavioral_insights}
+      Customer Journey: {journey_touchpoints}
+
+      USER CONTEXT:
+      Business Stage: {business_stage}
+      Project Name: {project_name}
+      Industry/Market: {industry_context}
+
+    knowledge_injection_template: |
+      RELEVANT KNOWLEDGE BASE:
+
+      Product-Market Fit Validation:
+      {product_market_fit_knowledge}
+
+      Brand Positioning Strategy:
+      {brand_positioning_knowledge}
+
+      Competitive Analysis:
+      {competitive_analysis_knowledge}
+
+      Messaging Framework Development:
+      {messaging_framework_knowledge}
+
+  # Dynamic prompt generation
+  dynamic_generation:
+    context_injection_points:
+      - 'after_system_prompt_identity'
+      - 'before_deliverables_section'
+      - 'after_constraints_section'
+      - 'before_output_format_section'
+    variable_substitution:
+      agent_identity: 'from_agent_config.persona.identity'
+      primary_objective: 'from_task_spec.primary_objective'
+      primary_deliverables: 'from_task_spec.deliverables.primary_deliverables'
+      mandatory_criteria: 'from_task_spec.success_criteria.mandatory_criteria'
+      scope_constraints: 'from_task_spec.constraints.scope_constraints'
+      workflow_stage: 'from_task_spec.context_awareness.workflow_stage'
+      stage_purpose: 'from_task_spec.context_awareness.stage_purpose'
+      next_stage_requirements: 'from_task_spec.context_awareness.next_stage_requirements'
+      quality_standards: 'from_task_spec.deliverables.quality_standards'
+      gtm_brief_content: 'from_previous_agent_output.gtm_brief'
+      persona_profiles_content: 'from_previous_agent_output.persona_profiles'
+    conditional_sections:
+      competitive_analysis_deep_dive: 'if_competitor_data_available'
+      user_research_synthesis: 'if_user_research_data_provided'
+      brand_perception_audit: 'if_existing_brand_data_available'
+    personalization_options:
+      industry_specific_positioning: 'based_on_user_industry'
+      business_stage_considerations: 'based_on_user_business_stage'
+      competitive_landscape_focus: 'based_on_market_maturity'
+
+  # Prompt optimization
+  optimization:
+    token_optimization: true
+    clarity_enhancement: true
+    context_compression: true
+    quality_instructions: true
+
+  # Prompt validation
+  validation:
+    prompt_validation: true
+    length_limits:
+      system_prompt_max_tokens: 3500
+      user_prompt_max_tokens: 1200
+      total_prompt_max_tokens: 4500
+    required_elements:
+      - 'task_objective_statement'
+      - 'deliverables_specification'
+      - 'success_criteria_definition'
+      - 'output_format_instruction'
+      - 'gtm_brief_context_injection'
+      - 'persona_context_injection'
+      - 'knowledge_base_injection'
+    quality_checks:
+      - 'all_variables_substituted'
+      - 'previous_agent_context_properly_injected'
+      - 'positioning_requirements_clearly_specified'
+      - 'token_limits_respected'
+
+# Template integration configuration
+template_integration:
+  primary_template: 'templates/product-brand-output-v2.yaml'
+  fallback_templates:
+    - 'templates/brand-guide-tmpl.yaml'
+  template_variables:
+    auto_extract:
+      - 'product_market_fit_analysis'
+      - 'brand_positioning_statement'
+      - 'messaging_framework'
+      - 'competitive_differentiation'
+    user_provided:
+      - 'project_name'
+      - 'business_stage'
+      - 'user_name'
+    system_generated:
+      - 'session_date'
+      - 'agent_name'
+      - 'agent_role'
+      - 'gtm_brief_reference'
+      - 'persona_reference'
+
+  processing:
+    auto_variable_extraction: true
+    variable_validation: true
+    quality_enhancement: true
+    multi_format_generation: true
+
+  customization:
+    section_overrides:
+      brand_positioning:
+        emphasis: 'competitive_differentiation'
+      messaging_framework:
+        depth: 'comprehensive_with_proof_points'
+    variable_defaults:
+      agent_name: 'Marcus'
+      agent_role: 'Product Manager'
+      session_duration: '35 minutes'
+    conditional_sections:
+      competitive_analysis: 'always_include'
+      user_experience_recommendations: 'if_persona_journey_detailed'
+
+# Execution configuration
+execution:
+  pre_execution:
+    setup_steps:
+      - 'load_agent_configuration'
+      - 'validate_previous_agent_outputs'
+      - 'prepare_knowledge_base'
+    context_preparation: 'inject_gtm_and_persona_context'
+    knowledge_injection: 'auto_inject_product_brand_knowledge'
+    validation_checks:
+      - 'gtm_brief_and_personas_completeness'
+      - 'system_readiness'
+      - 'template_availability'
+
+  main_execution:
+    execution_method: 'api_call'
+    api_configuration:
+      provider: 'anthropic'
+      model: 'claude-3-5-sonnet-20241022'
+      temperature: 0.7
+      max_tokens: 4000
+    processing_options:
+      streaming: false
+      parallel_processing: false
+      batch_size: 1
+    error_handling: 'retry_with_fallback'
+
+  post_execution:
+    output_processing:
+      - 'extract_template_variables'
+      - 'validate_positioning_quality'
+      - 'apply_formatting'
+    template_application: 'dynamic_variable_binding'
+    quality_validation:
+      - 'product_market_fit_validation_check'
+      - 'brand_differentiation_assessment'
+      - 'messaging_consistency_validation'
+    context_handoff: 'prepare_growth_manager_context'
+
+  error_handling:
+    retry_strategy: 'exponential_backoff'
+    max_retries: 3
+    fallback_behavior: 'use_fallback_template_and_notify'
+    escalation_rules:
+      - 'if_previous_context_insufficient_after_2_attempts'
+      - 'if_positioning_quality_below_0.8_after_3_attempts'
+      - 'if_api_errors_persist_after_5_minutes'
+
+# API integration configuration
+api_integration:
+  primary_api:
+    provider: 'anthropic'
+    model: 'claude-3-5-sonnet-20241022'
+    endpoint: 'https://api.anthropic.com/v1/messages'
+    authentication:
+      type: 'api_key'
+      key_source: 'environment_variable'
+      key_name: 'ANTHROPIC_API_KEY'
+
+  request_config:
+    timeout: 120
+    rate_limiting:
+      requests_per_minute: 50
+      tokens_per_minute: 40000
+    request_headers:
+      content_type: 'application/json'
+      user_agent: 'GrowthStrategyAgent/2.0'
+    retry_config:
+      max_retries: 3
+      backoff_factor: 2
+      retry_on_status: [429, 500, 502, 503, 504]
+
+  response_processing:
+    response_validation: true
+    content_extraction: 'extract_assistant_message'
+    error_detection:
+      - 'check_api_error_codes'
+      - 'validate_response_format'
+      - 'detect_incomplete_responses'
+    quality_scoring: true
+
+# Knowledge base integration
+knowledge_integration:
+  knowledge_sources:
+    primary_sources:
+      - 'knowledge-base/method/05product-market-fit.md'
+      - 'knowledge-base/resources/unique-value-proposition.md'
+    secondary_sources:
+      - 'knowledge-base/resources/market-segmentation.md'
+      - 'knowledge-base/resources/lift-model.md'
+      - 'knowledge-base/glossary/growth-hacking-dictionary.md'
+    dynamic_sources:
+      - 'gtm-brief.md'
+      - 'psychographic-personas.md'
+
+  injection_strategy:
+    method: 'context_aware'
+    relevance_threshold: 0.7
+    max_knowledge_tokens: 2000
+    prioritization: 'product_positioning_relevant'
+
+  processing:
+    preprocessing:
+      - 'extract_positioning_concepts'
+      - 'format_for_agent_consumption'
+    formatting: 'structured_sections'
+    context_integration: 'merge_with_previous_outputs'
+    validation: true
+
+# Context management
+context_management:
+  context_sources:
+    workflow_context: true
+    previous_outputs: true
+    user_context: true
+    system_context: true
+
+  processing:
+    context_merging: 'previous_outputs_priority'
+    context_compression: true
+    context_prioritization: 'gtm_brief_and_personas_first'
+    context_validation: true
+
+  handoff:
+    next_task_context:
+      growth_manager:
+        - 'product_positioning_for_metrics_alignment'
+        - 'brand_messaging_for_funnel_optimization'
+        - 'competitive_advantages_for_differentiation'
+      acquisition_manager:
+        - 'messaging_framework_for_campaign_development'
+        - 'brand_guidelines_for_creative_strategy'
+        - 'competitive_positioning_for_channel_strategy'
+    context_transformation: 'extract_relevant_for_growth_strategy'
+    context_storage: true
+    context_cleanup:
+      - 'remove_detailed_analysis_for_handoff'
+      - 'compress_supporting_research'
+
+# Quality assurance and validation
+quality_assurance:
+  input_validation:
+    schema_validation: true
+    previous_outputs_validation: true
+    context_validation: true
+    prerequisite_validation: true
+
+  process_validation:
+    execution_monitoring: true
+    intermediate_validation: false
+    resource_monitoring: true
+    performance_tracking: true
+
+  output_validation:
+    format_validation: true
+    positioning_quality: true
+    completeness_check: true
+    consistency_validation: true
+
+  scoring:
+    quality_metrics:
+      - 'product_market_fit_validation_strength'
+      - 'brand_positioning_distinctiveness'
+      - 'messaging_framework_consistency'
+      - 'competitive_differentiation_sustainability'
+      - 'strategic_alignment'
+    scoring_algorithm: 'weighted_average'
+    minimum_score: 0.8
+    improvement_suggestions: true
+
+# Performance and optimization
+performance:
+  resource_limits:
+    max_memory_usage: '2GB'
+    max_cpu_usage: '70%'
+    max_execution_time: 2400 # 40 minutes
+    max_api_calls: 5
+
+  caching:
+    cache_enabled: true
+    cache_scope: 'session'
+    cache_duration: '2h'
+    cache_invalidation:
+      - 'previous_outputs_changed'
+      - 'agent_config_updated'
+
+  optimization:
+    parallel_processing: false
+    lazy_loading: true
+    batch_processing: false
+    compression: true
+
+# Monitoring and analytics
+monitoring:
+  metrics:
+    execution_metrics: true
+    quality_metrics: true
+    positioning_effectiveness_metrics: true
+    api_usage_metrics: true
+
+  logging:
+    log_level: 'info'
+    log_components:
+      - 'agent_execution'
+      - 'positioning_development'
+      - 'quality_validation'
+      - 'context_handoff'
+    log_format: 'structured_json'
+    log_storage: 'local_files'
+
+  alerting:
+    alert_conditions:
+      - 'execution_time_exceeds_35_minutes'
+      - 'positioning_quality_score_below_0.8'
+      - 'api_error_rate_above_10_percent'
+    notification_channels:
+      - 'system_logs'
+      - 'admin_notifications'
+    escalation_procedures:
+      - 'notify_admin_after_3_failures'
+      - 'halt_workflow_after_critical_error'
+
+  reporting:
+    report_generation: true
+    report_frequency: 'per_execution'
+    report_recipients: ['system_admin', 'workflow_manager']
+    custom_reports:
+      - 'positioning_quality_report'
+      - 'brand_differentiation_effectiveness'
+
+# Integration points and extensibility
+integration_points:
+  pre_execution_hooks:
+    validation_hooks:
+      - 'validate_previous_outputs_positioning_requirements'
+    setup_hooks:
+      - 'prepare_product_positioning_context'
+    notification_hooks:
+      - 'notify_positioning_development_start'
+
+  post_execution_hooks:
+    cleanup_hooks:
+      - 'cleanup_temporary_analysis_files'
+    notification_hooks:
+      - 'notify_growth_manager'
+    integration_hooks:
+      - 'save_brand_guide_to_project_repository'
+
+  extensions:
+    custom_processors:
+      - 'brand_positioning_enhancer'
+      - 'competitive_analysis_validator'
+    custom_validators:
+      - 'product_market_fit_validator'
+      - 'brand_differentiation_validator'
+    custom_formatters:
+      - 'brand_guide_formatter'
+      - 'messaging_framework_formatter'
+    plugin_support: true
+
+# Security and compliance
+security:
+  data_protection:
+    encryption_at_rest: true
+    encryption_in_transit: true
+    brand_data_sanitization: true
+    access_logging: true
+
+  access_control:
+    authentication_required: false
+    authorization_levels: ['user', 'agent', 'admin']
+    permission_validation: true
+    audit_trail: true
+
+  compliance:
+    compliance_frameworks: ['data_privacy']
+    data_retention_policies: ['delete_after_30_days']
+    privacy_protection: true
+    regulatory_requirements: []
+
+# Documentation and metadata
+documentation:
+  usage_docs:
+    description: |
+      This task executes the Product Manager agent to validate product-market fit and develop
+      comprehensive brand positioning strategy. Builds on GTM brief and personas to create
+      distinctive market positioning and messaging framework for all marketing execution.
+    usage_examples:
+      - 'SaaS product positioning and brand strategy'
+      - 'Consumer product market fit validation'
+      - 'B2B service differentiation and messaging'
+    best_practices:
+      - 'Ensure personas provide adequate behavioral insights for positioning'
+      - 'Focus on defensible competitive advantages'
+      - 'Create messaging that enables consistent communication across channels'
+    troubleshooting:
+      - 'If positioning lacks differentiation, enhance competitive analysis depth'
+      - 'If messaging is inconsistent, review persona alignment'
+      - 'If market fit validation is weak, strengthen evidence base'
+
+  technical_docs:
+    implementation_details: 'Integrates with GTM brief and personas to create comprehensive positioning strategy'
+    api_documentation: 'Uses Anthropic Claude API with product positioning prompt engineering'
+    configuration_guide: 'Configure via product-manager-v2.yaml and product-brand-output-v2.yaml files'
+    integration_examples:
+      - 'Context passing from Persona Strategist to Product Manager'
+      - 'Brand positioning handoff to Growth Manager and Acquisition Manager'
+
+# Metadata and governance
+metadata:
+  version_info:
+    major_version: 2
+    minor_version: 0
+    patch_version: 0
+    release_date: '2024-01-15'
+    build_number: '2024.01.15.003'
+
+  governance:
+    owner: 'growth_strategy_team'
+    maintainers: ['system_architect', 'product_specialist']
+    contributors: ['agent_developers', 'template_designers']
+    reviewers: ['senior_strategist', 'brand_manager']
+
+  lifecycle:
+    status: 'active'
+    created_date: '2024-01-15'
+    last_modified: '2024-01-15'
+    deprecation_date: null
+    replacement_task: null
+
+  classification:
+    tags: ['product', 'brand', 'positioning', 'foundation', 'agent-execution']
+    categories: ['agent-tasks', 'workflow-foundation']
+    priority: 'high'
+    complexity_rating: 8
+    maturity_level: 'stable'

@@ -1,0 +1,744 @@
+# Viral Growth Architect Agent Task - Viral Growth Loops & Network Effects
+# Links Viral Growth Architect agent with workflow and template processing
+
+schema_version: '2.0'
+description: 'Agent task configuration for Viral Growth Architect execution with sustainable viral growth loops and network effects design'
+
+# Core task identification
+task:
+  id: 'viral-growth-architect-execution'
+  name: 'Viral Growth Loops & Network Effects Strategy'
+  version: '2.0'
+  description: 'Execute Viral Growth Architect agent to design sustainable viral growth loops with network effects and referral mechanisms'
+  category: 'agent-execution'
+  type: 'agent-task'
+
+  use_cases:
+    - 'viral_growth_loop_design'
+    - 'network_effects_strategy'
+    - 'referral_program_development'
+    - 'viral_amplification_optimization'
+    - 'organic_growth_acceleration'
+
+  complexity_level: 'complex'
+  estimated_duration: '40-50 minutes'
+  requires_user_interaction: false
+
+# Agent integration configuration
+agent_integration:
+  agent_config_path: 'agents/viral-growth-architect-v2.yaml'
+  agent_id: 'viral-growth-architect'
+  agent_role: 'Viral Growth Architect'
+
+  behavior_overrides:
+    temperature: 0.8
+    max_tokens: 4000
+    system_prompt_additions: |
+      You are executing in the strategy stage with complete foundation, growth framework, acquisition, and retention strategies.
+      Your viral growth strategy will amplify all marketing efforts and reduce acquisition costs.
+      Focus on creating sustainable viral loops with strong network effects and compelling referral mechanisms.
+    knowledge_focus:
+      - 'growth-loop'
+      - 'virality'
+      - 'pirate-funnel-referrals'
+      - 'network-effects'
+
+  capabilities:
+    tools_available:
+      - 'viral_loop_designer'
+      - 'network_analyzer'
+      - 'referral_optimizer'
+      - 'virality_calculator'
+    apis_accessible:
+      - 'anthropic_claude_api'
+    permissions:
+      - 'read_knowledge_base'
+      - 'access_complete_strategic_context'
+      - 'generate_viral_growth_documents'
+    restrictions:
+      - 'no_specific_technical_implementation_details'
+      - 'no_detailed_creative_asset_development'
+
+# Workflow integration specifications
+workflow_integration:
+  workflow_id: 'master-workflow-v2'
+  workflow_stage: 'strategy'
+  step_id: 'viral_growth_strategy'
+  sequence_order: 7
+
+  inputs:
+    required_inputs:
+      [
+        'gtm-brief.md',
+        'psychographic-personas.md',
+        'product-brand-guide.md',
+        'growth-funnel.md',
+        'acquisition-strategy.md',
+        'retention-strategy.md',
+      ]
+    optional_inputs: ['sharing_behavior_data', 'network_analysis']
+    user_inputs: ['viral_potential_assessment', 'sharing_preferences']
+    context_requirements:
+      user_context: true
+      business_context: true
+      market_context: true
+
+  outputs:
+    primary_output: 'viral-growth-strategy.md'
+    secondary_outputs:
+      - 'growth-loops-design.md'
+      - 'referral-programs.md'
+      - 'network-effects-strategy.md'
+    output_format: 'markdown'
+    storage_location: 'docs/'
+
+  coordination:
+    depends_on:
+      [
+        'foundation_gtm',
+        'persona_development',
+        'product_brand_development',
+        'growth_funnel_design',
+        'acquisition_strategy',
+        'retention_strategy',
+      ]
+    blocks: ['experiment_design']
+    parallel_execution: false
+    timeout: '50 minutes'
+
+  quality_gates:
+    pre_execution:
+      - 'validate_complete_strategic_context_including_retention'
+      - 'check_viral_potential_and_sharing_behavior_insights'
+    post_execution:
+      - 'validate_viral_loop_sustainability_and_measurability'
+      - 'check_network_effects_strength_and_defensibility'
+      - 'verify_referral_program_attractiveness_and_alignment'
+    validation_rules:
+      - 'viral_loops_must_be_sustainable_with_positive_viral_coefficients'
+      - 'network_effects_must_create_defensible_competitive_advantages'
+      - 'referral_programs_must_align_with_persona_motivations_and_sharing_behavior'
+      - 'viral_strategies_must_integrate_with_acquisition_and_retention_programs'
+    success_criteria:
+      - 'Sustainable viral growth loops with positive viral coefficients and clear amplification mechanisms'
+      - 'Strong network effects strategy that creates defensible competitive advantages'
+      - 'Compelling referral programs aligned with persona motivations and sharing behaviors'
+      - 'Integrated viral strategy that amplifies acquisition and retention efforts'
+
+# Task specification and requirements
+task_specification:
+  # Primary task definition
+  primary_objective: 'Design sustainable viral growth loops with strong network effects and compelling referral mechanisms that amplify all marketing efforts, reduce acquisition costs, and create defensible competitive advantages through organic growth acceleration'
+  secondary_objectives:
+    - 'Create sustainable viral growth loops with positive viral coefficients and clear amplification mechanics'
+    - 'Design network effects strategy that strengthens with scale and creates competitive moats'
+    - 'Develop compelling referral programs aligned with persona psychology and sharing behaviors'
+    - 'Establish viral measurement framework with virality metrics and optimization methodologies'
+
+  # Specific deliverables
+  deliverables:
+    primary_deliverables:
+      - 'Comprehensive viral growth strategy with sustainable viral loops and amplification mechanisms'
+      - 'Network effects design that creates competitive advantages and strengthens with scale'
+      - 'Compelling referral programs with persona-aligned incentives and sharing mechanisms'
+      - 'Viral measurement framework with virality coefficients, tracking, and optimization methodology'
+      - 'Integration strategy that amplifies acquisition and retention efforts through viral mechanisms'
+    secondary_deliverables:
+      - 'Viral growth experimentation roadmap with testing priorities and methodologies'
+      - 'Social proof and advocacy program frameworks aligned with brand positioning'
+      - 'Viral content strategy guidelines for organic amplification'
+      - 'Network topology analysis and optimization recommendations'
+    deliverable_format: 'Structured markdown document following viral-growth-output-v2 template'
+    quality_standards:
+      - 'Viral loops must be sustainable with mathematical validation of positive viral coefficients'
+      - 'Network effects must create genuine competitive advantages that strengthen with scale'
+      - 'Referral programs must demonstrate clear persona alignment and behavioral motivation'
+      - 'Viral measurement must enable data-driven optimization and integration with growth funnel'
+
+  # Success criteria and constraints
+  success_criteria:
+    mandatory_criteria:
+      - 'Viral growth loops are mathematically sustainable with positive viral coefficients and clear mechanics'
+      - 'Network effects strategy creates defensible competitive advantages that strengthen with user growth'
+      - 'Referral programs are compelling with persona-aligned incentives and natural sharing motivations'
+      - 'Viral measurement framework enables optimization and integration with overall growth metrics'
+      - 'All viral strategies integrate seamlessly with acquisition and retention programs for amplification'
+    optional_criteria:
+      - 'Viral loops reveal innovative amplification mechanisms not commonly used in industry'
+      - 'Network effects identify unique value creation opportunities that compound over time'
+      - 'Referral programs include sophisticated behavioral triggers and gamification elements'
+      - 'Viral measurement includes advanced attribution modeling and incrementality analysis'
+    measurement_approach: 'Quality scoring based on viral loop sustainability, network effects strength, referral program alignment, and integration effectiveness'
+    validation_method: 'Template compliance check, viral coefficient validation, network effects assessment, and persona alignment evaluation'
+
+  constraints:
+    scope_constraints:
+      - 'Do not create specific viral content or creative assets (focus on strategic frameworks)'
+      - 'Do not develop detailed technical implementation (focus on viral mechanics and strategy)'
+      - 'Do not design specific experiments (growth hacker handles this)'
+      - 'Focus on viral strategy and amplification systems, not tactical content creation'
+    resource_constraints:
+      - 'Maximum 50-minute execution time'
+      - 'Use complete strategic context including all previous marketing strategies'
+      - 'Generate comprehensive viral strategy within token limits'
+    dependency_constraints:
+      - 'Must align with persona sharing behaviors and social motivations'
+      - 'Must integrate with acquisition channels and retention programs for amplification'
+      - 'Must support brand positioning and competitive differentiation strategy'
+    quality_constraints:
+      - 'All viral mechanisms must be supported by persona behavioral analysis'
+      - 'Viral loops must be mathematically sound with realistic coefficient projections'
+      - 'Network effects must be defensible and sustainable over time'
+      - 'Referral programs must be implementable with available resources and technology'
+
+  # Context and workflow awareness
+  context_awareness:
+    workflow_stage: 'strategy'
+    stage_purpose: 'Complete comprehensive marketing strategy with viral amplification and organic growth acceleration'
+    previous_stage_outputs:
+      ['complete_strategic_foundation_and_all_marketing_strategies']
+    next_stage_requirements:
+      - 'Viral growth hypotheses and mechanisms for growth hacker experiment design'
+      - 'Viral measurement methodology for comprehensive growth tracking and optimization'
+      - 'Network effects and referral integration for overall strategy ROI calculation'
+      - 'Viral amplification opportunities for acquisition and retention optimization'
+
+  handoff_requirements:
+    context_to_provide:
+      - 'Complete viral growth strategy with sustainable loops and network effects design'
+      - 'Viral growth hypotheses and testing priorities for experiment design'
+      - 'Viral measurement methodology and integration with growth funnel metrics'
+      - 'Network effects and referral amplification opportunities for overall strategy optimization'
+    format_requirements:
+      - 'Structured viral strategy with clear loop mechanics and coefficient calculations'
+      - 'Network effects design with competitive advantage analysis and scaling projections'
+      - 'Referral program specifications with persona alignment and incentive structures'
+      - 'Executive summary for quick context understanding by final agent'
+    validation_requirements:
+      - 'Viral loops must be mathematically validated with realistic coefficient projections'
+      - 'Network effects must demonstrate genuine competitive advantages and defensibility'
+      - 'Referral programs must show clear persona alignment and behavioral motivation'
+    transformation_needs:
+      - 'Extract viral hypotheses for growth hacker experiment design and testing'
+      - 'Prepare viral measurement methodology for comprehensive growth tracking'
+      - 'Format viral amplification opportunities for overall strategy optimization'
+
+# Prompt generation configuration
+prompt_generation:
+  # Prompt template configuration
+  templates:
+    system_prompt_template: |
+      {agent_identity}
+
+      TASK OBJECTIVE: {primary_objective}
+
+      SPECIFIC DELIVERABLES:
+      {primary_deliverables}
+
+      SUCCESS CRITERIA:
+      {mandatory_criteria}
+
+      CONSTRAINTS AND SCOPE:
+      {scope_constraints}
+
+      WORKFLOW CONTEXT:
+      - Stage: {workflow_stage} ({stage_purpose})
+      - Building on: Complete strategic foundation and all marketing strategies
+      - Next agents depend on: {next_stage_requirements}
+
+      COMPLETE STRATEGIC CONTEXT: {complete_strategic_context}
+
+      KNOWLEDGE BASE: {injected_knowledge}
+
+      OUTPUT FORMAT: Follow template structure exactly - {primary_template}
+
+      QUALITY STANDARDS: {quality_standards}
+
+    user_prompt_template: |
+      Based on the complete strategic foundation and all marketing strategies, design sustainable viral growth loops with network effects and referral mechanisms following the specified deliverables and success criteria.
+
+      Strategic Foundation: {foundation_summary}
+      Customer Personas & Behavior: {personas_and_behavior}
+      Acquisition & Retention Strategies: {acquisition_retention_summary}
+      Growth Funnel & Metrics: {growth_funnel_summary}
+
+      Viral Potential Assessment: {viral_potential_assessment}
+      Sharing Preferences: {sharing_preferences}
+
+      Focus on creating sustainable viral amplification that reduces acquisition costs and creates defensible competitive advantages through network effects.
+
+    context_injection_template: |
+      WORKFLOW CONTEXT:
+      Current Stage: {workflow_stage}
+      Stage Purpose: {stage_purpose}
+      Previous Outputs: Complete strategic foundation and all marketing strategies
+      Next Stage Needs: {next_stage_requirements}
+
+      COMPLETE STRATEGIC FOUNDATION:
+      GTM Strategy: {gtm_strategy_summary}
+      Customer Personas: {personas_summary}
+      Product Positioning: {positioning_summary}
+      Growth Funnel: {growth_funnel_summary}
+      Acquisition Strategy: {acquisition_strategy_summary}
+      Retention Strategy: {retention_strategy_summary}
+
+      USER CONTEXT:
+      Business Stage: {business_stage}
+      Project Name: {project_name}
+      Industry/Market: {industry_context}
+      Network Potential: {network_potential}
+
+    knowledge_injection_template: |
+      RELEVANT KNOWLEDGE BASE:
+
+      Viral Growth Loops:
+      {viral_growth_loops_knowledge}
+
+      Network Effects Strategy:
+      {network_effects_knowledge}
+
+      AARRR Funnel - Referrals:
+      {pirate_funnel_referrals_knowledge}
+
+      Virality & Amplification:
+      {virality_amplification_knowledge}
+
+  # Dynamic prompt generation
+  dynamic_generation:
+    context_injection_points:
+      - 'after_system_prompt_identity'
+      - 'before_deliverables_section'
+      - 'after_constraints_section'
+      - 'before_output_format_section'
+    variable_substitution:
+      agent_identity: 'from_agent_config.persona.identity'
+      primary_objective: 'from_task_spec.primary_objective'
+      primary_deliverables: 'from_task_spec.deliverables.primary_deliverables'
+      mandatory_criteria: 'from_task_spec.success_criteria.mandatory_criteria'
+      scope_constraints: 'from_task_spec.constraints.scope_constraints'
+      workflow_stage: 'from_task_spec.context_awareness.workflow_stage'
+      stage_purpose: 'from_task_spec.context_awareness.stage_purpose'
+      next_stage_requirements: 'from_task_spec.context_awareness.next_stage_requirements'
+      quality_standards: 'from_task_spec.deliverables.quality_standards'
+      complete_strategic_context: 'from_all_previous_agent_outputs'
+    conditional_sections:
+      advanced_network_topology_analysis: 'if_network_analysis_data_available'
+      viral_content_strategy: 'if_content_marketing_focus'
+      gamification_elements: 'if_engagement_gamification_potential'
+    personalization_options:
+      industry_specific_viral_mechanics: 'based_on_user_industry'
+      network_effects_by_business_model: 'based_on_business_model'
+      viral_potential_assessment: 'based_on_product_sharing_nature'
+
+  # Prompt optimization
+  optimization:
+    token_optimization: true
+    clarity_enhancement: true
+    context_compression: true
+    quality_instructions: true
+
+  # Prompt validation
+  validation:
+    prompt_validation: true
+    length_limits:
+      system_prompt_max_tokens: 3500
+      user_prompt_max_tokens: 1200
+      total_prompt_max_tokens: 4500
+    required_elements:
+      - 'task_objective_statement'
+      - 'deliverables_specification'
+      - 'success_criteria_definition'
+      - 'output_format_instruction'
+      - 'complete_strategic_context_injection'
+      - 'knowledge_base_injection'
+    quality_checks:
+      - 'all_variables_substituted'
+      - 'complete_strategic_context_properly_integrated'
+      - 'viral_requirements_clearly_specified'
+      - 'token_limits_respected'
+
+# Template integration configuration
+template_integration:
+  primary_template: 'templates/viral-growth-output-v2.yaml'
+  fallback_templates:
+    - 'templates/growth-loops-tmpl.yaml'
+  template_variables:
+    auto_extract:
+      - 'viral_growth_strategy'
+      - 'growth_loops'
+      - 'network_effects'
+      - 'referral_programs'
+    user_provided:
+      - 'project_name'
+      - 'business_stage'
+      - 'user_name'
+    system_generated:
+      - 'session_date'
+      - 'agent_name'
+      - 'agent_role'
+      - 'complete_strategic_references'
+
+  processing:
+    auto_variable_extraction: true
+    variable_validation: true
+    quality_enhancement: true
+    multi_format_generation: true
+
+  customization:
+    section_overrides:
+      viral_loops:
+        emphasis: 'sustainability_and_mathematical_validation'
+      network_effects:
+        depth: 'competitive_advantage_and_defensibility'
+    variable_defaults:
+      agent_name: 'David'
+      agent_role: 'Viral Growth Architect'
+      session_duration: '45 minutes'
+    conditional_sections:
+      gamification_framework: 'if_engagement_gamification_viable'
+      viral_content_guidelines: 'if_content_amplification_strategy'
+
+# Execution configuration
+execution:
+  pre_execution:
+    setup_steps:
+      - 'load_agent_configuration'
+      - 'validate_complete_strategic_context_including_all_marketing'
+      - 'prepare_knowledge_base'
+    context_preparation: 'integrate_all_strategic_and_marketing_outputs'
+    knowledge_injection: 'auto_inject_viral_growth_knowledge'
+    validation_checks:
+      - 'complete_marketing_strategy_context_availability'
+      - 'system_readiness'
+      - 'template_availability'
+
+  main_execution:
+    execution_method: 'api_call'
+    api_configuration:
+      provider: 'anthropic'
+      model: 'claude-3-5-sonnet-20241022'
+      temperature: 0.8
+      max_tokens: 4000
+    processing_options:
+      streaming: false
+      parallel_processing: false
+      batch_size: 1
+    error_handling: 'retry_with_fallback'
+
+  post_execution:
+    output_processing:
+      - 'extract_template_variables'
+      - 'validate_viral_strategy_quality'
+      - 'apply_formatting'
+    template_application: 'dynamic_variable_binding'
+    quality_validation:
+      - 'viral_loop_sustainability_check'
+      - 'network_effects_strength_validation'
+      - 'referral_program_alignment_assessment'
+    context_handoff: 'prepare_growth_hacker_context'
+
+  error_handling:
+    retry_strategy: 'exponential_backoff'
+    max_retries: 3
+    fallback_behavior: 'use_fallback_template_and_notify'
+    escalation_rules:
+      - 'if_complete_strategic_context_insufficient_after_2_attempts'
+      - 'if_viral_strategy_quality_below_0.8_after_3_attempts'
+      - 'if_api_errors_persist_after_5_minutes'
+
+# API integration configuration
+api_integration:
+  primary_api:
+    provider: 'anthropic'
+    model: 'claude-3-5-sonnet-20241022'
+    endpoint: 'https://api.anthropic.com/v1/messages'
+    authentication:
+      type: 'api_key'
+      key_source: 'environment_variable'
+      key_name: 'ANTHROPIC_API_KEY'
+
+  request_config:
+    timeout: 120
+    rate_limiting:
+      requests_per_minute: 50
+      tokens_per_minute: 40000
+    request_headers:
+      content_type: 'application/json'
+      user_agent: 'GrowthStrategyAgent/2.0'
+    retry_config:
+      max_retries: 3
+      backoff_factor: 2
+      retry_on_status: [429, 500, 502, 503, 504]
+
+  response_processing:
+    response_validation: true
+    content_extraction: 'extract_assistant_message'
+    error_detection:
+      - 'check_api_error_codes'
+      - 'validate_response_format'
+      - 'detect_incomplete_responses'
+    quality_scoring: true
+
+# Knowledge base integration
+knowledge_integration:
+  knowledge_sources:
+    primary_sources:
+      - 'knowledge-base/method/15pirate-funnel-referrals.md'
+      - 'knowledge-base/method/16growth-loop.md'
+      - 'knowledge-base/resources/virality.md'
+    secondary_sources:
+      - 'knowledge-base/resources/cialdini-persuasion.md'
+      - 'knowledge-base/glossary/growth-hacking-dictionary.md'
+    dynamic_sources:
+      - 'gtm-brief.md'
+      - 'psychographic-personas.md'
+      - 'product-brand-guide.md'
+      - 'growth-funnel.md'
+      - 'acquisition-strategy.md'
+      - 'retention-strategy.md'
+
+  injection_strategy:
+    method: 'context_aware'
+    relevance_threshold: 0.7
+    max_knowledge_tokens: 2000
+    prioritization: 'viral_growth_relevant'
+
+  processing:
+    preprocessing:
+      - 'extract_viral_growth_concepts'
+      - 'format_for_agent_consumption'
+    formatting: 'structured_sections'
+    context_integration: 'merge_with_complete_strategic_context'
+    validation: true
+
+# Context management
+context_management:
+  context_sources:
+    workflow_context: true
+    previous_outputs: true
+    user_context: true
+    system_context: true
+
+  processing:
+    context_merging: 'all_marketing_strategies_priority'
+    context_compression: true
+    context_prioritization: 'personas_and_acquisition_retention_first'
+    context_validation: true
+
+  handoff:
+    next_task_context:
+      growth_hacker:
+        - 'viral_growth_hypotheses_for_experiment_design'
+        - 'viral_loop_testing_priorities_and_methodologies'
+        - 'viral_measurement_framework_for_experiment_tracking'
+        - 'network_effects_validation_opportunities'
+    context_transformation: 'extract_relevant_for_growth_experimentation'
+    context_storage: true
+    context_cleanup:
+      - 'remove_detailed_viral_strategy_analysis_for_handoff'
+      - 'compress_network_effects_design_details'
+
+# Quality assurance and validation
+quality_assurance:
+  input_validation:
+    schema_validation: true
+    complete_strategic_context_validation: true
+    context_validation: true
+    prerequisite_validation: true
+
+  process_validation:
+    execution_monitoring: true
+    intermediate_validation: false
+    resource_monitoring: true
+    performance_tracking: true
+
+  output_validation:
+    format_validation: true
+    viral_strategy_quality: true
+    completeness_check: true
+    consistency_validation: true
+
+  scoring:
+    quality_metrics:
+      - 'viral_loop_sustainability'
+      - 'network_effects_strength'
+      - 'referral_program_alignment'
+      - 'viral_measurement_robustness'
+      - 'strategic_integration'
+    scoring_algorithm: 'weighted_average'
+    minimum_score: 0.8
+    improvement_suggestions: true
+
+# Performance and optimization
+performance:
+  resource_limits:
+    max_memory_usage: '2GB'
+    max_cpu_usage: '70%'
+    max_execution_time: 3000 # 50 minutes
+    max_api_calls: 5
+
+  caching:
+    cache_enabled: true
+    cache_scope: 'session'
+    cache_duration: '2h'
+    cache_invalidation:
+      - 'complete_marketing_strategies_changed'
+      - 'agent_config_updated'
+
+  optimization:
+    parallel_processing: false
+    lazy_loading: true
+    batch_processing: false
+    compression: true
+
+# Monitoring and analytics
+monitoring:
+  metrics:
+    execution_metrics: true
+    quality_metrics: true
+    viral_strategy_effectiveness_metrics: true
+    api_usage_metrics: true
+
+  logging:
+    log_level: 'info'
+    log_components:
+      - 'agent_execution'
+      - 'viral_strategy_development'
+      - 'quality_validation'
+      - 'context_handoff'
+    log_format: 'structured_json'
+    log_storage: 'local_files'
+
+  alerting:
+    alert_conditions:
+      - 'execution_time_exceeds_45_minutes'
+      - 'viral_strategy_quality_score_below_0.8'
+      - 'api_error_rate_above_10_percent'
+    notification_channels:
+      - 'system_logs'
+      - 'admin_notifications'
+    escalation_procedures:
+      - 'notify_admin_after_3_failures'
+      - 'halt_workflow_after_critical_error'
+
+  reporting:
+    report_generation: true
+    report_frequency: 'per_execution'
+    report_recipients: ['system_admin', 'workflow_manager']
+    custom_reports:
+      - 'viral_strategy_quality_report'
+      - 'network_effects_sustainability_analysis'
+
+# Integration points and extensibility
+integration_points:
+  pre_execution_hooks:
+    validation_hooks:
+      - 'validate_complete_marketing_context_viral_requirements'
+    setup_hooks:
+      - 'prepare_viral_growth_strategy_development_context'
+    notification_hooks:
+      - 'notify_viral_strategy_start'
+
+  post_execution_hooks:
+    cleanup_hooks:
+      - 'cleanup_temporary_analysis_files'
+    notification_hooks:
+      - 'notify_growth_hacker'
+    integration_hooks:
+      - 'save_viral_strategy_to_project_repository'
+
+  extensions:
+    custom_processors:
+      - 'viral_loop_sustainability_enhancer'
+      - 'network_effects_analyzer'
+    custom_validators:
+      - 'viral_coefficient_validator'
+      - 'network_effects_defensibility_validator'
+    custom_formatters:
+      - 'viral_strategy_formatter'
+      - 'growth_loops_formatter'
+    plugin_support: true
+
+# Security and compliance
+security:
+  data_protection:
+    encryption_at_rest: true
+    encryption_in_transit: true
+    viral_strategy_data_sanitization: true
+    access_logging: true
+
+  access_control:
+    authentication_required: false
+    authorization_levels: ['user', 'agent', 'admin']
+    permission_validation: true
+    audit_trail: true
+
+  compliance:
+    compliance_frameworks: ['data_privacy']
+    data_retention_policies: ['delete_after_30_days']
+    privacy_protection: true
+    regulatory_requirements: []
+
+# Documentation and metadata
+documentation:
+  usage_docs:
+    description: |
+      This task executes the Viral Growth Architect agent to design sustainable viral growth
+      loops with network effects and referral mechanisms. Builds on complete strategic foundation
+      and all marketing strategies to create viral amplification systems.
+    usage_examples:
+      - 'Social platform viral growth loops'
+      - 'SaaS referral and network effects'
+      - 'Consumer app viral amplification'
+    best_practices:
+      - 'Ensure viral loops are mathematically sustainable with positive coefficients'
+      - 'Focus on network effects that create genuine competitive advantages'
+      - 'Align referral programs with persona motivations and sharing behaviors'
+    troubleshooting:
+      - 'If viral loops are unsustainable, adjust coefficient calculations and mechanics'
+      - 'If network effects are weak, strengthen value creation and user interdependencies'
+      - 'If referral programs lack appeal, enhance persona alignment and incentives'
+
+  technical_docs:
+    implementation_details: 'Integrates complete strategic foundation and all marketing strategies to create viral amplification systems'
+    api_documentation: 'Uses Anthropic Claude API with viral growth strategy prompt engineering'
+    configuration_guide: 'Configure via viral-growth-architect-v2.yaml and viral-growth-output-v2.yaml files'
+    integration_examples:
+      - 'Complete marketing strategy integration'
+      - 'Viral strategy handoff to Growth Hacker agent'
+
+# Metadata and governance
+metadata:
+  version_info:
+    major_version: 2
+    minor_version: 0
+    patch_version: 0
+    release_date: '2024-01-15'
+    build_number: '2024.01.15.007'
+
+  governance:
+    owner: 'growth_strategy_team'
+    maintainers: ['system_architect', 'viral_growth_specialist']
+    contributors: ['agent_developers', 'template_designers']
+    reviewers: ['senior_strategist', 'growth_director']
+
+  lifecycle:
+    status: 'active'
+    created_date: '2024-01-15'
+    last_modified: '2024-01-15'
+    deprecation_date: null
+    replacement_task: null
+
+  classification:
+    tags:
+      [
+        'viral',
+        'growth-loops',
+        'network-effects',
+        'strategy',
+        'agent-execution',
+      ]
+    categories: ['agent-tasks', 'workflow-strategy']
+    priority: 'high'
+    complexity_rating: 9
+    maturity_level: 'stable'

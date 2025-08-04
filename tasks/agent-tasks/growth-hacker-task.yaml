@@ -1,0 +1,808 @@
+# Growth Hacker Agent Task - Growth Experiments & Testing Framework
+# Links Growth Hacker agent with workflow and template processing
+
+schema_version: '2.0'
+description: 'Agent task configuration for Growth Hacker execution with comprehensive experimentation framework and testing roadmap'
+
+# Core task identification
+task:
+  id: 'growth-hacker-execution'
+  name: 'Growth Experiments & Testing Framework Development'
+  version: '2.0'
+  description: 'Execute Growth Hacker agent to create comprehensive experimentation framework with prioritized testing roadmap for validating all strategic hypotheses'
+  category: 'agent-execution'
+  type: 'agent-task'
+
+  use_cases:
+    - 'growth_experimentation_framework'
+    - 'hypothesis_validation_strategy'
+    - 'testing_roadmap_development'
+    - 'growth_optimization_methodology'
+    - 'data_driven_validation'
+
+  complexity_level: 'complex'
+  estimated_duration: '45-55 minutes'
+  requires_user_interaction: true
+
+# Agent integration configuration
+agent_integration:
+  agent_config_path: 'agents/growth-hacker-v2.yaml'
+  agent_id: 'growth-hacker'
+  agent_role: 'Growth Hacker'
+
+  behavior_overrides:
+    temperature: 0.6
+    max_tokens: 4500
+    system_prompt_additions: |
+      You are executing in the validation stage with complete strategic foundation and all marketing strategies.
+      Your experimentation framework will validate all strategic hypotheses and optimize growth initiatives.
+      Focus on creating systematic, data-driven testing methodology that enables continuous optimization.
+    knowledge_focus:
+      - 'experiment-process'
+      - 'master-experiments-database'
+      - 'growth-experiment-methodology'
+      - 'experiment-prioritization-frameworks'
+      - 'a-b-testing'
+      - 'statistical-analysis'
+      - 'growth-hacking-techniques'
+
+  capabilities:
+    tools_available:
+      - 'experiment_designer'
+      - 'hypothesis_generator'
+      - 'statistical_calculator'
+      - 'testing_prioritizer'
+    apis_accessible:
+      - 'anthropic_claude_api'
+    permissions:
+      - 'read_knowledge_base'
+      - 'access_complete_strategic_context'
+      - 'generate_experiment_documents'
+    restrictions:
+      - 'no_specific_technical_implementation_details'
+      - 'no_actual_experiment_execution'
+
+# Workflow integration specifications
+workflow_integration:
+  workflow_id: 'master-workflow-v2'
+  workflow_stage: 'validation'
+  step_id: 'experiment_design'
+  sequence_order: 8
+
+  inputs:
+    required_inputs:
+      [
+        'gtm-brief.md',
+        'psychographic-personas.md',
+        'product-brand-guide.md',
+        'growth-funnel.md',
+        'acquisition-strategy.md',
+        'retention-strategy.md',
+        'viral-growth-strategy.md',
+      ]
+    optional_inputs: ['existing_experiment_data', 'testing_infrastructure']
+    user_inputs: ['experimentation_priorities', 'testing_constraints']
+    context_requirements:
+      user_context: true
+      business_context: true
+      market_context: true
+
+  outputs:
+    primary_output: 'experiments.md'
+    secondary_outputs:
+      - 'testing-framework.md'
+      - 'experiment-roadmap.md'
+      - 'hypothesis-validation.md'
+    output_format: 'markdown'
+    storage_location: 'docs/'
+
+  coordination:
+    depends_on:
+      [
+        'foundation_gtm',
+        'persona_development',
+        'product_brand_development',
+        'growth_funnel_design',
+        'acquisition_strategy',
+        'retention_strategy',
+        'viral_growth_strategy',
+      ]
+    blocks: []
+    parallel_execution: false
+    timeout: '55 minutes'
+
+  quality_gates:
+    pre_execution:
+      - 'validate_complete_strategic_context_all_agents'
+      - 'check_strategic_hypotheses_identification_readiness'
+    post_execution:
+      - 'validate_experiment_framework_comprehensiveness_and_validity'
+      - 'check_hypothesis_formation_scientific_rigor'
+      - 'verify_testing_roadmap_prioritization_and_feasibility'
+    validation_rules:
+      - 'experiments_must_validate_key_strategic_hypotheses_from_all_agents'
+      - 'hypothesis_formation_must_be_scientifically_rigorous_and_testable'
+      - 'testing_roadmap_must_be_prioritized_by_impact_and_feasibility'
+      - 'experimentation_framework_must_enable_systematic_optimization'
+    success_criteria:
+      - 'Comprehensive experimentation framework that validates all key strategic hypotheses'
+      - 'Scientifically rigorous hypothesis formation with testable predictions'
+      - 'Prioritized testing roadmap with clear impact and feasibility assessments'
+      - 'Systematic optimization methodology that enables data-driven strategy refinement'
+
+# Task specification and requirements
+task_specification:
+  # Primary task definition
+  primary_objective: 'Create comprehensive experimentation framework with scientifically rigorous hypothesis formation and prioritized testing roadmap that validates all strategic hypotheses, leverages master experiment database for proven tactics, and enables systematic optimization of growth initiatives'
+  secondary_objectives:
+    - 'Develop systematic experimentation methodology following the 5-step process (Gather Ideas, Rank Ideas, Outline Experiments, Implement, Study Data)'
+    - 'Create testable hypotheses for all key strategic assumptions from previous agents'
+    - 'Filter and select relevant experiments from master experiments database based on business type, funnel stage, and resource constraints'
+    - 'Establish prioritized testing roadmap using PIE, BRASS, or ICE frameworks with impact, feasibility, and resource assessments'
+    - 'Design measurement and analysis framework that enables data-driven strategy optimization'
+
+  # Specific deliverables
+  deliverables:
+    primary_deliverables:
+      - 'Comprehensive experimentation framework following the 5-step process methodology with systematic testing and statistical rigor'
+      - 'Testable hypotheses for all key strategic assumptions from GTM, personas, positioning, funnel, acquisition, retention, and viral strategies'
+      - 'Curated experiment selection from master database filtered by business type, funnel stage, probability of success, effort level, and development requirements'
+      - 'Prioritized experiment roadmap using PIE/BRASS/ICE frameworks with impact assessments, feasibility analysis, and resource requirements'
+      - 'Measurement and analysis framework with statistical significance criteria and optimization methodology'
+      - 'Strategic validation plan that enables systematic testing and refinement of all growth initiatives'
+    secondary_deliverables:
+      - 'Experiment design templates following master database structure (Tactic, Hypothesis, Funnel Step, Success Probability, Business Type, Effort, Dev Requirements)'
+      - 'Statistical analysis guidelines and significance testing methodology'
+      - 'Growth optimization playbook with systematic improvement processes based on the 5-step experiment cycle'
+      - 'Filtered experiment backlog with 20+ relevant experiments ready for implementation'
+      - 'Experimentation infrastructure requirements and implementation recommendations'
+    deliverable_format: 'Structured markdown document following experiments-output-v2 template'
+    quality_standards:
+      - 'Experimentation framework must be scientifically rigorous with proper statistical methodology'
+      - 'Hypotheses must be specific, measurable, and directly tied to strategic assumptions'
+      - 'Testing roadmap must be prioritized with clear rationale and realistic timelines'
+      - 'Measurement framework must enable statistically significant conclusions and optimization'
+
+  # Success criteria and constraints
+  success_criteria:
+    mandatory_criteria:
+      - 'Experimentation framework follows 5-step process with systematic methodology and statistical rigor'
+      - 'Hypotheses are scientifically formulated and directly validate key strategic assumptions from all agents'
+      - 'Experiments are filtered from master database based on business type, funnel stage, and resource constraints'
+      - 'Testing roadmap is prioritized using PIE, BRASS, or ICE frameworks with clear impact assessments and realistic resource requirements'
+      - 'Selected experiments include 15-25 most relevant tactics from database with implementation guidance'
+      - 'Measurement and analysis framework enables statistically significant conclusions and optimization'
+      - 'All strategic initiatives have corresponding validation experiments with clear success criteria'
+    optional_criteria:
+      - 'Experimentation framework includes innovative testing methodologies not commonly used'
+      - 'Hypothesis formation reveals sophisticated understanding of strategic interdependencies'
+      - 'Testing roadmap includes advanced statistical techniques and multivariate analysis'
+      - 'Measurement framework includes predictive analytics and machine learning applications'
+    measurement_approach: 'Quality scoring based on framework comprehensiveness, hypothesis rigor, roadmap prioritization, and measurement validity'
+    validation_method: 'Template compliance check, scientific rigor assessment, hypothesis testability validation, and statistical methodology evaluation'
+
+  constraints:
+    scope_constraints:
+      - 'Do not execute actual experiments (focus on framework and design)'
+      - 'Do not create specific technical implementation details (focus on methodology)'
+      - 'Do not develop detailed analytics infrastructure (focus on requirements and processes)'
+      - 'Focus on experimentation strategy and validation framework, not tactical execution'
+    resource_constraints:
+      - 'Maximum 55-minute execution time'
+      - 'Use complete strategic context from all previous agents for hypothesis formation'
+      - 'Generate comprehensive experimentation framework within token limits'
+    dependency_constraints:
+      - 'Must validate key strategic assumptions from all previous agents'
+      - 'Must align with growth funnel metrics and measurement methodology'
+      - 'Must support systematic optimization of all marketing and growth strategies'
+    quality_constraints:
+      - 'All experiments must be scientifically rigorous with proper statistical design following 5-step process'
+      - 'Hypotheses must be specific, measurable, and tied to business outcomes'
+      - 'Experiment selection must be filtered from master database based on contextual relevance'
+      - 'Testing priorities must be justified using PIE, BRASS, or ICE frameworks with clear impact and feasibility analysis'
+      - 'Selected experiments must match business type (e.g., SaaS, Transactional, App) and funnel stages'
+      - 'Implementation guidance must consider development requirements and team capabilities'
+      - 'Measurement methodology must enable reliable conclusions and optimization'
+
+  # Context and workflow awareness
+  context_awareness:
+    workflow_stage: 'validation'
+    stage_purpose: 'Validate all strategic hypotheses and create systematic optimization methodology for growth initiatives'
+    previous_stage_outputs:
+      ['complete_strategic_foundation_and_all_marketing_strategies']
+    next_stage_requirements:
+      - 'Complete growth strategy with validated assumptions and optimization framework'
+      - 'Implementation roadmap with testing priorities and measurement methodology'
+      - 'Strategic refinement process based on experimental results and data-driven insights'
+
+  handoff_requirements:
+    context_to_provide:
+      - 'Complete experimentation framework for systematic strategy validation and optimization'
+      - 'Prioritized testing roadmap with clear implementation guidance and success criteria'
+      - 'Strategic validation methodology that enables continuous improvement and refinement'
+      - 'Measurement and optimization framework for data-driven growth strategy execution'
+    format_requirements:
+      - 'Structured experiment framework with clear methodology and statistical guidelines'
+      - 'Hypothesis documentation with testable predictions and validation criteria'
+      - 'Testing roadmap with priority rankings, timelines, and resource requirements'
+      - 'Executive summary for strategy implementation and optimization guidance'
+    validation_requirements:
+      - 'Experimentation framework must be scientifically valid and implementable'
+      - 'Hypotheses must be testable with available resources and measurement capabilities'
+      - 'Testing roadmap must be realistic with proper statistical power and significance criteria'
+    transformation_needs:
+      - 'Extract implementation priorities for strategy execution planning'
+      - 'Prepare optimization methodology for ongoing strategy refinement'
+      - 'Format validation framework for continuous improvement processes'
+
+# Prompt generation configuration
+prompt_generation:
+  # Prompt template configuration
+  templates:
+    system_prompt_template: |
+      {agent_identity}
+
+      TASK OBJECTIVE: {primary_objective}
+
+      SPECIFIC DELIVERABLES:
+      {primary_deliverables}
+
+      SUCCESS CRITERIA:
+      {mandatory_criteria}
+
+      CONSTRAINTS AND SCOPE:
+      {scope_constraints}
+
+      WORKFLOW CONTEXT:
+      - Stage: {workflow_stage} ({stage_purpose})
+      - Building on: Complete strategic foundation and all marketing strategies
+      - Final agent: Creates validation framework for entire growth strategy
+
+      EXPERIMENT DATABASE FILTERING INSTRUCTIONS:
+      Filter the master experiments database based on:
+      1. Business Type: Match user's business type (Transactional, SaaS, Collaborative, App, Media, Game)
+      2. Funnel Step: Prioritize experiments for stages identified in growth funnel
+      3. Probability of Success: Focus on High and Medium probability experiments
+      4. Effort Level: Balance Quick Wins (Low effort) with High Impact (Moderate effort)
+      5. Development Requirements: Consider team's development capabilities
+      
+      5-STEP EXPERIMENT PROCESS:
+      1. Gather Ideas: Use strategic context + filtered database experiments
+      2. Rank Ideas: Apply PIE, BRASS, or ICE prioritization frameworks
+      3. Outline Experiments: Design Minimum Viable Experiments with time boxes
+      4. Implement: Provide implementation guidance and cross-functional requirements
+      5. Study Data: Define success metrics, statistical analysis, and learning systematization
+
+      COMPLETE STRATEGIC CONTEXT: {complete_strategic_context}
+
+      KNOWLEDGE BASE: {injected_knowledge}
+
+      OUTPUT FORMAT: Follow template structure exactly - {primary_template}
+
+      QUALITY STANDARDS: {quality_standards}
+
+    user_prompt_template: |
+      Based on the complete strategic foundation and all marketing strategies, create a comprehensive experimentation framework with prioritized testing roadmap following the 5-step process and leveraging the master experiments database.
+
+      Complete Strategic Foundation: {complete_foundation_summary}
+      Key Strategic Hypotheses: {key_strategic_hypotheses}
+      Growth Funnel & Metrics: {growth_funnel_summary}
+      All Marketing Strategies: {all_marketing_strategies_summary}
+
+      Business Context for Experiment Filtering:
+      Business Type: {business_type}
+      Primary Funnel Stages: {primary_funnel_stages}
+      Development Resources: {dev_resources_available}
+      Team Size & Effort Capacity: {effort_capacity}
+      
+      Experimentation Priorities: {experimentation_priorities}
+      Testing Constraints: {testing_constraints}
+
+      INSTRUCTIONS:
+      1. Filter master experiments database based on business context
+      2. Apply 5-step process: Gather Ideas → Rank Ideas → Outline Experiments → Implement → Study Data
+      3. Use PIE/BRASS/ICE frameworks for prioritization
+      4. Select 15-25 most relevant experiments from database
+      5. Create systematic validation methodology that enables data-driven optimization
+
+    context_injection_template: |
+      WORKFLOW CONTEXT:
+      Current Stage: {workflow_stage}
+      Stage Purpose: {stage_purpose}
+      Previous Outputs: Complete strategic foundation and all marketing strategies
+      Final Agent: Creates comprehensive validation and optimization framework
+
+      COMPLETE STRATEGIC FOUNDATION:
+      GTM Strategy: {gtm_strategy_summary}
+      Customer Personas: {personas_summary}
+      Product Positioning: {positioning_summary}
+      Growth Funnel: {growth_funnel_summary}
+      Acquisition Strategy: {acquisition_strategy_summary}
+      Retention Strategy: {retention_strategy_summary}
+      Viral Growth Strategy: {viral_strategy_summary}
+
+      USER CONTEXT:
+      Business Stage: {business_stage}
+      Business Type: {business_type}
+      Project Name: {project_name}
+      Industry/Market: {industry_context}
+      Testing Maturity: {testing_maturity_level}
+      Development Resources: {dev_resources_available}
+      Team Size: {team_size}
+      Resource Constraints: {resource_constraints}
+
+    knowledge_injection_template: |
+      RELEVANT KNOWLEDGE BASE:
+
+      5-Step Experimentation Process:
+      {experimentation_process_knowledge}
+
+      Master Experiments Database:
+      {filtered_experiments_from_database}
+
+      Experiment Prioritization Frameworks (PIE, BRASS, ICE):
+      {prioritization_frameworks_knowledge}
+
+      A/B Testing & Statistical Analysis:
+      {ab_testing_knowledge}
+
+      Growth Hacking Techniques:
+      {growth_hacking_techniques_knowledge}
+
+      Hypothesis Formation & Validation:
+      {hypothesis_validation_knowledge}
+
+  # Dynamic prompt generation
+  dynamic_generation:
+    context_injection_points:
+      - 'after_system_prompt_identity'
+      - 'before_deliverables_section'
+      - 'after_constraints_section'
+      - 'before_output_format_section'
+    variable_substitution:
+      agent_identity: 'from_agent_config.persona.identity'
+      primary_objective: 'from_task_spec.primary_objective'
+      primary_deliverables: 'from_task_spec.deliverables.primary_deliverables'
+      mandatory_criteria: 'from_task_spec.success_criteria.mandatory_criteria'
+      scope_constraints: 'from_task_spec.constraints.scope_constraints'
+      workflow_stage: 'from_task_spec.context_awareness.workflow_stage'
+      stage_purpose: 'from_task_spec.context_awareness.stage_purpose'
+      quality_standards: 'from_task_spec.deliverables.quality_standards'
+      complete_strategic_context: 'from_all_previous_agent_outputs'
+      business_type: 'from_user_context.business_type'
+      primary_funnel_stages: 'from_growth_funnel_output.prioritized_stages'
+      dev_resources_available: 'from_user_context.development_resources'
+      effort_capacity: 'from_user_context.team_capacity'
+      filtered_experiments_from_database: 'from_experiment_database_filtered_by_context'
+    conditional_sections:
+      advanced_statistical_techniques: 'if_sophisticated_testing_infrastructure'
+      multivariate_testing_framework: 'if_complex_optimization_requirements'
+      predictive_analytics_integration: 'if_advanced_analytics_capabilities'
+      saas_specific_experiments: 'if_business_type_saas'
+      ecommerce_specific_experiments: 'if_business_type_transactional'
+      app_specific_experiments: 'if_business_type_app'
+      low_effort_quick_wins: 'if_limited_development_resources'
+      high_impact_experiments: 'if_sufficient_development_resources'
+    personalization_options:
+      industry_specific_experiments: 'based_on_user_industry'
+      business_model_testing_priorities: 'based_on_business_model'
+      testing_maturity_appropriate_methodology: 'based_on_testing_experience'
+      funnel_stage_prioritized_experiments: 'based_on_growth_funnel_bottlenecks'
+      resource_appropriate_experiment_selection: 'based_on_team_size_and_capabilities'
+      prioritization_framework_selection: 'pie_for_early_stage_brass_for_established_ice_for_lean_teams'
+
+  # Prompt optimization
+  optimization:
+    token_optimization: true
+    clarity_enhancement: true
+    context_compression: true
+    quality_instructions: true
+
+  # Prompt validation
+  validation:
+    prompt_validation: true
+    length_limits:
+      system_prompt_max_tokens: 3500
+      user_prompt_max_tokens: 1200
+      total_prompt_max_tokens: 4500
+    required_elements:
+      - 'task_objective_statement'
+      - 'deliverables_specification'
+      - 'success_criteria_definition'
+      - 'output_format_instruction'
+      - 'complete_strategic_context_injection'
+      - 'knowledge_base_injection'
+    quality_checks:
+      - 'all_variables_substituted'
+      - 'complete_strategic_context_properly_integrated'
+      - 'experimentation_requirements_clearly_specified'
+      - 'token_limits_respected'
+
+# Template integration configuration
+template_integration:
+  primary_template: 'templates/experiments-output-v2.yaml'
+  fallback_templates:
+    - 'templates/testing-framework-tmpl.yaml'
+  template_variables:
+    auto_extract:
+      - 'experimentation_framework'
+      - 'hypothesis_formation'
+      - 'testing_roadmap'
+      - 'measurement_methodology'
+    user_provided:
+      - 'project_name'
+      - 'business_stage'
+      - 'user_name'
+    system_generated:
+      - 'session_date'
+      - 'agent_name'
+      - 'agent_role'
+      - 'complete_strategic_references'
+
+  processing:
+    auto_variable_extraction: true
+    variable_validation: true
+    quality_enhancement: true
+    multi_format_generation: true
+
+  customization:
+    section_overrides:
+      experimentation_framework:
+        emphasis: 'scientific_rigor_and_statistical_validity'
+      testing_roadmap:
+        depth: 'comprehensive_with_prioritization_methodology'
+    variable_defaults:
+      agent_name: 'Emma'
+      agent_role: 'Growth Hacker'
+      session_duration: '50 minutes'
+    conditional_sections:
+      advanced_analytics: 'if_sophisticated_measurement_infrastructure'
+      multivariate_testing: 'if_complex_optimization_requirements'
+
+# Execution configuration
+execution:
+  pre_execution:
+    setup_steps:
+      - 'load_agent_configuration'
+      - 'validate_complete_strategic_context_all_agents'
+      - 'prepare_knowledge_base'
+    context_preparation: 'integrate_all_strategic_outputs_for_hypothesis_formation'
+    knowledge_injection: 'auto_inject_experimentation_knowledge'
+    validation_checks:
+      - 'complete_strategic_context_availability_and_quality'
+      - 'system_readiness'
+      - 'template_availability'
+
+  main_execution:
+    execution_method: 'api_call'
+    api_configuration:
+      provider: 'anthropic'
+      model: 'claude-3-5-sonnet-20241022'
+      temperature: 0.6
+      max_tokens: 4500
+    processing_options:
+      streaming: false
+      parallel_processing: false
+      batch_size: 1
+    error_handling: 'retry_with_fallback'
+
+  post_execution:
+    output_processing:
+      - 'extract_template_variables'
+      - 'validate_experimentation_framework_quality'
+      - 'apply_formatting'
+    template_application: 'dynamic_variable_binding'
+    quality_validation:
+      - 'framework_comprehensiveness_check'
+      - 'hypothesis_scientific_rigor_validation'
+      - 'testing_roadmap_feasibility_assessment'
+    context_handoff: 'prepare_workflow_completion_context'
+
+  error_handling:
+    retry_strategy: 'exponential_backoff'
+    max_retries: 3
+    fallback_behavior: 'use_fallback_template_and_notify'
+    escalation_rules:
+      - 'if_complete_strategic_context_insufficient_after_2_attempts'
+      - 'if_experimentation_quality_below_0.8_after_3_attempts'
+      - 'if_api_errors_persist_after_5_minutes'
+
+# API integration configuration
+api_integration:
+  primary_api:
+    provider: 'anthropic'
+    model: 'claude-3-5-sonnet-20241022'
+    endpoint: 'https://api.anthropic.com/v1/messages'
+    authentication:
+      type: 'api_key'
+      key_source: 'environment_variable'
+      key_name: 'ANTHROPIC_API_KEY'
+
+  request_config:
+    timeout: 120
+    rate_limiting:
+      requests_per_minute: 50
+      tokens_per_minute: 40000
+    request_headers:
+      content_type: 'application/json'
+      user_agent: 'GrowthStrategyAgent/2.0'
+    retry_config:
+      max_retries: 3
+      backoff_factor: 2
+      retry_on_status: [429, 500, 502, 503, 504]
+
+  response_processing:
+    response_validation: true
+    content_extraction: 'extract_assistant_message'
+    error_detection:
+      - 'check_api_error_codes'
+      - 'validate_response_format'
+      - 'detect_incomplete_responses'
+    quality_scoring: true
+
+# Knowledge base integration
+knowledge_integration:
+  knowledge_sources:
+    primary_sources:
+      - 'knowledge-base/experiments/experiment-process.md'
+      - 'knowledge-base/experiments/master-experiments.csv'
+      - 'knowledge-base/method/00growth-hacking-process.md'
+    secondary_sources:
+      - 'data/brainstorming-techniques.md'
+      - 'knowledge-base/resources/growthhacking-process-overview.md'
+      - 'knowledge-base/glossary/growth-hacking-dictionary.md'
+    dynamic_sources:
+      - 'gtm-brief.md'
+      - 'psychographic-personas.md'
+      - 'product-brand-guide.md'
+      - 'growth-funnel.md'
+      - 'acquisition-strategy.md'
+      - 'retention-strategy.md'
+      - 'viral-growth-strategy.md'
+
+  injection_strategy:
+    method: 'context_aware'
+    relevance_threshold: 0.7
+    max_knowledge_tokens: 2000
+    prioritization: 'experimentation_relevant'
+
+  processing:
+    preprocessing:
+      - 'extract_experimentation_concepts'
+      - 'format_for_agent_consumption'
+    formatting: 'structured_sections'
+    context_integration: 'merge_with_complete_strategic_context'
+    validation: true
+
+# Context management
+context_management:
+  context_sources:
+    workflow_context: true
+    previous_outputs: true
+    user_context: true
+    system_context: true
+
+  processing:
+    context_merging: 'all_strategic_outputs_equal_priority'
+    context_compression: true
+    context_prioritization: 'strategic_hypotheses_first'
+    context_validation: true
+
+  handoff:
+    next_task_context:
+      workflow_completion:
+        - 'complete_experimentation_framework_for_strategy_implementation'
+        - 'strategic_validation_methodology_for_continuous_optimization'
+        - 'testing_priorities_for_immediate_implementation_guidance'
+        - 'optimization_framework_for_ongoing_strategy_refinement'
+    context_transformation: 'extract_relevant_for_strategy_implementation'
+    context_storage: true
+    context_cleanup:
+      - 'remove_detailed_statistical_analysis_for_handoff'
+      - 'compress_methodology_specifications'
+
+# Quality assurance and validation
+quality_assurance:
+  input_validation:
+    schema_validation: true
+    complete_strategic_context_validation: true
+    context_validation: true
+    prerequisite_validation: true
+
+  process_validation:
+    execution_monitoring: true
+    intermediate_validation: false
+    resource_monitoring: true
+    performance_tracking: true
+
+  output_validation:
+    format_validation: true
+    experimentation_framework_quality: true
+    completeness_check: true
+    consistency_validation: true
+
+  scoring:
+    quality_metrics:
+      - 'framework_comprehensiveness'
+      - 'hypothesis_scientific_rigor'
+      - 'testing_roadmap_prioritization'
+      - 'measurement_methodology_validity'
+      - 'strategic_integration'
+    scoring_algorithm: 'weighted_average'
+    minimum_score: 0.9
+    improvement_suggestions: true
+
+# Performance and optimization
+performance:
+  resource_limits:
+    max_memory_usage: '2GB'
+    max_cpu_usage: '70%'
+    max_execution_time: 3300 # 55 minutes
+    max_api_calls: 5
+
+  caching:
+    cache_enabled: true
+    cache_scope: 'session'
+    cache_duration: '2h'
+    cache_invalidation:
+      - 'complete_strategic_outputs_changed'
+      - 'agent_config_updated'
+
+  optimization:
+    parallel_processing: false
+    lazy_loading: true
+    batch_processing: false
+    compression: true
+
+# Monitoring and analytics
+monitoring:
+  metrics:
+    execution_metrics: true
+    quality_metrics: true
+    experimentation_framework_effectiveness_metrics: true
+    api_usage_metrics: true
+
+  logging:
+    log_level: 'info'
+    log_components:
+      - 'agent_execution'
+      - 'experimentation_framework_development'
+      - 'quality_validation'
+      - 'workflow_completion'
+    log_format: 'structured_json'
+    log_storage: 'local_files'
+
+  alerting:
+    alert_conditions:
+      - 'execution_time_exceeds_50_minutes'
+      - 'experimentation_quality_score_below_0.9'
+      - 'api_error_rate_above_10_percent'
+    notification_channels:
+      - 'system_logs'
+      - 'admin_notifications'
+    escalation_procedures:
+      - 'notify_admin_after_3_failures'
+      - 'halt_workflow_after_critical_error'
+
+  reporting:
+    report_generation: true
+    report_frequency: 'per_execution'
+    report_recipients: ['system_admin', 'workflow_manager']
+    custom_reports:
+      - 'experimentation_framework_quality_report'
+      - 'strategic_validation_completeness_analysis'
+
+# Integration points and extensibility
+integration_points:
+  pre_execution_hooks:
+    validation_hooks:
+      - 'validate_complete_strategic_context_experimentation_requirements'
+    setup_hooks:
+      - 'prepare_experimentation_framework_development_context'
+    notification_hooks:
+      - 'notify_final_agent_execution_start'
+
+  post_execution_hooks:
+    cleanup_hooks:
+      - 'cleanup_temporary_analysis_files'
+    notification_hooks:
+      - 'notify_workflow_completion'
+    integration_hooks:
+      - 'save_experimentation_framework_to_project_repository'
+      - 'generate_workflow_completion_summary'
+
+  extensions:
+    custom_processors:
+      - 'hypothesis_validation_enhancer'
+      - 'statistical_methodology_analyzer'
+    custom_validators:
+      - 'scientific_rigor_validator'
+      - 'testing_feasibility_validator'
+    custom_formatters:
+      - 'experimentation_framework_formatter'
+      - 'testing_roadmap_formatter'
+    plugin_support: true
+
+# Security and compliance
+security:
+  data_protection:
+    encryption_at_rest: true
+    encryption_in_transit: true
+    experiment_data_sanitization: true
+    access_logging: true
+
+  access_control:
+    authentication_required: false
+    authorization_levels: ['user', 'agent', 'admin']
+    permission_validation: true
+    audit_trail: true
+
+  compliance:
+    compliance_frameworks: ['data_privacy']
+    data_retention_policies: ['delete_after_30_days']
+    privacy_protection: true
+    regulatory_requirements: []
+
+# Documentation and metadata
+documentation:
+  usage_docs:
+    description: |
+      This task executes the Growth Hacker agent to create comprehensive experimentation
+      framework with prioritized testing roadmap. Final agent in workflow that validates
+      all strategic hypotheses and creates systematic optimization methodology.
+    usage_examples:
+      - 'Complete growth strategy validation framework'
+      - 'A/B testing roadmap for marketing optimization'
+      - 'Systematic growth experimentation methodology'
+    best_practices:
+      - 'Ensure all strategic hypotheses have corresponding testable experiments'
+      - 'Focus on statistical rigor and scientific methodology'
+      - 'Prioritize experiments by impact and feasibility'
+    troubleshooting:
+      - 'If hypotheses lack testability, strengthen measurement methodology'
+      - 'If experiments lack statistical power, adjust sample size requirements'
+      - 'If roadmap is unrealistic, reassess resource requirements and timelines'
+
+  technical_docs:
+    implementation_details: 'Integrates complete strategic foundation and all marketing strategies to create validation framework'
+    api_documentation: 'Uses Anthropic Claude API with experimentation framework prompt engineering'
+    configuration_guide: 'Configure via growth-hacker-v2.yaml and experiments-output-v2.yaml files'
+    integration_examples:
+      - 'Complete strategic foundation integration'
+      - 'Experimentation framework for strategy implementation'
+
+# Metadata and governance
+metadata:
+  version_info:
+    major_version: 2
+    minor_version: 0
+    patch_version: 0
+    release_date: '2024-01-15'
+    build_number: '2024.01.15.008'
+
+  governance:
+    owner: 'growth_strategy_team'
+    maintainers: ['system_architect', 'experimentation_specialist']
+    contributors: ['agent_developers', 'template_designers']
+    reviewers: ['senior_strategist', 'data_science_lead']
+
+  lifecycle:
+    status: 'active'
+    created_date: '2024-01-15'
+    last_modified: '2024-01-15'
+    deprecation_date: null
+    replacement_task: null
+
+  classification:
+    tags:
+      [
+        'experiments',
+        'validation',
+        'testing',
+        'optimization',
+        'agent-execution',
+      ]
+    categories: ['agent-tasks', 'workflow-validation']
+    priority: 'critical'
+    complexity_rating: 10
+    maturity_level: 'stable'

@@ -1,0 +1,91 @@
+workflow:
+  id: master-workflow
+  name: Growth and Marketing Strategy Development
+  description: >-
+    Agent workflow for building a growth and marketing strategy.
+    Supports both comprehensive planning for complex projects and rapid prototyping for simple ones.
+  type: master-workflow
+  project_types:
+    - growth-strategy
+    - marketing-strategy
+    - product-strategy
+    - go-to-market-strategy
+    - mvp
+
+  sequence:
+    - agent: gtm-consultant
+      creates: gtm-brief.md
+      optional_steps:
+        - brainstorming_session
+        - market_research_prompt
+      notes: "Can do brainstorming first, then optional deep research before creating project brief. SAVE OUTPUT: Copy final project-brief.md to your project's docs/ folder."
+
+    - agent: persona-strategist
+      creates: psychographic-personas.md
+      requires: gtm-brief.md
+      notes: "Creates various psychographic personas from GTM brief using psychographic-persona-tmpl.yaml SAVE OUTPUT: Copy final prd.md to your project's docs/ folder."
+
+    - agent: product-manager
+      creates: product-brand-guide.md
+      requires:
+        - gtm-brief.md
+        - psychographic-personas.md
+      optional_steps:
+        - user_research_prompt
+      notes: "Creates UI/UX specification using front-end-spec-tmpl. SAVE OUTPUT: Copy final front-end-spec.md to your project's docs/ folder."
+
+    - agent: growth-manager
+      creates: growth-funnel.md
+      requires:
+        - gtm-brief.md
+        - psychographic-personas.md
+        - product-brand-guide.md
+      condition: user_wants_ai_generation
+      notes: 'OPTIONAL BUT RECOMMENDED: Generate AI UI prompt for tools like v0, Lovable, etc. Use the generate-ai-frontend-prompt task. User can then generate UI in external tool and download project structure.'
+
+    - agent: head-of-acquisition
+      creates: acquisition-strategy.md
+      requires:
+        - gtm-brief.md
+        - psychographic-personas.md
+        - product-brand-guide.md
+        - growth-funnel.md
+      optional_steps:
+        - technical_research_prompt
+        - review_generated_ui_structure
+      notes: "Creates comprehensive architecture using fullstack-architecture-tmpl. If user generated UI with v0/Lovable, can incorporate the project structure into architecture. May suggest changes to PRD stories or new stories. SAVE OUTPUT: Copy final fullstack-architecture.md to your project's docs/ folder."
+
+    - agent: head-of-retention
+      creates: retention-strategy.md
+      requires:
+        - gtm-brief.md
+        - psychographic-personas.md
+        - product-brand-guide.md
+        - growth-funnel.md
+        - acquisition-strategy.md
+      condition: architecture_suggests_prd_changes
+      notes: 'If architect suggests story changes, update PRD and re-export the complete unredacted prd.md to docs/ folder.'
+
+    - agent: viral-growth-architect
+      creates: viral-growth-strategy.md
+      requires:
+        - gtm-brief.md
+        - psychographic-personas.md
+        - product-brand-guide.md
+        - growth-funnel.md
+        - acquisition-strategy.md
+        - retention-strategy.md
+      uses: po-master-checklist
+      notes: 'Validates all documents for consistency and completeness. May require updates to any document.'
+
+    - agent: growth-hacker
+      creates: experiments.md
+      requires:
+        - gtm-brief.md
+        - psychographic-personas.md
+        - product-brand-guide.md
+        - growth-funnel.md
+        - acquisition-strategy.md
+        - retention-strategy.md
+      uses: master-experiments.csv
+      notes: 'Validates all documents for consistency and completeness. May require updates to any document.'

@@ -1,0 +1,364 @@
+# HEAD OF ACQUISITION OUTPUT TEMPLATE - Schema v2.0 Implementation
+# Comprehensive template for Head of Acquisition agent output with channel optimization and campaign frameworks
+
+schema_version: '2.0'
+description: 'Professional acquisition strategy output template with channel optimization and scalable campaign frameworks'
+
+# Core template identification
+template:
+  id: 'head-of-acquisition-output-v2'
+  name: 'Customer Acquisition Strategy & Channel Optimization Results'
+  version: '2.0'
+  description: 'Comprehensive template for customer acquisition strategy with optimized channel mix and campaign frameworks'
+  category: 'strategy'
+  type: 'output'
+
+  use_cases:
+    - 'customer_acquisition_strategy'
+    - 'channel_mix_optimization'
+    - 'campaign_framework_development'
+    - 'acquisition_funnel_design'
+    - 'budget_allocation_strategy'
+
+  agent_compatibility: ['head-of-acquisition']
+  workflow_stages: ['strategy']
+  complexity_level: 'complex'
+
+# Output configuration
+output:
+  format: 'markdown'
+  secondary_formats: ['pdf', 'html']
+  filename: 'docs/acquisition-strategy-{{project_name}}-{{date}}.md'
+  title: 'Customer Acquisition Strategy & Channel Optimization: {{project_name}}'
+
+# Key sections for Head of Acquisition
+sections:
+  # Document Header
+  - section_id: 'document_header'
+    title: null
+    order: 1
+    required: true
+    content_type: 'template'
+    content: |
+      # {{title}}
+
+      **Session Date:** {{session_date}}
+      **Facilitator:** {{agent_name}} ({{agent_role}})
+      **Project:** {{project_name}}
+      **Business Stage:** {{business_stage}}
+
+    variables:
+      - variable_name: 'agent_name'
+        default_value: 'Sarah'
+        description: 'Head of Acquisition agent name'
+      - variable_name: 'agent_role'
+        default_value: 'Head of Customer Acquisition'
+        description: 'Agent role'
+
+  # Executive Summary
+  - section_id: 'executive_summary'
+    title: 'Executive Summary'
+    order: 2
+    required: true
+    content_type: 'template'
+    content: |
+      **Primary Acquisition Channel:** {{primary_channel}}
+
+      **Target CAC:** {{target_cac}}
+
+      **Expected LTV:CAC Ratio:** {{ltv_cac_ratio}}
+
+      **Monthly Acquisition Target:** {{monthly_target}}
+
+      **Budget Allocation:** {{budget_allocation}}
+
+      **Implementation Timeline:** {{implementation_timeline}}
+
+  # Channel Strategy & Mix
+  - section_id: 'channel_strategy'
+    title: 'Channel Strategy & Optimization'
+    order: 3
+    required: true
+
+    subsections:
+      - section_id: 'channel_portfolio'
+        title: 'Channel Portfolio Design'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Primary Channels (70% of budget):**
+          {{#primary_channels}}
+          - **{{channel_name}}**
+            - Budget Allocation: {{budget_percentage}}%
+            - Expected CAC: {{expected_cac}}
+            - Expected Volume: {{expected_volume}}
+            - Confidence Level: {{confidence_level}}
+            - Rationale: {{channel_rationale}}
+          {{/primary_channels}}
+
+          **Secondary Channels (20% of budget):**
+          {{#secondary_channels}}
+          - **{{channel_name}}**
+            - Budget Allocation: {{budget_percentage}}%
+            - Expected CAC: {{expected_cac}}
+            - Testing Approach: {{testing_approach}}
+          {{/secondary_channels}}
+
+          **Experimental Channels (10% of budget):**
+          {{#experimental_channels}}
+          - **{{channel_name}}**
+            - Hypothesis: {{channel_hypothesis}}
+            - Test Budget: {{test_budget}}
+            - Success Criteria: {{success_criteria}}
+          {{/experimental_channels}}
+
+      - section_id: 'channel_optimization'
+        title: 'Channel-Specific Optimization'
+        order: 2
+        repeatable: true
+        content_type: 'template'
+        content: |
+          **Channel:** {{channel_name}}
+
+          **Current Performance:**
+          - CAC: {{current_cac}}
+          - Conversion Rate: {{conversion_rate}}
+          - Volume: {{current_volume}}
+          - Quality Score: {{quality_score}}
+
+          **Optimization Strategy:**
+          {{channel_optimization_strategy}}
+
+          **Tactics:**
+          {{#optimization_tactics}}
+          - **{{tactic}}**: {{expected_impact}}
+          {{/optimization_tactics}}
+
+          **Success Metrics:**
+          {{#channel_success_metrics}}
+          - {{metric}}: {{target_value}}
+          {{/channel_success_metrics}}
+
+  # Campaign Frameworks
+  - section_id: 'campaign_frameworks'
+    title: 'Campaign Frameworks & Templates'
+    order: 4
+    required: true
+
+    subsections:
+      - section_id: 'awareness_campaigns'
+        title: 'Awareness Stage Campaigns'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Campaign Objectives:**
+          {{awareness_objectives}}
+
+          **Target Audience:**
+          {{awareness_target_audience}}
+
+          **Key Messages:**
+          {{#awareness_messages}}
+          - {{message}}
+          {{/awareness_messages}}
+
+          **Channel Mix:**
+          {{awareness_channel_mix}}
+
+          **Creative Strategy:**
+          {{awareness_creative_strategy}}
+
+          **Budget & Timeline:**
+          - Budget: {{awareness_budget}}
+          - Duration: {{awareness_duration}}
+          - Launch Date: {{awareness_launch_date}}
+
+          **Success Metrics:**
+          {{#awareness_metrics}}
+          - {{metric}}: {{target}}
+          {{/awareness_metrics}}
+
+      - section_id: 'conversion_campaigns'
+        title: 'Conversion-Focused Campaigns'
+        order: 2
+        content_type: 'template'
+        content: |
+          **Campaign Objectives:**
+          {{conversion_objectives}}
+
+          **Target Audience:**
+          {{conversion_target_audience}}
+
+          **Key Messages:**
+          {{#conversion_messages}}
+          - {{message}}
+          {{/conversion_messages}}
+
+          **Channel Mix:**
+          {{conversion_channel_mix}}
+
+          **Creative Strategy:**
+          {{conversion_creative_strategy}}
+
+          **Landing Page Strategy:**
+          {{landing_page_strategy}}
+
+          **Budget & Timeline:**
+          - Budget: {{conversion_budget}}
+          - Duration: {{conversion_duration}}
+          - Launch Date: {{conversion_launch_date}}
+
+          **Success Metrics:**
+          {{#conversion_metrics}}
+          - {{metric}}: {{target}}
+          {{/conversion_metrics}}
+
+  # Budget Allocation & ROI
+  - section_id: 'budget_roi'
+    title: 'Budget Allocation & ROI Framework'
+    order: 5
+    required: true
+
+    subsections:
+      - section_id: 'budget_breakdown'
+        title: 'Detailed Budget Breakdown'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Total Acquisition Budget:** {{total_budget}}
+
+          **Channel Budget Allocation:**
+          {{#channel_budgets}}
+          - **{{channel_name}}**: {{budget_amount}} ({{percentage}}%)
+            - Monthly Spend: {{monthly_spend}}
+            - Expected Acquisitions: {{expected_acquisitions}}
+            - Projected CAC: {{projected_cac}}
+            - ROI Expectation: {{roi_expectation}}
+          {{/channel_budgets}}
+
+          **Creative & Content Budget:**
+          - Creative Production: {{creative_budget}}
+          - Content Creation: {{content_budget}}
+          - A/B Testing: {{testing_budget}}
+
+          **Tools & Technology:**
+          {{#acquisition_tools}}
+          - {{tool_name}}: {{tool_cost}}
+          {{/acquisition_tools}}
+
+      - section_id: 'roi_framework'
+        title: 'ROI Measurement Framework'
+        order: 2
+        content_type: 'template'
+        content: |
+          **Key ROI Metrics:**
+          {{#roi_metrics}}
+          - **{{metric_name}}**: {{current_baseline}} → {{target_value}}
+            - Calculation: {{calculation_method}}
+            - Frequency: {{measurement_frequency}}
+            - Owner: {{metric_owner}}
+          {{/roi_metrics}}
+
+          **Attribution Model:**
+          {{attribution_model_description}}
+
+          **Tracking & Analytics:**
+          {{#tracking_setup}}
+          - {{tracking_element}}: {{implementation_details}}
+          {{/tracking_setup}}
+
+          **Reporting Schedule:**
+          - Daily: {{daily_reporting}}
+          - Weekly: {{weekly_reporting}}
+          - Monthly: {{monthly_reporting}}
+
+  # Testing & Optimization
+  - section_id: 'testing_optimization'
+    title: 'Testing & Optimization Framework'
+    order: 6
+    required: true
+
+    content_type: 'template'
+    content: |
+      **Testing Philosophy:**
+      {{testing_philosophy}}
+
+      **Priority Test Areas:**
+      {{#priority_test_areas}}
+      - **{{test_area}}**: {{test_rationale}}
+        - Hypothesis: {{test_hypothesis}}
+        - Success Criteria: {{test_success_criteria}}
+        - Timeline: {{test_timeline}}
+      {{/priority_test_areas}}
+
+      **Testing Calendar:**
+      {{#testing_calendar}}
+      - **{{test_name}}** ({{test_dates}})
+        - Channel: {{test_channel}}
+        - Variable: {{test_variable}}
+        - Expected Impact: {{expected_impact}}
+      {{/testing_calendar}}
+
+      **Optimization Process:**
+      {{optimization_process_description}}
+
+  # Scaling Strategy
+  - section_id: 'scaling_strategy'
+    title: 'Scaling Strategy & Growth Levers'
+    order: 7
+    required: true
+
+    content_type: 'template'
+    content: |
+      **Scaling Framework:**
+      {{scaling_framework}}
+
+      **Phase 1 - Foundation (0-3 months):**
+      {{#phase1_activities}}
+      - {{activity}}: {{activity_description}}
+      {{/phase1_activities}}
+
+      **Phase 2 - Optimization (3-6 months):**
+      {{#phase2_activities}}
+      - {{activity}}: {{activity_description}}
+      {{/phase2_activities}}
+
+      **Phase 3 - Scale (6+ months):**
+      {{#phase3_activities}}
+      - {{activity}}: {{activity_description}}
+      {{/phase3_activities}}
+
+      **Key Growth Levers:**
+      {{#growth_levers}}
+      - **{{lever_name}}**: {{lever_impact}}
+        - Implementation: {{implementation_approach}}
+        - Timeline: {{lever_timeline}}
+        - Resources Needed: {{resources_needed}}
+      {{/growth_levers}}
+
+  # Next Steps & Handoff
+  - section_id: 'next_steps'
+    title: 'Next Steps & Context for Retention Strategy'
+    order: 8
+    required: true
+
+    content_type: 'template'
+    content: |
+      **Immediate Actions (Next 30 Days):**
+      {{#immediate_actions}}
+      - **{{action}}**: {{timeline}} - {{owner}}
+        - Success Criteria: {{success_criteria}}
+      {{/immediate_actions}}
+
+      **Context for Retention Manager:**
+      {{retention_manager_context}}
+
+      **Acquisition Quality Insights:**
+      {{#acquisition_quality_insights}}
+      - {{insight}}
+      {{/acquisition_quality_insights}}
+
+      **Customer Handoff Requirements:**
+      {{#handoff_requirements}}
+      - {{requirement}}
+      {{/handoff_requirements}}

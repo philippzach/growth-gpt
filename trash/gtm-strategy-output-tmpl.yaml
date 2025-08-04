@@ -1,0 +1,296 @@
+template:
+  id: gtm-strategy-output-tmpl
+  name: GTM Strategy Brainstorming Results
+  version: 1.0
+  output:
+    format: markdown
+    filename: docs/gtm-strategy-results.md
+    title: 'GTM Strategy Brainstorming Results'
+
+workflow:
+  mode: non-interactive
+
+sections:
+  - id: header
+    content: |
+      **Session Date:** {{date}}
+      **Facilitator:** {{agent_role}} {{agent_name}}
+      **Participant:** {{user_name}}
+
+  - id: executive-summary
+    title: Executive Summary
+    sections:
+      - id: summary-details
+        template: |
+          **Business Stage:** {{business_stage}}
+
+          **GTM Focus Area:** {{gtm_focus_area}}
+
+          **Target Customer:** {{target_customer}}
+
+          **Frameworks Used:** {{frameworks_list}}
+
+          **Session Duration:** {{session_duration}}
+      - id: key-insights
+        title: 'Key Strategic Insights:'
+        type: bullet-list
+        template: '- {{insight}}'
+
+  - id: customer-analysis
+    title: Customer Analysis
+    sections:
+      - id: customer-segments
+        title: Customer Segments Identified
+        repeatable: true
+        template: |
+          **Segment:** {{segment_name}}
+          - Characteristics: {{characteristics}}
+          - Size/Accessibility: {{market_size}}
+          - Willingness to Pay: {{price_sensitivity}}
+      - id: jobs-pains-gains
+        title: Jobs, Pains & Gains
+        sections:
+          - id: jobs
+            title: 'Jobs to be Done:'
+            type: bullet-list
+            template: '- {{job_type}}: {{job_description}}'
+          - id: pains
+            title: 'Customer Pains (by frequency/urgency):'
+            type: numbered-list
+            template: '{{pain}} - {{frequency}}/{{urgency}}/{{cost}}'
+          - id: gains
+            title: 'Desired Gains:'
+            type: numbered-list
+            template: '{{gain}} - {{importance_level}}'
+      - id: current-behavior
+        title: Current Customer Behavior
+        sections:
+          - id: solutions-used
+            title: 'Current Solutions/Workarounds:'
+            type: bullet-list
+            template: '- {{solution}}: {{pros_cons}}'
+          - id: triggers
+            title: 'Action Triggers:'
+            type: bullet-list
+            template: '- {{trigger}}: {{context}}'
+          - id: barriers
+            title: 'Adoption Barriers:'
+            type: bullet-list
+            template: '- {{barrier}}: {{impact}}'
+
+  - id: value-proposition
+    title: Value Proposition Design
+    sections:
+      - id: core-offering
+        title: Core Offering
+        template: |
+          **Products/Services:** {{products_services}}
+
+          **Primary Job Addressed:** {{primary_job}}
+      - id: pain-relievers
+        title: Pain Relievers
+        type: numbered-list
+        template: |
+          **{{pain_reliever}}**
+          - Pain addressed: {{pain_addressed}}
+          - How it works: {{mechanism}}
+          - Proof point: {{evidence}}
+      - id: gain-creators
+        title: Gain Creators
+        type: numbered-list
+        template: |
+          **{{gain_creator}}**
+          - Gain delivered: {{gain_delivered}}
+          - Customer impact: {{impact}}
+          - Differentiation: {{unique_aspect}}
+      - id: fit-assessment
+        title: Problem-Solution Fit Assessment
+        template: |
+          **Fit Score:** {{fit_score}}/10
+
+          **Strengths:** {{fit_strengths}}
+
+          **Gaps to Address:** {{fit_gaps}}
+
+  - id: competitive-differentiation
+    title: Competitive Differentiation
+    sections:
+      - id: usp-statement
+        title: Unique Selling Proposition
+        template: |
+          **USP Statement:** {{usp_statement}}
+
+          **Supporting Evidence:** {{usp_evidence}}
+      - id: competitive-analysis
+        title: Competitive Positioning
+        repeatable: true
+        template: |
+          **Competitor:** {{competitor_name}}
+          - Their positioning: {{their_position}}
+          - Our advantage: {{our_advantage}}
+          - Their advantage: {{their_advantage}}
+      - id: brand-voice
+        title: Brand Voice & Purpose
+        template: |
+          **Purpose/Vision:** {{purpose_statement}}
+
+          **Brand Voice:** {{voice_characteristics}}
+
+          **Key Messages:** {{key_messages}}
+
+  - id: business-model
+    title: Business Model Elements
+    sections:
+      - id: revenue-model
+        title: Revenue Model
+        template: |
+          **Primary Revenue Stream:** {{primary_stream}}
+
+          **Pricing Model:** {{pricing_model}}
+
+          **Price Points:** {{price_range}}
+
+          **Secondary Streams:** {{secondary_streams}}
+      - id: channels
+        title: Channels & Distribution
+        sections:
+          - id: primary-channels
+            title: 'Primary Channels:'
+            type: bullet-list
+            template: '- {{channel}}: {{rationale}}'
+          - id: channel-costs
+            title: 'Channel Economics:'
+            type: bullet-list
+            template: '- {{channel}}: {{cost_structure}}'
+      - id: key-resources
+        title: Key Resources & Activities
+        sections:
+          - id: resources
+            title: 'Critical Resources:'
+            type: bullet-list
+            template: '- {{resource}}: {{importance}}'
+          - id: activities
+            title: 'Core Activities:'
+            type: bullet-list
+            template: '- {{activity}}: {{frequency}}'
+      - id: partnerships
+        title: Strategic Partnerships
+        type: bullet-list
+        template: '- {{partner_type}}: {{value_exchange}}'
+
+  - id: gtm-strategy
+    title: Go-to-Market Strategy
+    sections:
+      - id: launch-sequence
+        title: Launch Sequence
+        type: numbered-list
+        template: |
+          **Phase {{phase_number}}: {{phase_name}}**
+          - Timeline: {{timeline}}
+          - Goals: {{goals}}
+          - Success metrics: {{metrics}}
+      - id: messaging-strategy
+        title: Messaging Strategy
+        template: |
+          **Emotional Hook:** {{emotional_message}}
+
+          **Rational Benefits:** {{rational_benefits}}
+
+          **Proof Points:** {{proof_points}}
+      - id: customer-acquisition
+        title: Customer Acquisition Plan
+        template: |
+          **Target CAC:** {{target_cac}}
+
+          **Primary Acquisition Channel:** {{primary_channel}}
+
+          **Conversion Funnel:** {{funnel_stages}}
+
+  - id: validation-plan
+    title: Validation & Testing Plan
+    sections:
+      - id: assumptions-to-test
+        title: Critical Assumptions to Test
+        type: numbered-list
+        template: |
+          **{{assumption}}**
+          - Test method: {{test_method}}
+          - Success criteria: {{criteria}}
+          - Timeline: {{test_timeline}}
+      - id: experiments
+        title: Validation Experiments
+        repeatable: true
+        template: |
+          **Experiment:** {{experiment_name}}
+          - Hypothesis: {{hypothesis}}
+          - Method: {{method}}
+          - Metrics: {{metrics}}
+          - Duration: {{duration}}
+
+  - id: action-plan
+    title: Action Plan
+    sections:
+      - id: immediate-actions
+        title: Immediate Next Steps (Next 2 Weeks)
+        type: numbered-list
+        template: |
+          **{{action}}**
+          - Owner: {{owner}}
+          - Resources needed: {{resources}}
+          - Success criteria: {{criteria}}
+      - id: 30-day-plan
+        title: 30-Day Roadmap
+        type: numbered-list
+        template: |
+          **{{milestone}}**
+          - Deliverables: {{deliverables}}
+          - Dependencies: {{dependencies}}
+      - id: 90-day-vision
+        title: 90-Day Vision
+        template: |
+          **Key Outcomes:** {{outcomes}}
+
+          **Success Metrics:** {{metrics}}
+
+          **Go/No-Go Decision Criteria:** {{decision_criteria}}
+
+  - id: risks-mitigation
+    title: Risk Analysis & Mitigation
+    sections:
+      - id: market-risks
+        title: Market Risks
+        type: bullet-list
+        template: '- {{risk}}: {{mitigation_strategy}}'
+      - id: execution-risks
+        title: Execution Risks
+        type: bullet-list
+        template: '- {{risk}}: {{mitigation_strategy}}'
+      - id: financial-risks
+        title: Financial Risks
+        type: bullet-list
+        template: '- {{risk}}: {{mitigation_strategy}}'
+
+  - id: reflection-followup
+    title: Session Reflection & Follow-up
+    sections:
+      - id: breakthrough-moments
+        title: Breakthrough Insights
+        type: bullet-list
+        template: '- {{insight}}: {{implication}}'
+      - id: open-questions
+        title: Questions Requiring Further Research
+        type: bullet-list
+        template: '- {{question}}'
+      - id: next-session
+        title: Recommended Next Session
+        template: |
+          **Focus Area:** {{next_focus}}
+          - Preparation needed: {{preparation}}
+          - Expected outcomes: {{outcomes}}
+          - Suggested timeframe: {{timeframe}}
+
+  - id: footer
+    content: |
+      ---
+
+      *GTM Strategy session facilitated using Value Proposition Canvas, Problem-Solution Fit Canvas, USP Framework, and Business Model Canvas methodologies*

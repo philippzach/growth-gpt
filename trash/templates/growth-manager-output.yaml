@@ -1,0 +1,991 @@
+# Growth Manager Output Template - Schema v2.0 Implementation
+# Comprehensive template for Growth Manager agent output with AARRR funnel design and North Star metrics
+
+schema_version: '2.0'
+description: 'Professional growth manager output template with comprehensive growth funnel design and KPI framework'
+
+# Core template identification
+template:
+  id: 'growth-manager-output-v2'
+  name: 'Growth Funnel Design & KPI Framework Results'
+  version: '2.0'
+  description: 'Comprehensive template for growth funnel design with AARRR framework, North Star metrics, and optimization roadmap'
+  category: 'strategy'
+  type: 'output'
+
+  use_cases:
+    - 'growth_funnel_design'
+    - 'aarrr_framework_development'
+    - 'north_star_metric_definition'
+    - 'kpi_framework_creation'
+    - 'growth_optimization_strategy'
+
+  agent_compatibility: ['growth-manager']
+  workflow_stages: ['strategy']
+  complexity_level: 'complex'
+
+# Output configuration
+output:
+  format: 'markdown'
+  secondary_formats: ['pdf', 'html']
+  filename: 'docs/growth-funnel-strategy-{{project_name}}-{{date}}.md'
+  title: 'Growth Funnel Design & KPI Framework: {{project_name}}'
+
+  storage:
+    default_location: 'docs/'
+    organization_pattern: 'date/agent'
+    versioning: true
+    backup_copies: true
+
+  format_specific:
+    markdown:
+      syntax_highlighting: true
+      table_formatting: 'github'
+      link_handling: 'relative'
+
+    pdf:
+      page_layout: 'a4'
+      font_family: 'Arial'
+      include_toc: true
+
+    html:
+      css_framework: 'bootstrap'
+      responsive: true
+      interactive_elements: false
+
+# Workflow integration
+workflow:
+  mode: 'non-interactive'
+  execution_context: 'post_agent'
+
+  user_interaction:
+    elicitation_required: false
+    approval_required: true
+
+  agent_integration:
+    prompt_integration: true
+    context_injection: true
+    validation_integration: true
+
+  processing:
+    pre_processing: ['validate_agent_output', 'extract_variables']
+    post_processing: ['quality_check', 'format_optimization', 'save_backup']
+    error_handling: 'graceful_degradation'
+    fallback_template: 'growth-strategy-tmpl'
+
+# Section structure and hierarchy
+sections:
+  # Document Header
+  - section_id: 'document_header'
+    title: null
+    description: 'Document metadata and session information'
+    order: 1
+    required: true
+    content_type: 'template'
+    content: |
+      # {{title}}
+
+      **Session Date:** {{session_date}}
+      **Facilitator:** {{agent_name}} ({{agent_role}})
+      **Participant:** {{user_name}}
+      **Project:** {{project_name}}
+      **Business Stage:** {{business_stage}}
+
+    variables:
+      - variable_name: 'session_date'
+        data_type: 'string'
+        required: true
+        default_value: '{{current_date}}'
+        description: 'Date of growth strategy session'
+      - variable_name: 'agent_name'
+        data_type: 'string'
+        required: true
+        default_value: 'Marcus'
+        description: 'Name of the growth manager agent'
+      - variable_name: 'agent_role'
+        data_type: 'string'
+        required: true
+        default_value: 'Growth Strategy Manager'
+        description: 'Role of the facilitating agent'
+      - variable_name: 'user_name'
+        data_type: 'string'
+        required: false
+        default_value: 'Growth Team'
+        description: 'Name of the user or team'
+      - variable_name: 'project_name'
+        data_type: 'string'
+        required: true
+        description: 'Name of the project or business'
+      - variable_name: 'business_stage'
+        data_type: 'string'
+        required: true
+        description: 'Current stage of business development'
+
+  # Executive Summary
+  - section_id: 'executive_summary'
+    title: 'Executive Summary'
+    description: 'High-level overview of growth strategy and key metrics'
+    order: 2
+    required: true
+    content_type: 'template'
+    content: |
+      **North Star Metric:** {{north_star_metric}}
+
+      **Current Growth Stage:** {{current_growth_stage}}
+
+      **Primary Growth Lever:** {{primary_growth_lever}}
+
+      **Expected Growth Rate:** {{expected_growth_rate}}
+
+      **Key Bottleneck:** {{key_bottleneck}}
+
+      **Implementation Timeline:** {{implementation_timeline}}
+
+    variables:
+      - variable_name: 'north_star_metric'
+        data_type: 'string'
+        required: true
+        description: 'Primary North Star metric for growth'
+      - variable_name: 'current_growth_stage'
+        data_type: 'string'
+        required: true
+        description: 'Current stage in growth lifecycle'
+      - variable_name: 'primary_growth_lever'
+        data_type: 'string'
+        required: true
+        description: 'Most important growth lever to focus on'
+      - variable_name: 'expected_growth_rate'
+        data_type: 'string'
+        required: true
+        description: 'Expected growth rate with strategy implementation'
+      - variable_name: 'key_bottleneck'
+        data_type: 'string'
+        required: true
+        description: 'Primary bottleneck limiting growth'
+      - variable_name: 'implementation_timeline'
+        data_type: 'string'
+        required: true
+        description: 'Timeline for strategy implementation'
+
+  # North Star Metric Framework
+  - section_id: 'north_star_framework'
+    title: 'North Star Metric Framework'
+    description: 'Definition and framework for the North Star metric'
+    order: 3
+    required: true
+
+    subsections:
+      - section_id: 'north_star_definition'
+        title: 'North Star Metric Definition'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Metric Name:** {{nsm_name}}
+
+          **Definition:** {{nsm_definition}}
+
+          **Calculation Method:** {{nsm_calculation}}
+
+          **Current Baseline:** {{nsm_baseline}}
+
+          **Target Goals:**
+          - 30 days: {{nsm_target_30d}}
+          - 90 days: {{nsm_target_90d}}
+          - 6 months: {{nsm_target_6m}}
+          - 12 months: {{nsm_target_12m}}
+
+          **Why This Metric:**
+          {{nsm_rationale}}
+
+          **Business Model Alignment:**
+          {{nsm_business_alignment}}
+
+        variables:
+          - variable_name: 'nsm_name'
+            data_type: 'string'
+            required: true
+            description: 'Name of the North Star metric'
+          - variable_name: 'nsm_definition'
+            data_type: 'string'
+            required: true
+            description: 'Clear definition of the metric'
+          - variable_name: 'nsm_calculation'
+            data_type: 'string'
+            required: true
+            description: 'How the metric is calculated'
+          - variable_name: 'nsm_baseline'
+            data_type: 'string'
+            required: true
+            description: 'Current baseline value'
+          - variable_name: 'nsm_target_30d'
+            data_type: 'string'
+            required: true
+            description: '30-day target'
+          - variable_name: 'nsm_target_90d'
+            data_type: 'string'
+            required: true
+            description: '90-day target'
+          - variable_name: 'nsm_target_6m'
+            data_type: 'string'
+            required: true
+            description: '6-month target'
+          - variable_name: 'nsm_target_12m'
+            data_type: 'string'
+            required: true
+            description: '12-month target'
+          - variable_name: 'nsm_rationale'
+            data_type: 'string'
+            required: true
+            description: 'Why this metric was chosen'
+          - variable_name: 'nsm_business_alignment'
+            data_type: 'string'
+            required: true
+            description: 'How metric aligns with business model'
+
+      - section_id: 'input_metrics'
+        title: 'Input Metrics'
+        order: 2
+        content_type: 'template'
+        formatting:
+          type: 'bullet-list'
+        content: |
+          {{#input_metrics}}
+          - **{{metric_name}}**
+            - Definition: {{metric_definition}}
+            - Current Value: {{current_value}}
+            - Target: {{target_value}}
+            - Impact on NSM: {{nsm_impact}}
+            - Measurement Frequency: {{measurement_frequency}}
+          {{/input_metrics}}
+
+        variables:
+          - variable_name: 'input_metrics'
+            data_type: 'array'
+            required: true
+            description: 'Metrics that drive the North Star metric'
+
+  # AARRR Growth Funnel
+  - section_id: 'aarrr_funnel'
+    title: 'AARRR Growth Funnel Design'
+    description: 'Comprehensive AARRR funnel with metrics and optimization strategies'
+    order: 4
+    required: true
+
+    subsections:
+      - section_id: 'awareness_stage'
+        title: 'Awareness Stage'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Stage Definition:** {{awareness_definition}}
+
+          **Key Metrics:**
+          {{#awareness_metrics}}
+          - **{{metric_name}}**: {{current_value}} → {{target_value}}
+            - Calculation: {{calculation_method}}
+            - Benchmark: {{industry_benchmark}}
+          {{/awareness_metrics}}
+
+          **Current Performance:**
+          - Conversion Rate: {{awareness_conversion_rate}}
+          - Volume: {{awareness_volume}}
+          - Quality Score: {{awareness_quality}}
+
+          **Optimization Opportunities:**
+          {{#awareness_optimizations}}
+          - **{{opportunity}}**: {{impact_estimate}}
+          {{/awareness_optimizations}}
+
+          **Success Criteria:**
+          {{awareness_success_criteria}}
+
+        variables:
+          - variable_name: 'awareness_definition'
+            data_type: 'string'
+            required: true
+            description: 'Definition of awareness stage for this business'
+          - variable_name: 'awareness_metrics'
+            data_type: 'array'
+            required: true
+            description: 'Key metrics for awareness stage'
+          - variable_name: 'awareness_conversion_rate'
+            data_type: 'string'
+            required: true
+            description: 'Current awareness to acquisition conversion rate'
+          - variable_name: 'awareness_volume'
+            data_type: 'string'
+            required: true
+            description: 'Current awareness volume'
+          - variable_name: 'awareness_quality'
+            data_type: 'string'
+            required: true
+            description: 'Quality score of awareness traffic'
+          - variable_name: 'awareness_optimizations'
+            data_type: 'array'
+            required: true
+            description: 'Optimization opportunities for awareness'
+          - variable_name: 'awareness_success_criteria'
+            data_type: 'string'
+            required: true
+            description: 'Success criteria for awareness stage'
+
+      - section_id: 'acquisition_stage'
+        title: 'Acquisition Stage'
+        order: 2
+        content_type: 'template'
+        content: |
+          **Stage Definition:** {{acquisition_definition}}
+
+          **Key Metrics:**
+          {{#acquisition_metrics}}
+          - **{{metric_name}}**: {{current_value}} → {{target_value}}
+            - Calculation: {{calculation_method}}
+            - Benchmark: {{industry_benchmark}}
+          {{/acquisition_metrics}}
+
+          **Current Performance:**
+          - Conversion Rate: {{acquisition_conversion_rate}}
+          - Cost per Acquisition: {{acquisition_cost}}
+          - Channel Performance: {{channel_performance}}
+
+          **Optimization Opportunities:**
+          {{#acquisition_optimizations}}
+          - **{{opportunity}}**: {{impact_estimate}}
+          {{/acquisition_optimizations}}
+
+          **Success Criteria:**
+          {{acquisition_success_criteria}}
+
+        variables:
+          - variable_name: 'acquisition_definition'
+            data_type: 'string'
+            required: true
+            description: 'Definition of acquisition stage'
+          - variable_name: 'acquisition_metrics'
+            data_type: 'array'
+            required: true
+            description: 'Key metrics for acquisition stage'
+          - variable_name: 'acquisition_conversion_rate'
+            data_type: 'string'
+            required: true
+            description: 'Acquisition conversion rate'
+          - variable_name: 'acquisition_cost'
+            data_type: 'string'
+            required: true
+            description: 'Cost per acquisition'
+          - variable_name: 'channel_performance'
+            data_type: 'string'
+            required: true
+            description: 'Performance across channels'
+          - variable_name: 'acquisition_optimizations'
+            data_type: 'array'
+            required: true
+            description: 'Optimization opportunities'
+          - variable_name: 'acquisition_success_criteria'
+            data_type: 'string'
+            required: true
+            description: 'Success criteria for acquisition'
+
+      - section_id: 'activation_stage'
+        title: 'Activation Stage'
+        order: 3
+        content_type: 'template'
+        content: |
+          **Stage Definition:** {{activation_definition}}
+
+          **Aha Moment:** {{aha_moment_definition}}
+
+          **Key Metrics:**
+          {{#activation_metrics}}
+          - **{{metric_name}}**: {{current_value}} → {{target_value}}
+            - Calculation: {{calculation_method}}
+            - Benchmark: {{industry_benchmark}}
+          {{/activation_metrics}}
+
+          **Current Performance:**
+          - Activation Rate: {{activation_rate}}
+          - Time to Activation: {{time_to_activation}}
+          - Drop-off Points: {{drop_off_points}}
+
+          **Optimization Opportunities:**
+          {{#activation_optimizations}}
+          - **{{opportunity}}**: {{impact_estimate}}
+          {{/activation_optimizations}}
+
+          **Success Criteria:**
+          {{activation_success_criteria}}
+
+        variables:
+          - variable_name: 'activation_definition'
+            data_type: 'string'
+            required: true
+            description: 'Definition of activation stage'
+          - variable_name: 'aha_moment_definition'
+            data_type: 'string'
+            required: true
+            description: 'Definition of the aha moment'
+          - variable_name: 'activation_metrics'
+            data_type: 'array'
+            required: true
+            description: 'Key activation metrics'
+          - variable_name: 'activation_rate'
+            data_type: 'string'
+            required: true
+            description: 'Current activation rate'
+          - variable_name: 'time_to_activation'
+            data_type: 'string'
+            required: true
+            description: 'Average time to activation'
+          - variable_name: 'drop_off_points'
+            data_type: 'string'
+            required: true
+            description: 'Main drop-off points in activation'
+          - variable_name: 'activation_optimizations'
+            data_type: 'array'
+            required: true
+            description: 'Activation optimization opportunities'
+          - variable_name: 'activation_success_criteria'
+            data_type: 'string'
+            required: true
+            description: 'Success criteria for activation'
+
+      - section_id: 'retention_stage'
+        title: 'Retention Stage'
+        order: 4
+        content_type: 'template'
+        content: |
+          **Stage Definition:** {{retention_definition}}
+
+          **Key Metrics:**
+          {{#retention_metrics}}
+          - **{{metric_name}}**: {{current_value}} → {{target_value}}
+            - Calculation: {{calculation_method}}
+            - Benchmark: {{industry_benchmark}}
+          {{/retention_metrics}}
+
+          **Current Performance:**
+          - Day 1 Retention: {{day1_retention}}
+          - Day 7 Retention: {{day7_retention}}
+          - Day 30 Retention: {{day30_retention}}
+          - Churn Rate: {{churn_rate}}
+
+          **Optimization Opportunities:**
+          {{#retention_optimizations}}
+          - **{{opportunity}}**: {{impact_estimate}}
+          {{/retention_optimizations}}
+
+          **Success Criteria:**
+          {{retention_success_criteria}}
+
+        variables:
+          - variable_name: 'retention_definition'
+            data_type: 'string'
+            required: true
+            description: 'Definition of retention stage'
+          - variable_name: 'retention_metrics'
+            data_type: 'array'
+            required: true
+            description: 'Key retention metrics'
+          - variable_name: 'day1_retention'
+            data_type: 'string'
+            required: true
+            description: 'Day 1 retention rate'
+          - variable_name: 'day7_retention'
+            data_type: 'string'
+            required: true
+            description: 'Day 7 retention rate'
+          - variable_name: 'day30_retention'
+            data_type: 'string'
+            required: true
+            description: 'Day 30 retention rate'
+          - variable_name: 'churn_rate'
+            data_type: 'string'
+            required: true
+            description: 'Current churn rate'
+          - variable_name: 'retention_optimizations'
+            data_type: 'array'
+            required: true
+            description: 'Retention optimization opportunities'
+          - variable_name: 'retention_success_criteria'
+            data_type: 'string'
+            required: true
+            description: 'Success criteria for retention'
+
+      - section_id: 'revenue_stage'
+        title: 'Revenue Stage'
+        order: 5
+        content_type: 'template'
+        content: |
+          **Stage Definition:** {{revenue_definition}}
+
+          **Key Metrics:**
+          {{#revenue_metrics}}
+          - **{{metric_name}}**: {{current_value}} → {{target_value}}
+            - Calculation: {{calculation_method}}
+            - Benchmark: {{industry_benchmark}}
+          {{/revenue_metrics}}
+
+          **Current Performance:**
+          - Conversion to Paid: {{paid_conversion_rate}}
+          - Average Revenue Per User: {{arpu}}
+          - Customer Lifetime Value: {{clv}}
+          - Payback Period: {{payback_period}}
+
+          **Optimization Opportunities:**
+          {{#revenue_optimizations}}
+          - **{{opportunity}}**: {{impact_estimate}}
+          {{/revenue_optimizations}}
+
+          **Success Criteria:**
+          {{revenue_success_criteria}}
+
+        variables:
+          - variable_name: 'revenue_definition'
+            data_type: 'string'
+            required: true
+            description: 'Definition of revenue stage'
+          - variable_name: 'revenue_metrics'
+            data_type: 'array'
+            required: true
+            description: 'Key revenue metrics'
+          - variable_name: 'paid_conversion_rate'
+            data_type: 'string'
+            required: true
+            description: 'Conversion rate to paid customers'
+          - variable_name: 'arpu'
+            data_type: 'string'
+            required: true
+            description: 'Average revenue per user'
+          - variable_name: 'clv'
+            data_type: 'string'
+            required: true
+            description: 'Customer lifetime value'
+          - variable_name: 'payback_period'
+            data_type: 'string'
+            required: true
+            description: 'Customer acquisition payback period'
+          - variable_name: 'revenue_optimizations'
+            data_type: 'array'
+            required: true
+            description: 'Revenue optimization opportunities'
+          - variable_name: 'revenue_success_criteria'
+            data_type: 'string'
+            required: true
+            description: 'Success criteria for revenue'
+
+  # KPI Framework
+  - section_id: 'kpi_framework'
+    title: 'KPI Framework & Measurement'
+    description: 'Comprehensive KPI framework with measurement methodology'
+    order: 5
+    required: true
+
+    subsections:
+      - section_id: 'kpi_hierarchy'
+        title: 'KPI Hierarchy'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Tier 1 - North Star Metric:**
+          - {{north_star_metric_name}}: {{north_star_current}} → {{north_star_target}}
+
+          **Tier 2 - Primary KPIs:**
+          {{#primary_kpis}}
+          - **{{kpi_name}}**: {{current_value}} → {{target_value}}
+            - Owner: {{kpi_owner}}
+            - Frequency: {{measurement_frequency}}
+            - Impact Weight: {{impact_weight}}
+          {{/primary_kpis}}
+
+          **Tier 3 - Secondary KPIs:**
+          {{#secondary_kpis}}
+          - **{{kpi_name}}**: {{current_value}} → {{target_value}}
+            - Owner: {{kpi_owner}}
+            - Frequency: {{measurement_frequency}}
+          {{/secondary_kpis}}
+
+          **Tier 4 - Diagnostic Metrics:**
+          {{#diagnostic_metrics}}
+          - **{{metric_name}}**: {{purpose}}
+          {{/diagnostic_metrics}}
+
+        variables:
+          - variable_name: 'north_star_metric_name'
+            data_type: 'string'
+            required: true
+            description: 'Name of North Star metric'
+          - variable_name: 'north_star_current'
+            data_type: 'string'
+            required: true
+            description: 'Current North Star value'
+          - variable_name: 'north_star_target'
+            data_type: 'string'
+            required: true
+            description: 'Target North Star value'
+          - variable_name: 'primary_kpis'
+            data_type: 'array'
+            required: true
+            description: 'Primary KPIs driving North Star'
+          - variable_name: 'secondary_kpis'
+            data_type: 'array'
+            required: true
+            description: 'Secondary supporting KPIs'
+          - variable_name: 'diagnostic_metrics'
+            data_type: 'array'
+            required: true
+            description: 'Diagnostic metrics for troubleshooting'
+
+      - section_id: 'measurement_methodology'
+        title: 'Measurement Methodology'
+        order: 2
+        content_type: 'template'
+        content: |
+          **Data Collection Methods:**
+          {{#data_collection_methods}}
+          - **{{method_name}}**: {{method_description}}
+            - Tools Required: {{tools_required}}
+            - Frequency: {{collection_frequency}}
+            - Responsible Team: {{responsible_team}}
+          {{/data_collection_methods}}
+
+          **Reporting Schedule:**
+          - Daily: {{daily_reports}}
+          - Weekly: {{weekly_reports}}
+          - Monthly: {{monthly_reports}}
+          - Quarterly: {{quarterly_reports}}
+
+          **Data Quality Standards:**
+          {{#quality_standards}}
+          - {{standard_name}}: {{standard_description}}
+          {{/quality_standards}}
+
+          **Automation Opportunities:**
+          {{#automation_opportunities}}
+          - {{opportunity}}: {{automation_description}}
+          {{/automation_opportunities}}
+
+        variables:
+          - variable_name: 'data_collection_methods'
+            data_type: 'array'
+            required: true
+            description: 'Methods for collecting KPI data'
+          - variable_name: 'daily_reports'
+            data_type: 'string'
+            required: true
+            description: 'Daily reporting requirements'
+          - variable_name: 'weekly_reports'
+            data_type: 'string'
+            required: true
+            description: 'Weekly reporting requirements'
+          - variable_name: 'monthly_reports'
+            data_type: 'string'
+            required: true
+            description: 'Monthly reporting requirements'
+          - variable_name: 'quarterly_reports'
+            data_type: 'string'
+            required: true
+            description: 'Quarterly reporting requirements'
+          - variable_name: 'quality_standards'
+            data_type: 'array'
+            required: true
+            description: 'Data quality standards'
+          - variable_name: 'automation_opportunities'
+            data_type: 'array'
+            required: true
+            description: 'Opportunities for automation'
+
+  # Growth Optimization Roadmap
+  - section_id: 'optimization_roadmap'
+    title: 'Growth Optimization Roadmap'
+    description: 'Prioritized roadmap for growth optimization initiatives'
+    order: 6
+    required: true
+
+    subsections:
+      - section_id: 'high_impact_initiatives'
+        title: 'High Impact Initiatives (Next 30 Days)'
+        order: 1
+        repeatable: true
+        content_type: 'template'
+        content: |
+          **Initiative:** {{initiative_name}}
+
+          **Objective:** {{initiative_objective}}
+
+          **Expected Impact:** {{expected_impact}}
+
+          **Funnel Stage:** {{target_funnel_stage}}
+
+          **Implementation Details:**
+          - Timeline: {{implementation_timeline}}
+          - Resources Required: {{resources_required}}
+          - Success Metrics: {{success_metrics}}
+          - Risk Level: {{risk_level}}
+
+          **Dependencies:** {{dependencies}}
+
+          **Owner:** {{initiative_owner}}
+
+        variables:
+          - variable_name: 'initiative_name'
+            data_type: 'string'
+            required: true
+            description: 'Name of the growth initiative'
+          - variable_name: 'initiative_objective'
+            data_type: 'string'
+            required: true
+            description: 'Objective of the initiative'
+          - variable_name: 'expected_impact'
+            data_type: 'string'
+            required: true
+            description: 'Expected impact on growth metrics'
+          - variable_name: 'target_funnel_stage'
+            data_type: 'string'
+            required: true
+            description: 'Which funnel stage this targets'
+          - variable_name: 'implementation_timeline'
+            data_type: 'string'
+            required: true
+            description: 'Timeline for implementation'
+          - variable_name: 'resources_required'
+            data_type: 'string'
+            required: true
+            description: 'Resources needed'
+          - variable_name: 'success_metrics'
+            data_type: 'string'
+            required: true
+            description: 'How success will be measured'
+          - variable_name: 'risk_level'
+            data_type: 'string'
+            required: true
+            description: 'Risk level of the initiative'
+          - variable_name: 'dependencies'
+            data_type: 'string'
+            required: true
+            description: 'Dependencies for success'
+          - variable_name: 'initiative_owner'
+            data_type: 'string'
+            required: true
+            description: 'Owner of the initiative'
+
+      - section_id: 'medium_term_opportunities'
+        title: 'Medium-Term Opportunities (30-90 Days)'
+        order: 2
+        content_type: 'template'
+        formatting:
+          type: 'bullet-list'
+        content: |
+          {{#medium_term_opportunities}}
+          - **{{opportunity_name}}**
+            - Impact Potential: {{impact_potential}}
+            - Effort Required: {{effort_required}}
+            - Priority Score: {{priority_score}}
+            - Prerequisites: {{prerequisites}}
+          {{/medium_term_opportunities}}
+
+        variables:
+          - variable_name: 'medium_term_opportunities'
+            data_type: 'array'
+            required: true
+            description: 'Medium-term growth opportunities'
+
+      - section_id: 'long_term_strategic_initiatives'
+        title: 'Long-Term Strategic Initiatives (90+ Days)'
+        order: 3
+        content_type: 'template'
+        formatting:
+          type: 'bullet-list'
+        content: |
+          {{#long_term_initiatives}}
+          - **{{initiative_name}}**
+            - Strategic Value: {{strategic_value}}
+            - Investment Required: {{investment_required}}
+            - Expected ROI: {{expected_roi}}
+            - Timeline: {{timeline}}
+          {{/long_term_initiatives}}
+
+        variables:
+          - variable_name: 'long_term_initiatives'
+            data_type: 'array'
+            required: true
+            description: 'Long-term strategic growth initiatives'
+
+  # Next Steps & Handoff
+  - section_id: 'next_steps'
+    title: 'Next Steps & Context for Acquisition Strategy'
+    description: 'Action items and context preparation for acquisition manager'
+    order: 7
+    required: true
+
+    content_type: 'template'
+    content: |
+      **Immediate Actions:**
+      {{#immediate_actions}}
+      - **Action:** {{action}}
+      - **Owner:** {{owner}}
+      - **Timeline:** {{timeline}}
+      - **Success Criteria:** {{success_criteria}}
+      {{/immediate_actions}}
+
+      **Growth Strategy Priorities:**
+      1. {{priority_1}}
+      2. {{priority_2}}
+      3. {{priority_3}}
+
+      **Context for Acquisition Manager:**
+      {{acquisition_manager_context}}
+
+      **Acquisition-Specific Insights:**
+      {{#acquisition_insights}}
+      - {{insight}}
+      {{/acquisition_insights}}
+
+      **Areas Requiring Acquisition Strategy Focus:**
+      {{#acquisition_focus_areas}}
+      - {{area}}
+      {{/acquisition_focus_areas}}
+
+    variables:
+      - variable_name: 'immediate_actions'
+        data_type: 'array'
+        required: true
+        description: 'Actions to take based on growth strategy'
+      - variable_name: 'priority_1'
+        data_type: 'string'
+        required: true
+        description: 'Top priority for growth strategy implementation'
+      - variable_name: 'priority_2'
+        data_type: 'string'
+        required: true
+        description: 'Second priority for growth strategy'
+      - variable_name: 'priority_3'
+        data_type: 'string'
+        required: true
+        description: 'Third priority for growth strategy'
+      - variable_name: 'acquisition_manager_context'
+        data_type: 'string'
+        required: true
+        description: 'Context and insights for acquisition manager'
+      - variable_name: 'acquisition_insights'
+        data_type: 'array'
+        required: true
+        description: 'Key insights for acquisition strategy'
+      - variable_name: 'acquisition_focus_areas'
+        data_type: 'array'
+        required: true
+        description: 'Areas where acquisition strategy should focus'
+
+# Variable management and data binding
+variables:
+  global_variables:
+    current_date: '{{current_timestamp}}'
+    agent_version: '2.0'
+    template_version: '2.0'
+
+  sources:
+    agent_outputs: true
+    user_inputs: true
+    workflow_context: true
+    external_apis: false
+
+  processing:
+    auto_extraction: true
+    type_conversion: true
+    validation: true
+    sanitization: true
+
+  binding:
+    late_binding: true
+    dynamic_binding: true
+    context_awareness: true
+
+  defaults:
+    strategy: 'context_based'
+    placeholder_pattern: '[{{variable_name}}]'
+    missing_variable_behavior: 'substitute'
+
+# Content generation and AI integration
+content_generation:
+  ai_generation:
+    enabled: true
+    model_preferences: ['claude-3-5-sonnet-20241022']
+    quality_thresholds:
+      completeness: 0.9
+      metric_accuracy: 0.95
+      actionability: 0.85
+
+  enhancement:
+    grammar_checking: true
+    style_consistency: true
+    fact_checking: false
+    readability_optimization: true
+
+  validation:
+    schema_validation: true
+    content_completeness: true
+    variable_consistency: true
+    format_compliance: true
+
+# Quality assurance and validation
+quality_assurance:
+  quality_checks:
+    completeness: true
+    consistency: true
+    metric_accuracy: true
+    actionability: true
+
+  validation_rules:
+    required_sections:
+      [
+        'north_star_framework',
+        'aarrr_funnel',
+        'kpi_framework',
+        'optimization_roadmap',
+      ]
+    minimum_content_length:
+      aarrr_funnel: 500
+      kpi_framework: 300
+      optimization_roadmap: 350
+
+  scoring:
+    enabled: true
+    scoring_criteria:
+      [
+        'metric_framework_quality',
+        'funnel_completeness',
+        'optimization_practicality',
+        'strategic_alignment',
+      ]
+    minimum_score: 0.85
+    improvement_suggestions: true
+
+# Metadata and governance
+metadata:
+  version_info:
+    major_version: 2
+    minor_version: 0
+    patch_version: 0
+    release_date: '2024-01-15'
+
+  governance:
+    owner: 'growth_strategy_team'
+    maintainers: ['growth_manager_agent']
+    contributors: ['growth_specialists', 'data_analysts']
+
+  lifecycle:
+    status: 'active'
+    deprecation_date: null
+    replacement_template: null
+
+  classification:
+    tags:
+      [
+        'growth-funnel',
+        'aarrr',
+        'north-star-metric',
+        'kpi-framework',
+        'growth-optimization',
+      ]
+    categories: ['strategy_templates', 'output_templates']
+    maturity_level: 'stable'
+    usage_frequency: 'frequent'

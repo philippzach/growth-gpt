@@ -1,0 +1,417 @@
+# Template Schema v2.0 - Standardized Configuration for Growth Strategy Output Templates
+# This schema defines the structure for creating dynamic, API-integrated output templates
+
+schema_version: "2.0"
+description: "Standardized template configuration for generating structured outputs from Growth & Marketing Strategy AI Agents"
+
+# Core template identification and metadata
+template:
+  id: string                    # Unique template identifier (e.g., "gtm-strategy-output-tmpl")
+  name: string                  # Human-friendly template name
+  version: string               # Template version for tracking updates
+  description: string           # Detailed description of template purpose
+  category: string              # Template category (e.g., "strategy", "analysis", "brief")
+  type: string                  # Template type (e.g., "output", "input", "interactive")
+  
+  # Template applicability and scope
+  use_cases: array              # Use cases this template supports
+  # Example: ["gtm_strategy", "market_analysis", "competitive_intelligence"]
+  
+  agent_compatibility: array    # Agents that can use this template
+  workflow_stages: array        # Workflow stages where template applies
+  complexity_level: string      # "simple", "intermediate", "complex"
+
+# Output configuration
+output:
+  format: string                # Primary output format (markdown, html, json, pdf, docx)
+  secondary_formats: array      # Additional formats to generate
+  filename: string              # Default filename pattern with variables
+  title: string                 # Document title with variable substitution
+  
+  # File organization
+  storage:
+    default_location: string    # Default storage directory
+    organization_pattern: string # How to organize files (date, agent, category)
+    versioning: boolean         # Whether to version output files
+    backup_copies: boolean      # Whether to keep backup copies
+    
+  # Multi-format support
+  format_specific:
+    markdown:
+      syntax_highlighting: boolean
+      table_formatting: string  # "github", "standard", "extended"
+      link_handling: string     # "relative", "absolute", "inline"
+    
+    pdf:
+      page_layout: string       # "a4", "letter", "custom"
+      font_family: string       # Font family for PDF generation
+      include_toc: boolean      # Whether to include table of contents
+      
+    html:
+      css_framework: string     # CSS framework to use
+      responsive: boolean       # Whether to make responsive
+      interactive_elements: boolean
+
+# Workflow integration
+workflow:
+  mode: string                  # "interactive", "non-interactive", "hybrid"
+  execution_context: string     # When template is applied ("pre_agent", "post_agent", "during_agent")
+  
+  # User interaction configuration
+  user_interaction:
+    elicitation_required: boolean    # Whether user input is needed
+    elicitation_type: string         # "guided", "freeform", "selection"
+    custom_elicitation: object       # Custom elicitation configuration
+    approval_required: boolean       # Whether user approval is needed
+    
+  # Agent integration
+  agent_integration:
+    prompt_integration: boolean      # Whether to include template in agent prompts
+    context_injection: boolean       # Whether to inject template context
+    validation_integration: boolean  # Whether to validate against template
+    
+  # Processing flow
+  processing:
+    pre_processing: array           # Steps before template application
+    post_processing: array          # Steps after template application
+    error_handling: string          # How to handle template errors
+    fallback_template: string       # Fallback template if primary fails
+
+# Section structure and hierarchy
+sections:
+  - section_id: string              # Unique section identifier
+    title: string                   # Section title (can include variables)
+    description: string             # Section description/purpose
+    order: integer                  # Display order (1, 2, 3...)
+    
+    # Section behavior
+    required: boolean               # Whether section is required
+    conditional: string             # Condition for section inclusion
+    repeatable: boolean             # Whether section can repeat
+    collapsible: boolean            # Whether section can be collapsed
+    
+    # Content configuration
+    content_type: string            # "template", "instruction", "static", "dynamic"
+    content: string                 # Static content or template
+    instruction: string             # Instructions for generating content
+    
+    # Template variables
+    variables:
+      - variable_name: string       # Variable name (e.g., "business_stage")
+        data_type: string           # "string", "number", "boolean", "array", "object"
+        required: boolean           # Whether variable is required
+        default_value: string       # Default value if not provided
+        validation_rules: array     # Validation rules for variable
+        description: string         # Variable description
+        examples: array             # Example values
+    
+    # Formatting options
+    formatting:
+      type: string                  # "bullet-list", "numbered-list", "table", "paragraph", "heading"
+      styling: object               # Styling options (bold, italic, etc.)
+      indentation: integer          # Indentation level
+      spacing: string               # Spacing configuration
+    
+    # Nested sections
+    subsections: array              # Nested section definitions (recursive)
+    
+    # Conditional rendering
+    conditions:
+      show_if: string               # Condition for showing section
+      hide_if: string               # Condition for hiding section
+      required_variables: array     # Variables required for section
+      
+    # Content generation
+    generation:
+      method: string                # "static", "template", "ai_generated", "user_input"
+      ai_prompt: string             # Prompt for AI-generated content
+      user_prompt: string           # Prompt for user input
+      validation_prompt: string     # Prompt for content validation
+      
+    # Section metadata
+    metadata:
+      tags: array                   # Tags for section organization
+      priority: string              # "high", "medium", "low"
+      estimated_tokens: integer     # Estimated token count for section
+      complexity: string            # Section complexity level
+
+# Variable management and data binding
+variables:
+  # Global variables available across all sections
+  global_variables: object
+  
+  # Variable sources
+  sources:
+    agent_outputs: boolean          # Variables from agent responses
+    user_inputs: boolean           # Variables from user inputs  
+    workflow_context: boolean      # Variables from workflow state
+    external_apis: boolean         # Variables from external data sources
+    
+  # Variable processing
+  processing:
+    auto_extraction: boolean       # Automatically extract variables from agent responses
+    type_conversion: boolean       # Automatically convert variable types
+    validation: boolean            # Validate variables against rules
+    sanitization: boolean          # Sanitize variables for security
+    
+  # Variable binding
+  binding:
+    late_binding: boolean          # Whether to bind variables late in process
+    dynamic_binding: boolean       # Whether to support dynamic variable binding
+    context_awareness: boolean     # Whether variables are context-aware
+    
+  # Default values and fallbacks
+  defaults:
+    strategy: string               # "empty", "placeholder", "context_based"
+    placeholder_pattern: string    # Pattern for placeholder text
+    missing_variable_behavior: string # "error", "ignore", "substitute"
+
+# Content generation and AI integration
+content_generation:
+  # AI-powered content generation
+  ai_generation:
+    enabled: boolean               # Whether AI generation is enabled
+    model_preferences: array       # Preferred AI models for generation
+    prompt_templates: object       # Templates for AI prompts
+    quality_thresholds: object     # Quality requirements for generated content
+    
+  # Content enhancement
+  enhancement:
+    grammar_checking: boolean      # Whether to check grammar
+    style_consistency: boolean     # Whether to ensure style consistency
+    fact_checking: boolean         # Whether to perform fact checking
+    readability_optimization: boolean # Whether to optimize readability
+    
+  # Content validation
+  validation:
+    schema_validation: boolean     # Validate against JSON schema
+    content_completeness: boolean  # Check if all required content is present
+    variable_consistency: boolean  # Check variable consistency across sections
+    format_compliance: boolean     # Check format compliance
+    
+  # Content personalization
+  personalization:
+    audience_adaptation: boolean   # Adapt content for specific audiences
+    tone_adjustment: boolean       # Adjust tone based on context
+    complexity_scaling: boolean    # Scale complexity based on user level
+    localization_support: boolean # Support for different locales
+
+# Template processing and rendering
+processing:
+  # Template engine configuration
+  engine:
+    type: string                   # "nunjucks", "mustache", "handlebars", "custom"
+    syntax_style: string           # Template syntax style
+    strict_mode: boolean           # Whether to use strict mode
+    
+  # Rendering pipeline
+  pipeline:
+    preprocessing_steps: array     # Steps before template processing
+    rendering_steps: array         # Steps during template rendering  
+    postprocessing_steps: array    # Steps after template processing
+    
+  # Performance optimization
+  optimization:
+    caching: boolean               # Whether to cache processed templates
+    lazy_loading: boolean          # Whether to load sections on demand
+    parallel_processing: boolean   # Whether to process sections in parallel
+    compression: boolean           # Whether to compress output
+    
+  # Error handling
+  error_handling:
+    strategy: string               # "fail_fast", "graceful_degradation", "retry"
+    max_retries: integer           # Maximum retry attempts
+    fallback_behavior: string      # Behavior when processing fails
+    error_reporting: string        # How to report errors
+
+# Quality assurance and validation
+quality_assurance:
+  # Content quality checks
+  quality_checks:
+    completeness: boolean          # Check if all sections are complete
+    consistency: boolean           # Check consistency across sections
+    accuracy: boolean              # Check factual accuracy
+    relevance: boolean             # Check content relevance
+    
+  # Validation rules
+  validation_rules:
+    required_sections: array       # Sections that must be present
+    minimum_content_length: object # Minimum content length per section
+    variable_constraints: object   # Constraints on variable values
+    format_requirements: object    # Format-specific requirements
+    
+  # Quality scoring
+  scoring:
+    enabled: boolean               # Whether to score template quality
+    scoring_criteria: array        # Criteria for quality scoring
+    minimum_score: float           # Minimum acceptable quality score
+    improvement_suggestions: boolean # Whether to provide improvement suggestions
+    
+  # Review processes
+  review:
+    peer_review: boolean           # Whether peer review is required
+    expert_review: boolean         # Whether expert review is required
+    automated_review: boolean      # Whether automated review is performed
+    review_criteria: array         # Criteria for review processes
+
+# Integration and extensibility
+integration:
+  # External system integration
+  external_systems:
+    crm_integration: boolean       # Integration with CRM systems
+    analytics_integration: boolean # Integration with analytics platforms
+    documentation_systems: boolean # Integration with documentation platforms
+    
+  # API integration
+  apis:
+    webhook_support: boolean       # Support for webhooks
+    rest_api_endpoints: array      # REST API endpoints for template operations
+    graphql_support: boolean       # Support for GraphQL queries
+    
+  # Plugin system
+  plugins:
+    custom_processors: array       # Custom content processors
+    format_converters: array       # Custom format converters
+    validation_plugins: array      # Custom validation plugins
+    
+  # Export capabilities
+  export:
+    supported_formats: array       # Formats available for export
+    batch_export: boolean          # Support for batch export
+    scheduled_export: boolean      # Support for scheduled exports
+    cloud_storage_integration: boolean # Integration with cloud storage
+
+# User experience and interface
+user_experience:
+  # Editing and customization
+  editing:
+    live_preview: boolean          # Whether to show live preview
+    inline_editing: boolean        # Whether to support inline editing
+    version_history: boolean       # Whether to track version history
+    collaboration: boolean         # Whether to support collaboration
+    
+  # User interface
+  interface:
+    template_builder: boolean      # Whether to provide template builder
+    drag_drop_editor: boolean      # Whether to support drag-and-drop editing
+    wysiwyg_editor: boolean        # Whether to provide WYSIWYG editor
+    syntax_highlighting: boolean   # Whether to highlight template syntax
+    
+  # Help and guidance
+  guidance:
+    contextual_help: boolean       # Whether to provide contextual help
+    examples_library: boolean      # Whether to include examples library
+    best_practices: boolean        # Whether to include best practices
+    troubleshooting_guide: boolean # Whether to include troubleshooting
+
+# Performance and scalability
+performance:
+  # Resource management
+  resource_limits:
+    max_template_size: string      # Maximum template size
+    max_variables: integer         # Maximum number of variables
+    max_sections: integer          # Maximum number of sections
+    processing_timeout: integer    # Maximum processing time
+    
+  # Caching strategy
+  caching:
+    template_caching: boolean      # Whether to cache compiled templates
+    content_caching: boolean       # Whether to cache generated content
+    variable_caching: boolean      # Whether to cache variable values
+    cache_duration: string         # How long to cache (e.g., "1h", "1d")
+    
+  # Optimization
+  optimization:
+    lazy_evaluation: boolean       # Whether to use lazy evaluation
+    incremental_updates: boolean   # Whether to support incremental updates
+    memory_optimization: boolean   # Whether to optimize memory usage
+    cpu_optimization: boolean      # Whether to optimize CPU usage
+
+# Security and compliance
+security:
+  # Data protection
+  data_protection:
+    sensitive_data_handling: boolean # Whether template handles sensitive data
+    data_encryption: boolean         # Whether to encrypt template data
+    access_logging: boolean          # Whether to log template access
+    
+  # Input validation
+  input_validation:
+    xss_prevention: boolean        # Whether to prevent XSS attacks
+    injection_prevention: boolean  # Whether to prevent injection attacks
+    input_sanitization: boolean    # Whether to sanitize inputs
+    
+  # Compliance
+  compliance:
+    gdpr_compliance: boolean       # Whether template is GDPR compliant
+    audit_trail: boolean          # Whether to maintain audit trail
+    data_retention_policies: boolean # Whether to enforce retention policies
+
+# Testing and validation
+testing:
+  # Test configuration
+  test_framework:
+    unit_tests: boolean            # Whether to include unit tests
+    integration_tests: boolean     # Whether to include integration tests
+    performance_tests: boolean     # Whether to include performance tests
+    
+  # Test data
+  test_data:
+    sample_data_sets: array        # Sample data for testing
+    edge_case_scenarios: array     # Edge cases to test
+    performance_benchmarks: array  # Performance benchmarks
+    
+  # Validation scenarios
+  validation_scenarios:
+    valid_inputs: array            # Valid input scenarios
+    invalid_inputs: array          # Invalid input scenarios
+    boundary_conditions: array     # Boundary condition tests
+
+# Documentation and metadata
+documentation:
+  # User documentation
+  user_docs:
+    usage_guide: string            # Link to usage guide
+    variable_reference: string     # Link to variable reference
+    examples: array               # Example templates and outputs
+    troubleshooting: string       # Link to troubleshooting guide
+    
+  # Technical documentation
+  technical_docs:
+    architecture: string           # Template architecture documentation
+    api_reference: string          # API reference documentation
+    integration_guide: string     # Integration guide
+    
+  # Change management
+  change_management:
+    changelog: string             # Link to changelog
+    migration_guide: string       # Migration guide for version updates
+    deprecation_notices: array    # Deprecation notices
+
+# Metadata and governance
+metadata:
+  # Version information
+  version_info:
+    major_version: integer         # Major version number
+    minor_version: integer         # Minor version number
+    patch_version: integer         # Patch version number
+    release_date: string           # Release date
+    
+  # Ownership and maintenance
+  governance:
+    owner: string                  # Template owner
+    maintainers: array             # Template maintainers
+    contributors: array            # Template contributors
+    
+  # Lifecycle management
+  lifecycle:
+    status: string                 # "development", "active", "deprecated"
+    deprecation_date: string       # Date when template will be deprecated
+    replacement_template: string   # Replacement template if deprecated
+    
+  # Classification
+  classification:
+    tags: array                    # Tags for template organization
+    categories: array              # Categories for template grouping
+    maturity_level: string         # "experimental", "beta", "stable", "mature"
+    usage_frequency: string        # "rare", "occasional", "frequent", "critical"

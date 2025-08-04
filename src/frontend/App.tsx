@@ -1,0 +1,41 @@
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import { SessionProvider } from './contexts/SessionContext';
+import AuthGuard from './components/AuthGuard';
+import Dashboard from './pages/Dashboard';
+import Chat from './pages/Chat';
+import Login from './pages/Login';
+
+function App() {
+  return (
+    <AuthProvider>
+      <div className='min-h-screen bg-background'>
+        <Routes>
+          <Route path='/login' element={<Login />} />
+          <Route path='/' element={<Navigate to='/dashboard' replace />} />
+          <Route
+            path='/dashboard'
+            element={
+              <AuthGuard>
+                <Dashboard />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path='/chat/:sessionId'
+            element={
+              <AuthGuard>
+                <SessionProvider>
+                  <Chat />
+                </SessionProvider>
+              </AuthGuard>
+            }
+          />
+        </Routes>
+      </div>
+    </AuthProvider>
+  );
+}
+
+export default App;

@@ -1,0 +1,907 @@
+# Persona Strategist Output Template - Schema v2.0 Implementation
+# Comprehensive template for Persona Strategist agent output with behavioral analysis and journey mapping
+
+schema_version: '2.0'
+description: 'Professional persona strategist output template with customer psychology analysis and behavioral journey mapping'
+
+# Core template identification
+template:
+  id: 'persona-strategist-output-v2'
+  name: 'Customer Persona Development & Behavioral Analysis Results'
+  version: '2.0'
+  description: 'Comprehensive template for customer persona development with psychological insights, behavioral analysis, and journey mapping'
+  category: 'strategy'
+  type: 'output'
+
+  use_cases:
+    - 'customer_persona_development'
+    - 'behavioral_analysis'
+    - 'customer_journey_mapping'
+    - 'psychology_profiling'
+    - 'user_experience_strategy'
+
+  agent_compatibility: ['persona-strategist']
+  workflow_stages: ['foundation']
+  complexity_level: 'complex'
+
+# Output configuration
+output:
+  format: 'markdown'
+  secondary_formats: ['pdf', 'html']
+  filename: 'docs/customer-personas-{{project_name}}-{{date}}.md'
+  title: 'Customer Persona Development Results: {{project_name}}'
+
+  storage:
+    default_location: 'docs/'
+    organization_pattern: 'date/agent'
+    versioning: true
+    backup_copies: true
+
+  format_specific:
+    markdown:
+      syntax_highlighting: true
+      table_formatting: 'github'
+      link_handling: 'relative'
+
+    pdf:
+      page_layout: 'a4'
+      font_family: 'Arial'
+      include_toc: true
+
+    html:
+      css_framework: 'bootstrap'
+      responsive: true
+      interactive_elements: false
+
+# Workflow integration
+workflow:
+  mode: 'non-interactive'
+  execution_context: 'post_agent'
+
+  user_interaction:
+    elicitation_required: false
+    approval_required: true
+
+  agent_integration:
+    prompt_integration: true
+    context_injection: true
+    validation_integration: true
+
+  processing:
+    pre_processing: ['validate_agent_output', 'extract_variables']
+    post_processing: ['quality_check', 'format_optimization', 'save_backup']
+    error_handling: 'graceful_degradation'
+    fallback_template: 'customer-analysis-tmpl'
+
+# Section structure and hierarchy
+sections:
+  # Document Header
+  - section_id: 'document_header'
+    title: null
+    description: 'Document metadata and session information'
+    order: 1
+    required: true
+    content_type: 'template'
+    content: |
+      # {{title}}
+
+      **Session Date:** {{session_date}}
+      **Facilitator:** {{agent_name}} ({{agent_role}})
+      **Participant:** {{user_name}}
+      **Project:** {{project_name}}
+      **Business Stage:** {{business_stage}}
+
+    variables:
+      - variable_name: 'session_date'
+        data_type: 'string'
+        required: true
+        default_value: '{{current_date}}'
+        description: 'Date of persona development session'
+      - variable_name: 'agent_name'
+        data_type: 'string'
+        required: true
+        default_value: 'Maya'
+        description: 'Name of the persona strategist agent'
+      - variable_name: 'agent_role'
+        data_type: 'string'
+        required: true
+        default_value: 'Customer Persona Strategist'
+        description: 'Role of the facilitating agent'
+      - variable_name: 'user_name'
+        data_type: 'string'
+        required: false
+        default_value: 'Strategy Team'
+        description: 'Name of the user or team'
+      - variable_name: 'project_name'
+        data_type: 'string'
+        required: true
+        description: 'Name of the project or business'
+      - variable_name: 'business_stage'
+        data_type: 'string'
+        required: true
+        description: 'Current stage of business development'
+
+  # Executive Summary
+  - section_id: 'executive_summary'
+    title: 'Executive Summary'
+    description: 'High-level overview of persona insights and key behavioral patterns'
+    order: 2
+    required: true
+    content_type: 'template'
+    content: |
+      **Primary Persona:** {{primary_persona_name}}
+
+      **Key Behavioral Insight:** {{key_behavioral_insight}}
+
+      **Primary Motivation:** {{primary_motivation}}
+
+      **Biggest Pain Point:** {{biggest_pain_point}}
+
+      **Preferred Journey Stage:** {{preferred_journey_stage}}
+
+      **Decision Making Style:** {{decision_making_style}}
+
+    variables:
+      - variable_name: 'primary_persona_name'
+        data_type: 'string'
+        required: true
+        description: 'Name of the primary customer persona'
+      - variable_name: 'key_behavioral_insight'
+        data_type: 'string'
+        required: true
+        description: 'Most important behavioral insight discovered'
+      - variable_name: 'primary_motivation'
+        data_type: 'string'
+        required: true
+        description: 'Primary motivation driving customer behavior'
+      - variable_name: 'biggest_pain_point'
+        data_type: 'string'
+        required: true
+        description: 'Most significant pain point or challenge'
+      - variable_name: 'preferred_journey_stage'
+        data_type: 'string'
+        required: true
+        description: 'Stage where customer prefers to engage most'
+      - variable_name: 'decision_making_style'
+        data_type: 'string'
+        required: true
+        description: 'How the persona makes purchasing decisions'
+
+  # Primary Persona Profile
+  - section_id: 'primary_persona'
+    title: 'Primary Persona Profile'
+    description: 'Detailed profile of the primary customer persona'
+    order: 3
+    required: true
+
+    subsections:
+      - section_id: 'persona_demographics'
+        title: 'Demographics & Background'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Name:** {{persona_name}}
+          **Age Range:** {{age_range}}
+          **Location:** {{location}}
+          **Income Level:** {{income_level}}
+          **Education:** {{education_level}}
+          **Job Title/Role:** {{job_title}}
+          **Company Size:** {{company_size}}
+          **Industry:** {{industry}}
+
+        variables:
+          - variable_name: 'persona_name'
+            data_type: 'string'
+            required: true
+            description: "Persona's representative name"
+          - variable_name: 'age_range'
+            data_type: 'string'
+            required: true
+            description: 'Age range of the persona'
+          - variable_name: 'location'
+            data_type: 'string'
+            required: true
+            description: 'Geographic location'
+          - variable_name: 'income_level'
+            data_type: 'string'
+            required: true
+            description: 'Income level or range'
+          - variable_name: 'education_level'
+            data_type: 'string'
+            required: true
+            description: 'Educational background'
+          - variable_name: 'job_title'
+            data_type: 'string'
+            required: true
+            description: 'Professional title or role'
+          - variable_name: 'company_size'
+            data_type: 'string'
+            required: false
+            description: 'Size of company they work for'
+          - variable_name: 'industry'
+            data_type: 'string'
+            required: false
+            description: 'Industry they work in'
+
+      - section_id: 'psychological_profile'
+        title: 'Psychological Profile'
+        order: 2
+        content_type: 'template'
+        content: |
+          **Personality Type:** {{personality_type}}
+
+          **Core Values:**
+          {{#core_values}}
+          - {{value}}: {{importance}}
+          {{/core_values}}
+
+          **Behavioral Drivers:**
+          - **Primary Driver:** {{primary_driver}}
+          - **Secondary Driver:** {{secondary_driver}}
+          - **Emotional Triggers:** {{emotional_triggers}}
+
+          **Decision Making Process:**
+          {{decision_process_description}}
+
+          **Risk Tolerance:** {{risk_tolerance}}
+
+          **Communication Style:** {{communication_style}}
+
+        variables:
+          - variable_name: 'personality_type'
+            data_type: 'string'
+            required: true
+            description: 'DISC, Myers-Briggs, or other personality classification'
+          - variable_name: 'core_values'
+            data_type: 'array'
+            required: true
+            description: 'List of core values and their importance'
+          - variable_name: 'primary_driver'
+            data_type: 'string'
+            required: true
+            description: 'Primary behavioral driver'
+          - variable_name: 'secondary_driver'
+            data_type: 'string'
+            required: true
+            description: 'Secondary behavioral driver'
+          - variable_name: 'emotional_triggers'
+            data_type: 'string'
+            required: true
+            description: 'What emotions drive their actions'
+          - variable_name: 'decision_process_description'
+            data_type: 'string'
+            required: true
+            description: 'How they make decisions'
+          - variable_name: 'risk_tolerance'
+            data_type: 'string'
+            required: true
+            description: 'Comfort level with risk-taking'
+          - variable_name: 'communication_style'
+            data_type: 'string'
+            required: true
+            description: 'Preferred communication approach'
+
+  # Pain Points & Challenges
+  - section_id: 'pain_points'
+    title: 'Pain Points & Challenges'
+    description: 'Detailed analysis of customer pain points and challenges'
+    order: 4
+    required: true
+
+    subsections:
+      - section_id: 'functional_pain_points'
+        title: 'Functional Pain Points'
+        order: 1
+        content_type: 'template'
+        formatting:
+          type: 'bullet-list'
+        content: |
+          {{#functional_pains}}
+          - **{{pain_point}}**
+            - Severity: {{severity_level}}
+            - Frequency: {{frequency}}
+            - Current Solutions: {{current_solutions}}
+            - Impact: {{business_impact}}
+          {{/functional_pains}}
+
+        variables:
+          - variable_name: 'functional_pains'
+            data_type: 'array'
+            required: true
+            description: 'Functional pain points with details'
+
+      - section_id: 'emotional_pain_points'
+        title: 'Emotional Pain Points'
+        order: 2
+        content_type: 'template'
+        formatting:
+          type: 'bullet-list'
+        content: |
+          {{#emotional_pains}}
+          - **{{pain_point}}**
+            - Emotional Impact: {{emotional_impact}}
+            - Triggers: {{triggers}}
+            - Consequences: {{consequences}}
+          {{/emotional_pains}}
+
+        variables:
+          - variable_name: 'emotional_pains'
+            data_type: 'array'
+            required: true
+            description: 'Emotional pain points with impact analysis'
+
+      - section_id: 'social_pain_points'
+        title: 'Social Pain Points'
+        order: 3
+        content_type: 'template'
+        formatting:
+          type: 'bullet-list'
+        content: |
+          {{#social_pains}}
+          - **{{pain_point}}**
+            - Social Context: {{social_context}}
+            - Peer Pressure: {{peer_pressure}}
+            - Status Impact: {{status_impact}}
+          {{/social_pains}}
+
+        variables:
+          - variable_name: 'social_pains'
+            data_type: 'array'
+            required: false
+            description: 'Social and status-related pain points'
+
+  # Goals & Aspirations
+  - section_id: 'goals_aspirations'
+    title: 'Goals & Aspirations'
+    description: 'Customer goals, desires, and aspirational outcomes'
+    order: 5
+    required: true
+
+    subsections:
+      - section_id: 'functional_goals'
+        title: 'Functional Goals'
+        order: 1
+        content_type: 'template'
+        formatting:
+          type: 'bullet-list'
+        content: |
+          {{#functional_goals}}
+          - **{{goal}}**
+            - Priority: {{priority_level}}
+            - Timeline: {{desired_timeline}}
+            - Success Criteria: {{success_criteria}}
+            - Current Progress: {{current_progress}}
+          {{/functional_goals}}
+
+        variables:
+          - variable_name: 'functional_goals'
+            data_type: 'array'
+            required: true
+            description: 'Functional goals and desired outcomes'
+
+      - section_id: 'emotional_goals'
+        title: 'Emotional Goals'
+        order: 2
+        content_type: 'template'
+        formatting:
+          type: 'bullet-list'
+        content: |
+          {{#emotional_goals}}
+          - **{{goal}}**
+            - Emotional Outcome: {{emotional_outcome}}
+            - Personal Meaning: {{personal_meaning}}
+            - Validation Needs: {{validation_needs}}
+          {{/emotional_goals}}
+
+        variables:
+          - variable_name: 'emotional_goals'
+            data_type: 'array'
+            required: true
+            description: 'Emotional goals and desired feelings'
+
+      - section_id: 'social_goals'
+        title: 'Social Goals'
+        order: 3
+        content_type: 'template'
+        formatting:
+          type: 'bullet-list'
+        content: |
+          {{#social_goals}}
+          - **{{goal}}**
+            - Social Status: {{status_desired}}
+            - Community Impact: {{community_impact}}
+            - Recognition Needs: {{recognition_needs}}
+          {{/social_goals}}
+
+        variables:
+          - variable_name: 'social_goals'
+            data_type: 'array'
+            required: false
+            description: 'Social and status-related goals'
+
+  # Customer Journey Mapping
+  - section_id: 'customer_journey'
+    title: 'Customer Journey Mapping'
+    description: 'Detailed mapping of customer journey stages and touchpoints'
+    order: 6
+    required: true
+
+    subsections:
+      - section_id: 'awareness_stage'
+        title: 'Awareness Stage'
+        order: 1
+        repeatable: true
+        content_type: 'template'
+        content: |
+          **Stage:** {{stage_name}}
+
+          **Customer Mindset:** {{customer_mindset}}
+
+          **Key Activities:**
+          {{#key_activities}}
+          - {{activity}}
+          {{/key_activities}}
+
+          **Information Sources:**
+          {{#information_sources}}
+          - {{source}}: {{usage_frequency}}
+          {{/information_sources}}
+
+          **Emotional State:** {{emotional_state}}
+
+          **Pain Points at This Stage:**
+          {{#stage_pain_points}}
+          - {{pain_point}}
+          {{/stage_pain_points}}
+
+          **Opportunities:** {{stage_opportunities}}
+
+        variables:
+          - variable_name: 'stage_name'
+            data_type: 'string'
+            required: true
+            description: 'Name of the journey stage'
+          - variable_name: 'customer_mindset'
+            data_type: 'string'
+            required: true
+            description: "Customer's mental state at this stage"
+          - variable_name: 'key_activities'
+            data_type: 'array'
+            required: true
+            description: 'What customers do in this stage'
+          - variable_name: 'information_sources'
+            data_type: 'array'
+            required: true
+            description: 'Where they get information'
+          - variable_name: 'emotional_state'
+            data_type: 'string'
+            required: true
+            description: 'How they feel at this stage'
+          - variable_name: 'stage_pain_points'
+            data_type: 'array'
+            required: true
+            description: 'Pain points specific to this stage'
+          - variable_name: 'stage_opportunities'
+            data_type: 'string'
+            required: true
+            description: 'Opportunities to engage at this stage'
+
+  # Behavioral Insights
+  - section_id: 'behavioral_insights'
+    title: 'Behavioral Insights & Triggers'
+    description: 'Deep behavioral analysis and action triggers'
+    order: 7
+    required: true
+
+    subsections:
+      - section_id: 'behavioral_patterns'
+        title: 'Behavioral Patterns'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Digital Behavior:**
+          - Preferred Platforms: {{preferred_platforms}}
+          - Content Consumption: {{content_consumption_style}}
+          - Social Media Usage: {{social_media_behavior}}
+          - Device Preferences: {{device_preferences}}
+
+          **Purchase Behavior:**
+          - Research Process: {{research_process}}
+          - Decision Timeline: {{decision_timeline}}
+          - Budget Considerations: {{budget_considerations}}
+          - Influence Factors: {{influence_factors}}
+
+          **Communication Preferences:**
+          - Preferred Channels: {{preferred_communication_channels}}
+          - Response Time Expectations: {{response_time_expectations}}
+          - Information Depth Preference: {{information_depth_preference}}
+          - Tone Preferences: {{tone_preferences}}
+
+        variables:
+          - variable_name: 'preferred_platforms'
+            data_type: 'string'
+            required: true
+            description: 'Digital platforms they prefer'
+          - variable_name: 'content_consumption_style'
+            data_type: 'string'
+            required: true
+            description: 'How they consume content'
+          - variable_name: 'social_media_behavior'
+            data_type: 'string'
+            required: true
+            description: 'Social media usage patterns'
+          - variable_name: 'device_preferences'
+            data_type: 'string'
+            required: true
+            description: 'Preferred devices for different activities'
+          - variable_name: 'research_process'
+            data_type: 'string'
+            required: true
+            description: 'How they research before purchasing'
+          - variable_name: 'decision_timeline'
+            data_type: 'string'
+            required: true
+            description: 'Typical time from awareness to purchase'
+          - variable_name: 'budget_considerations'
+            data_type: 'string'
+            required: true
+            description: 'Budget constraints and considerations'
+          - variable_name: 'influence_factors'
+            data_type: 'string'
+            required: true
+            description: 'What influences their decisions'
+          - variable_name: 'preferred_communication_channels'
+            data_type: 'string'
+            required: true
+            description: 'How they prefer to be contacted'
+          - variable_name: 'response_time_expectations'
+            data_type: 'string'
+            required: true
+            description: 'Expected response times'
+          - variable_name: 'information_depth_preference'
+            data_type: 'string'
+            required: true
+            description: 'Preference for detailed vs. brief information'
+          - variable_name: 'tone_preferences'
+            data_type: 'string'
+            required: true
+            description: 'Preferred communication tone'
+
+      - section_id: 'action_triggers'
+        title: 'Action Triggers'
+        order: 2
+        content_type: 'template'
+        formatting:
+          type: 'bullet-list'
+        content: |
+          **Positive Triggers (What Makes Them Act):**
+          {{#positive_triggers}}
+          - **{{trigger}}**: {{trigger_description}}
+          {{/positive_triggers}}
+
+          **Negative Triggers (What Turns Them Away):**
+          {{#negative_triggers}}
+          - **{{trigger}}**: {{trigger_description}}
+          {{/negative_triggers}}
+
+          **Urgency Creators:**
+          {{#urgency_creators}}
+          - **{{trigger}}**: {{trigger_description}}
+          {{/urgency_creators}}
+
+        variables:
+          - variable_name: 'positive_triggers'
+            data_type: 'array'
+            required: true
+            description: 'Triggers that motivate positive action'
+          - variable_name: 'negative_triggers'
+            data_type: 'array'
+            required: true
+            description: 'Triggers that cause negative reactions'
+          - variable_name: 'urgency_creators'
+            data_type: 'array'
+            required: true
+            description: 'What creates sense of urgency'
+
+  # Secondary Personas
+  - section_id: 'secondary_personas'
+    title: 'Secondary Personas'
+    description: 'Additional customer personas and their key characteristics'
+    order: 8
+    required: false
+    repeatable: true
+
+    content_type: 'template'
+    content: |
+      **Persona Name:** {{secondary_persona_name}}
+
+      **Key Differences from Primary:**
+      {{secondary_persona_differences}}
+
+      **Unique Characteristics:**
+      - Demographics: {{secondary_demographics}}
+      - Primary Pain Point: {{secondary_primary_pain}}
+      - Primary Goal: {{secondary_primary_goal}}
+      - Behavioral Difference: {{secondary_behavioral_difference}}
+
+      **Journey Variations:**
+      {{secondary_journey_variations}}
+
+      **Targeting Implications:**
+      {{secondary_targeting_implications}}
+
+    variables:
+      - variable_name: 'secondary_persona_name'
+        data_type: 'string'
+        required: true
+        description: 'Name of secondary persona'
+      - variable_name: 'secondary_persona_differences'
+        data_type: 'string'
+        required: true
+        description: 'How this persona differs from primary'
+      - variable_name: 'secondary_demographics'
+        data_type: 'string'
+        required: true
+        description: 'Key demographic differences'
+      - variable_name: 'secondary_primary_pain'
+        data_type: 'string'
+        required: true
+        description: 'Primary pain point for this persona'
+      - variable_name: 'secondary_primary_goal'
+        data_type: 'string'
+        required: true
+        description: 'Primary goal for this persona'
+      - variable_name: 'secondary_behavioral_difference'
+        data_type: 'string'
+        required: true
+        description: 'Key behavioral differences'
+      - variable_name: 'secondary_journey_variations'
+        data_type: 'string'
+        required: true
+        description: 'How their journey differs'
+      - variable_name: 'secondary_targeting_implications'
+        data_type: 'string'
+        required: true
+        description: 'Implications for targeting and messaging'
+
+  # Validation Framework
+  - section_id: 'validation_framework'
+    title: 'Persona Validation Framework'
+    description: 'Framework for validating and refining persona insights'
+    order: 9
+    required: true
+
+    subsections:
+      - section_id: 'research_recommendations'
+        title: 'Research Recommendations'
+        order: 1
+        content_type: 'template'
+        formatting:
+          type: 'numbered-list'
+        content: |
+          {{#research_recommendations}}
+          **{{research_method}}**
+          - Objective: {{objective}}
+          - Target Sample: {{target_sample}}
+          - Key Questions: {{key_questions}}
+          - Timeline: {{timeline}}
+          - Expected Insights: {{expected_insights}}
+          {{/research_recommendations}}
+
+        variables:
+          - variable_name: 'research_recommendations'
+            data_type: 'array'
+            required: true
+            description: 'Recommended research methods for validation'
+
+      - section_id: 'validation_metrics'
+        title: 'Validation Metrics'
+        order: 2
+        content_type: 'template'
+        content: |
+          **Accuracy Indicators:**
+          {{#accuracy_indicators}}
+          - {{metric}}: {{target_threshold}}
+          {{/accuracy_indicators}}
+
+          **Behavioral Validation:**
+          {{#behavioral_validation}}
+          - {{behavior}}: {{validation_method}}
+          {{/behavioral_validation}}
+
+          **Feedback Collection Methods:**
+          {{#feedback_methods}}
+          - {{method}}: {{implementation_details}}
+          {{/feedback_methods}}
+
+        variables:
+          - variable_name: 'accuracy_indicators'
+            data_type: 'array'
+            required: true
+            description: 'Metrics to measure persona accuracy'
+          - variable_name: 'behavioral_validation'
+            data_type: 'array'
+            required: true
+            description: 'Ways to validate behavioral assumptions'
+          - variable_name: 'feedback_methods'
+            data_type: 'array'
+            required: true
+            description: 'Methods for collecting validation feedback'
+
+  # Next Steps & Handoff
+  - section_id: 'next_steps'
+    title: 'Next Steps & Context for Product Strategy'
+    description: 'Action items and context preparation for next agent'
+    order: 10
+    required: true
+
+    content_type: 'template'
+    content: |
+      **Immediate Actions:**
+      {{#immediate_actions}}
+      - **{{action}}**: {{timeline}} - {{owner}}
+      {{/immediate_actions}}
+
+      **Persona Application Priorities:**
+      1. {{priority_1}}
+      2. {{priority_2}}
+      3. {{priority_3}}
+
+      **Context for Product Manager:**
+      {{product_manager_context}}
+
+      **Key Insights to Leverage:**
+      {{#key_insights_to_leverage}}
+      - {{insight}}
+      {{/key_insights_to_leverage}}
+
+      **Areas Requiring Product Strategy Input:**
+      {{#product_strategy_needs}}
+      - {{need}}
+      {{/product_strategy_needs}}
+
+    variables:
+      - variable_name: 'immediate_actions'
+        data_type: 'array'
+        required: true
+        description: 'Actions to take based on persona insights'
+      - variable_name: 'priority_1'
+        data_type: 'string'
+        required: true
+        description: 'Top priority for persona application'
+      - variable_name: 'priority_2'
+        data_type: 'string'
+        required: true
+        description: 'Second priority for persona application'
+      - variable_name: 'priority_3'
+        data_type: 'string'
+        required: true
+        description: 'Third priority for persona application'
+      - variable_name: 'product_manager_context'
+        data_type: 'string'
+        required: true
+        description: 'Context and insights for product manager'
+      - variable_name: 'key_insights_to_leverage'
+        data_type: 'array'
+        required: true
+        description: 'Key insights for product strategy'
+      - variable_name: 'product_strategy_needs'
+        data_type: 'array'
+        required: true
+        description: 'Areas where product strategy input is needed'
+
+# Variable management and data binding
+variables:
+  global_variables:
+    current_date: '{{current_timestamp}}'
+    agent_version: '2.0'
+    template_version: '2.0'
+
+  sources:
+    agent_outputs: true
+    user_inputs: true
+    workflow_context: true
+    external_apis: false
+
+  processing:
+    auto_extraction: true
+    type_conversion: true
+    validation: true
+    sanitization: true
+
+  binding:
+    late_binding: true
+    dynamic_binding: true
+    context_awareness: true
+
+  defaults:
+    strategy: 'context_based'
+    placeholder_pattern: '[{{variable_name}}]'
+    missing_variable_behavior: 'substitute'
+
+# Content generation and AI integration
+content_generation:
+  ai_generation:
+    enabled: true
+    model_preferences: ['claude-3-5-sonnet-20241022']
+    quality_thresholds:
+      completeness: 0.9
+      depth: 0.85
+      actionability: 0.8
+
+  enhancement:
+    grammar_checking: true
+    style_consistency: true
+    fact_checking: false
+    readability_optimization: true
+
+  validation:
+    schema_validation: true
+    content_completeness: true
+    variable_consistency: true
+    format_compliance: true
+
+# Quality assurance and validation
+quality_assurance:
+  quality_checks:
+    completeness: true
+    consistency: true
+    depth: true
+    actionability: true
+
+  validation_rules:
+    required_sections:
+      [
+        'primary_persona',
+        'pain_points',
+        'goals_aspirations',
+        'customer_journey',
+        'behavioral_insights',
+      ]
+    minimum_content_length:
+      primary_persona: 400
+      pain_points: 300
+      behavioral_insights: 350
+
+  scoring:
+    enabled: true
+    scoring_criteria:
+      [
+        'persona_depth',
+        'behavioral_accuracy',
+        'journey_completeness',
+        'actionability',
+      ]
+    minimum_score: 0.8
+    improvement_suggestions: true
+
+# Metadata and governance
+metadata:
+  version_info:
+    major_version: 2
+    minor_version: 0
+    patch_version: 0
+    release_date: '2024-01-15'
+
+  governance:
+    owner: 'persona_strategy_team'
+    maintainers: ['persona_strategist_agent']
+    contributors: ['customer_research_specialists']
+
+  lifecycle:
+    status: 'active'
+    deprecation_date: null
+    replacement_template: null
+
+  classification:
+    tags:
+      [
+        'personas',
+        'behavioral-analysis',
+        'customer-journey',
+        'psychology',
+        'user-research',
+      ]
+    categories: ['strategy_templates', 'output_templates']
+    maturity_level: 'stable'
+    usage_frequency: 'frequent'

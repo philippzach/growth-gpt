@@ -1,0 +1,466 @@
+# Integration Mappings - Growth Strategy Agent System
+# Defines how agents, workflows, tasks, and templates are linked together
+
+config_version: "2.0"
+description: "Integration mappings for linking agents, workflows, tasks, and templates in the Growth Strategy system"
+
+# Agent to task mappings
+agent_task_mapping:
+  # Foundation stage agents
+  gtm_consultant:
+    primary_task: "tasks/agent-tasks/gtm-consultant-task.yaml"
+    backup_tasks: []
+    workflow_stage: "foundation"
+    sequence_order: 1
+    
+  persona_strategist:
+    primary_task: "tasks/agent-tasks/persona-strategist-task.yaml"
+    backup_tasks: []
+    workflow_stage: "foundation"
+    sequence_order: 2
+    
+  product_manager:
+    primary_task: "tasks/agent-tasks/product-manager-task.yaml"
+    backup_tasks: []
+    workflow_stage: "foundation"
+    sequence_order: 3
+  
+  # Strategy stage agents
+  growth_manager:
+    primary_task: "tasks/agent-tasks/growth-manager-task.yaml"
+    backup_tasks: []
+    workflow_stage: "strategy"
+    sequence_order: 4
+    
+  head_of_acquisition:
+    primary_task: "tasks/agent-tasks/head-of-acquisition-task.yaml"
+    backup_tasks: []
+    workflow_stage: "strategy"
+    sequence_order: 5
+    
+  head_of_retention:
+    primary_task: "tasks/agent-tasks/head-of-retention-task.yaml"
+    backup_tasks: []
+    workflow_stage: "strategy"
+    sequence_order: 6
+    
+  viral_growth_architect:
+    primary_task: "tasks/agent-tasks/viral-growth-architect-task.yaml"
+    backup_tasks: []
+    workflow_stage: "strategy"
+    sequence_order: 7
+  
+  # Validation stage agents
+  growth_hacker:
+    primary_task: "tasks/agent-tasks/growth-hacker-task.yaml"
+    backup_tasks: []
+    workflow_stage: "validation"
+    sequence_order: 8
+
+# Workflow to template mappings
+workflow_template_mapping:
+  # Master workflow template mappings
+  master_workflow_v2:
+    foundation_gtm:
+      primary_template: "templates/gtm-strategy-output-v2.yaml"
+      fallback_templates: ["templates/project-brief-tmpl.yaml"]
+      output_formats: ["markdown", "pdf"]
+      
+    persona_development:
+      primary_template: "templates/persona-output-v2.yaml"
+      fallback_templates: ["templates/customer-analysis-tmpl.yaml"]
+      output_formats: ["markdown", "html"]
+      
+    product_brand_development:
+      primary_template: "templates/product-brand-output-v2.yaml"
+      fallback_templates: ["templates/brand-guide-tmpl.yaml"]
+      output_formats: ["markdown", "pdf"]
+      
+    growth_funnel_design:
+      primary_template: "templates/growth-funnel-output-v2.yaml"
+      fallback_templates: ["templates/metrics-framework-tmpl.yaml"]
+      output_formats: ["markdown", "html"]
+      
+    acquisition_strategy:
+      primary_template: "templates/acquisition-strategy-output-v2.yaml"
+      fallback_templates: ["templates/channel-strategy-tmpl.yaml"]
+      output_formats: ["markdown", "pdf"]
+      
+    retention_strategy:
+      primary_template: "templates/retention-strategy-output-v2.yaml"
+      fallback_templates: ["templates/lifecycle-strategy-tmpl.yaml"]
+      output_formats: ["markdown", "html"]
+      
+    viral_growth_strategy:
+      primary_template: "templates/viral-growth-output-v2.yaml"
+      fallback_templates: ["templates/growth-loops-tmpl.yaml"]
+      output_formats: ["markdown", "pdf"]
+      
+    experiment_design:
+      primary_template: "templates/experiments-output-v2.yaml"
+      fallback_templates: ["templates/testing-framework-tmpl.yaml"]
+      output_formats: ["markdown", "html", "pdf"]
+
+# Agent to knowledge base mappings
+agent_knowledge_mapping:
+  gtm_consultant:
+    primary_knowledge:
+      - "knowledge-base/method/01value-proposition.md"
+      - "knowledge-base/method/02problem-solution-fit.md"
+      - "knowledge-base/method/03business-model.md"
+    secondary_knowledge:
+      - "knowledge-base/resources/unique-value-proposition.md"
+      - "knowledge-base/resources/market-segmentation.md"
+      - "knowledge-base/glossary/growth-hacking-dictionary.md"
+    domain_focus: ["value-proposition", "business-model", "market-analysis"]
+    
+  persona_strategist:
+    primary_knowledge:
+      - "knowledge-base/method/04psychograhpic-persona.md"
+      - "knowledge-base/resources/psychographic-segmentation.md"
+      - "knowledge-base/resources/psychographics-socialmedia.md"
+    secondary_knowledge:
+      - "knowledge-base/resources/ocean-personality.md"
+      - "knowledge-base/resources/hierachy-of-engagement.md"
+    domain_focus: ["psychographics", "personas", "customer-behavior"]
+    
+  product_manager:
+    primary_knowledge:
+      - "knowledge-base/method/05product-market-fit.md"
+      - "knowledge-base/resources/unique-value-proposition.md"
+    secondary_knowledge:
+      - "knowledge-base/resources/market-segmentation.md"
+      - "knowledge-base/resources/lift-model.md"
+    domain_focus: ["product-market-fit", "brand-positioning", "competitive-analysis"]
+    
+  growth_manager:
+    primary_knowledge:
+      - "knowledge-base/method/06one-metric-that-matters.md"
+      - "knowledge-base/method/07pirate-funnel.md"
+      - "knowledge-base/resources/north-start-metric.md"
+    secondary_knowledge:
+      - "knowledge-base/method/08friction-to-value.md"
+      - "knowledge-base/resources/hierachy-of-engagement.md"
+    domain_focus: ["growth-metrics", "funnel-optimization", "north-star-metrics"]
+    
+  head_of_acquisition:
+    primary_knowledge:
+      - "knowledge-base/method/09pirate-funnel-awareness.md"
+      - "knowledge-base/method/10pirate-funnel-acquisition.md"
+      - "knowledge-base/resources/facebook-Ads.md"
+    secondary_knowledge:
+      - "knowledge-base/resources/cro.md"
+      - "knowledge-base/resources/copywriting-cheat-sheet.md"
+    domain_focus: ["customer-acquisition", "paid-advertising", "conversion-optimization"]
+    
+  head_of_retention:
+    primary_knowledge:
+      - "knowledge-base/method/11wow-moment.md"
+      - "knowledge-base/method/12pirate-funnel-activation.md"
+      - "knowledge-base/method/14pirate-funnel-retention.md"
+    secondary_knowledge:
+      - "knowledge-base/resources/retention-lifecycle.md"
+      - "knowledge-base/resources/hierachy-of-engagement.md"
+    domain_focus: ["customer-retention", "lifecycle-management", "activation"]
+    
+  viral_growth_architect:
+    primary_knowledge:
+      - "knowledge-base/method/15pirate-funnel-referrals.md"
+      - "knowledge-base/method/16growth-loop.md"
+      - "knowledge-base/resources/virality.md"
+    secondary_knowledge:
+      - "knowledge-base/resources/cialdini-persuasion.md"
+    domain_focus: ["viral-growth", "referrals", "growth-loops"]
+    
+  growth_hacker:
+    primary_knowledge:
+      - "knowledge-base/experiments/experiment-process.md"
+      - "knowledge-base/method/00growth-hacking-process.md"
+    secondary_knowledge:
+      - "data/brainstorming-techniques.md"
+      - "knowledge-base/resources/growthhacking-process-overview.md"
+    domain_focus: ["experimentation", "growth-hacking", "testing"]
+
+# Task dependency mappings
+task_dependency_mapping:
+  # Agent task dependencies
+  agent_tasks:
+    gtm_consultant_task:
+      depends_on: []
+      provides_for: ["persona_strategist_task", "product_manager_task"]
+      shared_context: ["business_concept", "value_proposition", "target_market"]
+      
+    persona_strategist_task:
+      depends_on: ["gtm_consultant_task"]
+      provides_for: ["product_manager_task", "growth_manager_task"]
+      shared_context: ["customer_personas", "psychographic_insights", "journey_maps"]
+      
+    product_manager_task:
+      depends_on: ["gtm_consultant_task", "persona_strategist_task"]
+      provides_for: ["growth_manager_task", "head_of_acquisition_task"]
+      shared_context: ["product_positioning", "brand_guide", "market_fit_analysis"]
+      
+    growth_manager_task:
+      depends_on: ["gtm_consultant_task", "persona_strategist_task", "product_manager_task"]
+      provides_for: ["head_of_acquisition_task", "head_of_retention_task"]
+      shared_context: ["growth_funnel", "north_star_metric", "kpi_framework"]
+      
+    head_of_acquisition_task:
+      depends_on: ["gtm_consultant_task", "persona_strategist_task", "product_manager_task", "growth_manager_task"]
+      provides_for: ["head_of_retention_task", "viral_growth_architect_task"]
+      shared_context: ["acquisition_channels", "campaign_frameworks", "conversion_funnels"]
+      
+    head_of_retention_task:
+      depends_on: ["gtm_consultant_task", "persona_strategist_task", "product_manager_task", "growth_manager_task", "head_of_acquisition_task"]
+      provides_for: ["viral_growth_architect_task", "growth_hacker_task"]
+      shared_context: ["retention_strategy", "lifecycle_programs", "engagement_frameworks"]
+      
+    viral_growth_architect_task:
+      depends_on: ["gtm_consultant_task", "persona_strategist_task", "product_manager_task", "growth_manager_task", "head_of_acquisition_task", "head_of_retention_task"]
+      provides_for: ["growth_hacker_task"]
+      shared_context: ["viral_loops", "referral_programs", "network_effects"]
+      
+    growth_hacker_task:
+      depends_on: ["gtm_consultant_task", "persona_strategist_task", "product_manager_task", "growth_manager_task", "head_of_acquisition_task", "head_of_retention_task", "viral_growth_architect_task"]
+      provides_for: []
+      shared_context: ["experiment_framework", "testing_roadmap", "hypothesis_validation"]
+  
+  # Utility task dependencies
+  utility_tasks:
+    apply_template_task:
+      depends_on: ["agent_execution_complete"]
+      provides_for: ["document_generation_complete"]
+      shared_context: ["agent_outputs", "formatted_documents"]
+      
+    execute_workflow_task:
+      depends_on: []
+      provides_for: ["workflow_completion"]
+      shared_context: ["workflow_state", "agent_coordination"]
+
+# Context passing configuration
+context_passing:
+  # Global context elements
+  global_context:
+    user_information:
+      - "user_name"
+      - "business_name"
+      - "project_name"
+      - "business_stage"
+    
+    workflow_information:
+      - "workflow_id"
+      - "current_stage"
+      - "completed_agents"
+      - "remaining_agents"
+    
+    system_information:
+      - "session_id"
+      - "start_time"
+      - "system_version"
+  
+  # Agent-specific context
+  agent_context:
+    gtm_consultant:
+      receives: ["user_business_concept", "initial_requirements"]
+      provides: ["value_proposition", "business_model", "market_analysis"]
+      transforms: "business_concept_to_strategic_framework"
+      
+    persona_strategist:
+      receives: ["gtm_brief", "target_market_definition"]
+      provides: ["customer_personas", "psychographic_analysis", "journey_maps"]
+      transforms: "market_definition_to_detailed_personas"
+      
+    product_manager:
+      receives: ["gtm_brief", "customer_personas"]
+      provides: ["product_positioning", "brand_guide", "competitive_analysis"]
+      transforms: "personas_to_product_market_fit"
+      
+    growth_manager:
+      receives: ["gtm_brief", "customer_personas", "product_positioning"]
+      provides: ["growth_funnel", "metrics_framework", "north_star_metric"]
+      transforms: "strategy_to_measurable_growth_framework"
+      
+    head_of_acquisition:
+      receives: ["all_previous_outputs"]
+      provides: ["acquisition_strategy", "channel_mix", "campaign_frameworks"]
+      transforms: "strategy_to_acquisition_execution"
+      
+    head_of_retention:
+      receives: ["all_previous_outputs"]
+      provides: ["retention_strategy", "lifecycle_programs", "engagement_frameworks"]
+      transforms: "strategy_to_retention_execution"
+      
+    viral_growth_architect:
+      receives: ["all_previous_outputs"]
+      provides: ["viral_strategy", "growth_loops", "referral_programs"]
+      transforms: "strategy_to_viral_growth_systems"
+      
+    growth_hacker:
+      receives: ["all_previous_outputs"]
+      provides: ["experiment_framework", "testing_roadmap", "validation_plan"]
+      transforms: "strategy_to_testable_hypotheses"
+
+# Quality gate mappings
+quality_gate_mapping:
+  # Stage-level quality gates
+  foundation_stage:
+    gate_id: "foundation_quality_gate"
+    triggers_after: ["product_manager_task"]
+    validation_criteria:
+      - "value_proposition_clarity"
+      - "market_definition_specificity"
+      - "persona_depth_adequacy"
+      - "brand_positioning_differentiation"
+    failure_actions: ["retry_with_improvements", "escalate_to_user"]
+    
+  strategy_stage:
+    gate_id: "strategy_quality_gate"
+    triggers_after: ["viral_growth_architect_task"]
+    validation_criteria:
+      - "strategy_coherence"
+      - "implementation_feasibility"
+      - "metrics_measurability"
+      - "channel_alignment"
+    failure_actions: ["review_and_retry", "escalate_to_expert"]
+    
+  validation_stage:
+    gate_id: "validation_quality_gate"
+    triggers_after: ["growth_hacker_task"]
+    validation_criteria:
+      - "experiment_validity"
+      - "hypothesis_testability"
+      - "resource_feasibility"
+      - "timeline_realism"
+    failure_actions: ["refine_experiments", "adjust_scope"]
+  
+  # Agent-specific quality gates
+  agent_gates:
+    gtm_consultant:
+      criteria: ["value_prop_uniqueness", "market_size_quantification", "problem_urgency_validation"]
+      thresholds: {"quality_score": 0.8, "completeness": 0.9}
+      
+    persona_strategist:
+      criteria: ["persona_specificity", "behavioral_insights", "journey_completeness"]
+      thresholds: {"quality_score": 0.85, "actionability": 0.8}
+      
+    growth_hacker:
+      criteria: ["hypothesis_clarity", "experiment_design_validity", "measurement_feasibility"]
+      thresholds: {"quality_score": 0.9, "scientific_rigor": 0.85}
+
+# Output integration mappings
+output_integration:
+  # Document consolidation
+  document_consolidation:
+    master_strategy_document:
+      combines: ["gtm_brief", "personas", "product_guide", "growth_funnel", "acquisition_strategy", "retention_strategy", "viral_strategy", "experiments"]
+      template: "templates/master-strategy-consolidated.yaml"
+      formats: ["pdf", "html"]
+      
+    executive_summary:
+      combines: ["gtm_brief.executive_summary", "growth_funnel.north_star_metric", "experiments.key_hypotheses"]
+      template: "templates/executive-summary.yaml"
+      formats: ["markdown", "pdf"]
+  
+  # Export configurations
+  export_configurations:
+    presentation_export:
+      source_documents: ["all_agent_outputs"]
+      export_format: "powerpoint"
+      template: "templates/strategy-presentation.pptx"
+      
+    implementation_guide:
+      source_documents: ["acquisition_strategy", "retention_strategy", "experiments"]
+      export_format: "markdown"
+      template: "templates/implementation-guide.yaml"
+
+# Error handling mappings
+error_handling_mapping:
+  # Component-specific error handlers
+  agent_errors:
+    api_timeout:
+      handler: "retry_with_exponential_backoff"
+      max_attempts: 3
+      escalation: "notify_admin_and_use_fallback"
+      
+    output_quality_low:
+      handler: "retry_with_enhanced_prompts"
+      max_attempts: 2
+      escalation: "request_user_input_for_clarification"
+      
+    knowledge_base_unavailable:
+      handler: "proceed_with_cached_knowledge"
+      fallback: "use_minimal_knowledge_set"
+      escalation: "notify_user_of_reduced_capability"
+  
+  workflow_errors:
+    agent_failure:
+      handler: "retry_agent_with_different_parameters"
+      fallback: "skip_agent_with_user_approval"
+      escalation: "halt_workflow_and_save_state"
+      
+    context_corruption:
+      handler: "restore_from_last_checkpoint"
+      fallback: "rebuild_context_from_outputs"
+      escalation: "request_user_to_restart_workflow"
+  
+  template_errors:
+    variable_missing:
+      handler: "use_default_or_placeholder_value"
+      fallback: "generate_partial_output_with_notes"
+      escalation: "request_user_input_for_missing_data"
+      
+    format_generation_failure:
+      handler: "try_alternative_format"
+      fallback: "provide_raw_markdown_output"
+      escalation: "notify_user_of_format_limitation"
+
+# Monitoring and analytics mappings
+monitoring_mapping:
+  # Performance monitoring
+  performance_metrics:
+    agent_performance:
+      metrics: ["execution_time", "token_usage", "quality_scores", "success_rate"]
+      aggregation: "per_agent_and_overall"
+      alerts: ["execution_time_exceeded", "quality_degradation"]
+      
+    workflow_performance:
+      metrics: ["total_execution_time", "stage_completion_rates", "user_interaction_time"]
+      aggregation: "per_workflow_type"
+      alerts: ["workflow_timeout", "high_failure_rate"]
+      
+    template_performance:
+      metrics: ["processing_time", "variable_extraction_success", "output_quality"]
+      aggregation: "per_template"
+      alerts: ["processing_errors", "quality_issues"]
+  
+  # Usage analytics
+  usage_analytics:
+    agent_usage:
+      tracks: ["invocation_frequency", "success_rates", "user_satisfaction"]
+      reporting: "weekly_agent_performance_report"
+      
+    workflow_usage:
+      tracks: ["workflow_popularity", "completion_rates", "stage_bottlenecks"]
+      reporting: "monthly_workflow_analytics"
+      
+    template_usage:
+      tracks: ["template_usage_frequency", "format_preferences", "customization_patterns"]
+      reporting: "template_effectiveness_report"
+
+# Metadata and governance
+metadata:
+  version_info:
+    mappings_version: "2.0"
+    last_updated: "2024-01-15"
+    compatibility: "system_v2.0"
+    
+  governance:
+    owner: "integration_team"
+    maintainers: ["system_architects", "integration_specialists"]
+    approval_required_for_changes: true
+    
+  validation:
+    schema_validation: true
+    consistency_checking: true
+    dependency_validation: true
+    performance_impact_assessment: true

@@ -1,0 +1,727 @@
+# Growth Manager Agent Task - Growth Funnel & Metrics Framework
+# Links Growth Manager agent with workflow and template processing
+
+schema_version: '2.0'
+description: 'Agent task configuration for Growth Manager execution with AARRR funnel design and North Star Metric framework'
+
+# Core task identification
+task:
+  id: 'growth-manager-execution'
+  name: 'Growth Funnel Design & North Star Metrics Framework'
+  version: '2.0'
+  description: 'Execute Growth Manager agent to design comprehensive AARRR growth funnel with North Star Metric and KPI framework based on strategic foundation'
+  category: 'agent-execution'
+  type: 'agent-task'
+
+  use_cases:
+    - 'growth_funnel_architecture'
+    - 'north_star_metric_identification'
+    - 'kpi_framework_development'
+    - 'conversion_optimization_strategy'
+    - 'growth_measurement_system'
+
+  complexity_level: 'complex'
+  estimated_duration: '35-45 minutes'
+  requires_user_interaction: true
+
+# Agent integration configuration
+agent_integration:
+  agent_config_path: 'agents/growth-manager-v2.yaml'
+  agent_id: 'growth-manager'
+  agent_role: 'Growth Manager'
+
+  behavior_overrides:
+    temperature: 0.6
+    max_tokens: 4000
+    system_prompt_additions: |
+      You are executing in the strategy stage with complete foundation from previous agents.
+      Your growth funnel and metrics framework will guide all tactical marketing execution.
+      Focus on creating measurable, optimizable systems that enable data-driven growth.
+    knowledge_focus:
+      - 'pirate-funnel'
+      - 'north-star-metric'
+      - 'growth-hacking-process'
+      - 'conversion-optimization'
+
+  capabilities:
+    tools_available:
+      - 'funnel_analyzer'
+      - 'metrics_calculator'
+      - 'optimization_planner'
+      - 'conversion_tracker'
+    apis_accessible:
+      - 'anthropic_claude_api'
+    permissions:
+      - 'read_knowledge_base'
+      - 'access_all_foundation_context'
+      - 'generate_growth_documents'
+    restrictions:
+      - 'no_specific_channel_tactics'
+      - 'no_detailed_campaign_specifications'
+
+# Workflow integration specifications
+workflow_integration:
+  workflow_id: 'master-workflow-v2'
+  workflow_stage: 'strategy'
+  step_id: 'growth_funnel_design'
+  sequence_order: 4
+
+  inputs:
+    required_inputs:
+      ['gtm-brief.md', 'psychographic-personas.md', 'product-brand-guide.md']
+    optional_inputs: ['analytics_data', 'funnel_benchmarks']
+    user_inputs: ['current_metrics', 'growth_targets']
+    context_requirements:
+      user_context: true
+      business_context: true
+      market_context: true
+
+  outputs:
+    primary_output: 'growth-funnel.md'
+    secondary_outputs:
+      - 'metrics-dashboard.md'
+      - 'kpi-framework.md'
+      - 'optimization-roadmap.md'
+    output_format: 'markdown'
+    storage_location: 'docs/'
+
+  coordination:
+    depends_on:
+      ['foundation_gtm', 'persona_development', 'product_brand_development']
+    blocks: ['acquisition_strategy', 'retention_strategy']
+    parallel_execution: false
+    timeout: '45 minutes'
+
+  quality_gates:
+    pre_execution:
+      - 'validate_complete_foundation_context'
+      - 'check_strategic_alignment_readiness'
+    post_execution:
+      - 'validate_funnel_completeness_and_measurability'
+      - 'check_north_star_metric_alignment'
+      - 'verify_kpi_framework_actionability'
+    validation_rules:
+      - 'funnel_must_include_all_aarrr_stages_with_metrics'
+      - 'north_star_metric_must_align_with_business_model'
+      - 'kpis_must_be_measurable_and_actionable'
+      - 'optimization_opportunities_must_be_specific'
+    success_criteria:
+      - 'Complete AARRR funnel with stage-specific metrics and benchmarks'
+      - 'Clear North Star Metric aligned with business objectives'
+      - 'Actionable KPI framework with measurement methodology'
+      - 'Specific optimization roadmap with prioritized opportunities'
+
+# Task specification and requirements
+task_specification:
+  # Primary task definition
+  primary_objective: 'Design comprehensive AARRR growth funnel with North Star Metric and KPI framework that enables data-driven growth optimization and guides all marketing and retention strategies'
+  secondary_objectives:
+    - 'Establish North Star Metric aligned with business model and customer value'
+    - 'Create complete AARRR funnel architecture with stage-specific metrics'
+    - 'Develop actionable KPI framework with measurement methodology'
+    - 'Identify key optimization opportunities and growth levers'
+
+  # Specific deliverables
+  deliverables:
+    primary_deliverables:
+      - 'Complete AARRR funnel architecture with stage definitions and metrics'
+      - 'North Star Metric identification with supporting rationale and calculation'
+      - 'Comprehensive KPI framework with leading and lagging indicators'
+      - 'Funnel optimization roadmap with prioritized improvement opportunities'
+      - 'Measurement and tracking methodology for all metrics'
+    secondary_deliverables:
+      - 'Funnel benchmarking analysis (if industry data available)'
+      - 'Growth experimentation framework aligned with funnel stages'
+      - 'Dashboard and reporting recommendations'
+      - 'Cohort analysis framework for retention measurement'
+    deliverable_format: 'Structured markdown document following growth-funnel-output-v2 template'
+    quality_standards:
+      - 'All funnel stages must have specific, measurable metrics with calculation methods'
+      - 'North Star Metric must directly align with customer value and business success'
+      - 'KPI framework must include both leading indicators and outcome metrics'
+      - 'Optimization opportunities must be prioritized by impact and feasibility'
+
+  # Success criteria and constraints
+  success_criteria:
+    mandatory_criteria:
+      - 'AARRR funnel is complete with all stages clearly defined and metrics specified'
+      - 'North Star Metric aligns with business model and reflects true customer value'
+      - 'KPI framework enables actionable insights and decision-making at each funnel stage'
+      - 'Optimization roadmap provides clear priorities and expected impact estimates'
+      - 'All metrics are measurable with defined calculation methods and data sources'
+    optional_criteria:
+      - 'Funnel design reveals innovative measurement or optimization approaches'
+      - 'North Star Metric captures unique value creation not commonly measured in industry'
+      - 'KPI framework includes predictive indicators that enable proactive optimization'
+      - 'Optimization roadmap identifies high-impact, low-effort quick wins alongside strategic initiatives'
+    measurement_approach: 'Quality scoring based on funnel completeness, metric measurability, North Star alignment, and optimization actionability'
+    validation_method: 'Template compliance check, funnel architecture assessment, metrics validation, and optimization feasibility evaluation'
+
+  constraints:
+    scope_constraints:
+      - 'Do not create specific marketing campaigns or channel tactics (acquisition agent handles this)'
+      - 'Do not develop detailed retention programs (retention agent handles this)'
+      - 'Do not design specific experiments (growth hacker handles this)'
+      - 'Focus on measurement framework and funnel architecture, not tactical execution'
+    resource_constraints:
+      - 'Maximum 45-minute execution time'
+      - 'Use complete foundation context from all previous agents'
+      - 'Generate comprehensive funnel framework within token limits'
+    dependency_constraints:
+      - 'Must align with GTM brief business model and value proposition'
+      - 'Must leverage persona insights for funnel stage optimization'
+      - 'Must support product positioning and brand strategy execution'
+    quality_constraints:
+      - 'All metrics must be mathematically sound and practically measurable'
+      - 'Funnel stages must reflect realistic customer journey progression'
+      - 'Optimization recommendations must be evidence-based and prioritized'
+      - 'KPI framework must enable both strategic and tactical decision-making'
+
+  # Context and workflow awareness
+  context_awareness:
+    workflow_stage: 'strategy'
+    stage_purpose: 'Establish measurable growth framework that enables data-driven optimization of all marketing efforts'
+    previous_stage_outputs:
+      ['complete_strategic_foundation_from_gtm_personas_and_positioning']
+    next_stage_requirements:
+      - 'Funnel framework for acquisition manager to align channel strategies'
+      - 'Metrics and KPIs for retention manager to optimize lifecycle programs'
+      - 'North Star Metric for viral growth architect to design amplification loops'
+      - 'Measurement framework for growth hacker to design experiments'
+
+  handoff_requirements:
+    context_to_provide:
+      - 'Complete AARRR funnel with stage-specific metrics for all marketing agents'
+      - 'North Star Metric and KPI framework for strategy alignment'
+      - 'Optimization opportunities and growth levers for tactical development'
+      - 'Measurement methodology and tracking requirements for implementation'
+    format_requirements:
+      - 'Structured funnel diagram with clear stage definitions and metric specifications'
+      - 'KPI framework with hierarchical organization and calculation methods'
+      - 'Optimization roadmap with priority rankings and impact estimates'
+      - 'Executive summary for quick context understanding by subsequent agents'
+    validation_requirements:
+      - 'All funnel stages must have measurable metrics with clear calculation methods'
+      - 'North Star Metric must be validated against business model alignment'
+      - 'KPI framework must be practically implementable with available tools'
+    transformation_needs:
+      - 'Extract acquisition metrics for acquisition manager channel optimization'
+      - 'Prepare retention metrics for retention manager lifecycle development'
+      - 'Format growth levers for viral growth architect amplification design'
+
+# Prompt generation configuration
+prompt_generation:
+  # Prompt template configuration
+  templates:
+    system_prompt_template: |
+      {agent_identity}
+
+      TASK OBJECTIVE: {primary_objective}
+
+      SPECIFIC DELIVERABLES:
+      {primary_deliverables}
+
+      SUCCESS CRITERIA:
+      {mandatory_criteria}
+
+      CONSTRAINTS AND SCOPE:
+      {scope_constraints}
+
+      WORKFLOW CONTEXT:
+      - Stage: {workflow_stage} ({stage_purpose})
+      - Building on: Complete strategic foundation from GTM, personas, and positioning
+      - Next agents depend on: {next_stage_requirements}
+
+      FOUNDATION CONTEXT: {complete_foundation_context}
+
+      KNOWLEDGE BASE: {injected_knowledge}
+
+      OUTPUT FORMAT: Follow template structure exactly - {primary_template}
+
+      QUALITY STANDARDS: {quality_standards}
+
+    user_prompt_template: |
+      Based on the complete strategic foundation, design a comprehensive AARRR growth funnel with North Star Metric and KPI framework following the specified deliverables and success criteria.
+
+      Strategic Foundation Summary: {foundation_summary}
+      Business Model: {business_model}
+      Value Proposition: {value_proposition}
+      Target Personas: {target_personas}
+      Product Positioning: {product_positioning}
+
+      Current Metrics (if available): {current_metrics}
+      Growth Targets: {growth_targets}
+
+      Focus on creating a measurable, optimizable framework that guides all subsequent marketing and growth strategies.
+
+    context_injection_template: |
+      WORKFLOW CONTEXT:
+      Current Stage: {workflow_stage}
+      Stage Purpose: {stage_purpose}
+      Previous Outputs: Complete strategic foundation
+      Next Stage Needs: {next_stage_requirements}
+
+      STRATEGIC FOUNDATION:
+      GTM Brief: {gtm_brief_summary}
+      Personas: {persona_summary}
+      Product Positioning: {positioning_summary}
+      Brand Strategy: {brand_strategy_summary}
+
+      USER CONTEXT:
+      Business Stage: {business_stage}
+      Project Name: {project_name}
+      Industry/Market: {industry_context}
+      Current Scale: {business_scale}
+
+    knowledge_injection_template: |
+      RELEVANT KNOWLEDGE BASE:
+
+      AARRR Pirate Funnel:
+      {pirate_funnel_knowledge}
+
+      North Star Metric Framework:
+      {north_star_metric_knowledge}
+
+      Growth Hacking Process:
+      {growth_hacking_process_knowledge}
+
+      Conversion Optimization:
+      {conversion_optimization_knowledge}
+
+  # Dynamic prompt generation
+  dynamic_generation:
+    context_injection_points:
+      - 'after_system_prompt_identity'
+      - 'before_deliverables_section'
+      - 'after_constraints_section'
+      - 'before_output_format_section'
+    variable_substitution:
+      agent_identity: 'from_agent_config.persona.identity'
+      primary_objective: 'from_task_spec.primary_objective'
+      primary_deliverables: 'from_task_spec.deliverables.primary_deliverables'
+      mandatory_criteria: 'from_task_spec.success_criteria.mandatory_criteria'
+      scope_constraints: 'from_task_spec.constraints.scope_constraints'
+      workflow_stage: 'from_task_spec.context_awareness.workflow_stage'
+      stage_purpose: 'from_task_spec.context_awareness.stage_purpose'
+      next_stage_requirements: 'from_task_spec.context_awareness.next_stage_requirements'
+      quality_standards: 'from_task_spec.deliverables.quality_standards'
+      complete_foundation_context: 'from_all_previous_agent_outputs'
+    conditional_sections:
+      funnel_benchmarking: 'if_industry_benchmarks_available'
+      advanced_analytics_setup: 'if_existing_analytics_infrastructure'
+      cohort_analysis_framework: 'if_subscription_or_retention_model'
+    personalization_options:
+      industry_specific_metrics: 'based_on_user_industry'
+      business_model_alignment: 'based_on_business_model'
+      scale_appropriate_kpis: 'based_on_business_stage'
+
+  # Prompt optimization
+  optimization:
+    token_optimization: true
+    clarity_enhancement: true
+    context_compression: true
+    quality_instructions: true
+
+  # Prompt validation
+  validation:
+    prompt_validation: true
+    length_limits:
+      system_prompt_max_tokens: 3500
+      user_prompt_max_tokens: 1200
+      total_prompt_max_tokens: 4500
+    required_elements:
+      - 'task_objective_statement'
+      - 'deliverables_specification'
+      - 'success_criteria_definition'
+      - 'output_format_instruction'
+      - 'complete_foundation_context_injection'
+      - 'knowledge_base_injection'
+    quality_checks:
+      - 'all_variables_substituted'
+      - 'foundation_context_properly_integrated'
+      - 'funnel_requirements_clearly_specified'
+      - 'token_limits_respected'
+
+# Template integration configuration
+template_integration:
+  primary_template: 'templates/growth-funnel-output-v2.yaml'
+  fallback_templates:
+    - 'templates/metrics-framework-tmpl.yaml'
+  template_variables:
+    auto_extract:
+      - 'aarrr_funnel_architecture'
+      - 'north_star_metric'
+      - 'kpi_framework'
+      - 'optimization_roadmap'
+    user_provided:
+      - 'project_name'
+      - 'business_stage'
+      - 'user_name'
+    system_generated:
+      - 'session_date'
+      - 'agent_name'
+      - 'agent_role'
+      - 'foundation_references'
+
+  processing:
+    auto_variable_extraction: true
+    variable_validation: true
+    quality_enhancement: true
+    multi_format_generation: true
+
+  customization:
+    section_overrides:
+      funnel_architecture:
+        emphasis: 'measurement_and_optimization'
+      north_star_metric:
+        depth: 'comprehensive_with_rationale'
+    variable_defaults:
+      agent_name: 'Alex'
+      agent_role: 'Growth Manager'
+      session_duration: '40 minutes'
+    conditional_sections:
+      benchmarking_analysis: 'if_industry_data_available'
+      cohort_framework: 'if_retention_focus_model'
+
+# Execution configuration
+execution:
+  pre_execution:
+    setup_steps:
+      - 'load_agent_configuration'
+      - 'validate_complete_foundation_context'
+      - 'prepare_knowledge_base'
+    context_preparation: 'integrate_all_foundation_outputs'
+    knowledge_injection: 'auto_inject_growth_funnel_knowledge'
+    validation_checks:
+      - 'foundation_completeness_and_quality'
+      - 'system_readiness'
+      - 'template_availability'
+
+  main_execution:
+    execution_method: 'api_call'
+    api_configuration:
+      provider: 'anthropic'
+      model: 'claude-3-5-sonnet-20241022'
+      temperature: 0.6
+      max_tokens: 4000
+    processing_options:
+      streaming: false
+      parallel_processing: false
+      batch_size: 1
+    error_handling: 'retry_with_fallback'
+
+  post_execution:
+    output_processing:
+      - 'extract_template_variables'
+      - 'validate_funnel_quality'
+      - 'apply_formatting'
+    template_application: 'dynamic_variable_binding'
+    quality_validation:
+      - 'funnel_completeness_check'
+      - 'metric_measurability_validation'
+      - 'north_star_alignment_assessment'
+    context_handoff: 'prepare_acquisition_manager_context'
+
+  error_handling:
+    retry_strategy: 'exponential_backoff'
+    max_retries: 3
+    fallback_behavior: 'use_fallback_template_and_notify'
+    escalation_rules:
+      - 'if_foundation_context_insufficient_after_2_attempts'
+      - 'if_funnel_quality_below_0.8_after_3_attempts'
+      - 'if_api_errors_persist_after_5_minutes'
+
+# API integration configuration
+api_integration:
+  primary_api:
+    provider: 'anthropic'
+    model: 'claude-3-5-sonnet-20241022'
+    endpoint: 'https://api.anthropic.com/v1/messages'
+    authentication:
+      type: 'api_key'
+      key_source: 'environment_variable'
+      key_name: 'ANTHROPIC_API_KEY'
+
+  request_config:
+    timeout: 120
+    rate_limiting:
+      requests_per_minute: 50
+      tokens_per_minute: 40000
+    request_headers:
+      content_type: 'application/json'
+      user_agent: 'GrowthStrategyAgent/2.0'
+    retry_config:
+      max_retries: 3
+      backoff_factor: 2
+      retry_on_status: [429, 500, 502, 503, 504]
+
+  response_processing:
+    response_validation: true
+    content_extraction: 'extract_assistant_message'
+    error_detection:
+      - 'check_api_error_codes'
+      - 'validate_response_format'
+      - 'detect_incomplete_responses'
+    quality_scoring: true
+
+# Knowledge base integration
+knowledge_integration:
+  knowledge_sources:
+    primary_sources:
+      - 'knowledge-base/method/06one-metric-that-matters.md'
+      - 'knowledge-base/method/07pirate-funnel.md'
+      - 'knowledge-base/resources/north-start-metric.md'
+    secondary_sources:
+      - 'knowledge-base/method/08friction-to-value.md'
+      - 'knowledge-base/resources/hierachy-of-engagement.md'
+      - 'knowledge-base/glossary/growth-hacking-dictionary.md'
+    dynamic_sources:
+      - 'gtm-brief.md'
+      - 'psychographic-personas.md'
+      - 'product-brand-guide.md'
+
+  injection_strategy:
+    method: 'context_aware'
+    relevance_threshold: 0.7
+    max_knowledge_tokens: 2000
+    prioritization: 'growth_metrics_relevant'
+
+  processing:
+    preprocessing:
+      - 'extract_funnel_concepts'
+      - 'format_for_agent_consumption'
+    formatting: 'structured_sections'
+    context_integration: 'merge_with_foundation_context'
+    validation: true
+
+# Context management
+context_management:
+  context_sources:
+    workflow_context: true
+    previous_outputs: true
+    user_context: true
+    system_context: true
+
+  processing:
+    context_merging: 'foundation_outputs_priority'
+    context_compression: true
+    context_prioritization: 'strategic_foundation_first'
+    context_validation: true
+
+  handoff:
+    next_task_context:
+      acquisition_manager:
+        - 'acquisition_funnel_metrics_for_channel_optimization'
+        - 'conversion_benchmarks_for_campaign_design'
+        - 'north_star_metric_for_strategy_alignment'
+      retention_manager:
+        - 'activation_and_retention_metrics_for_lifecycle_design'
+        - 'cohort_framework_for_program_optimization'
+        - 'engagement_kpis_for_experience_development'
+      viral_growth_architect:
+        - 'referral_metrics_for_viral_loop_design'
+        - 'growth_levers_for_amplification_optimization'
+        - 'viral_coefficient_tracking_for_program_measurement'
+    context_transformation: 'extract_relevant_for_tactical_execution'
+    context_storage: true
+    context_cleanup:
+      - 'remove_detailed_analysis_for_handoff'
+      - 'compress_supporting_methodology'
+
+# Quality assurance and validation
+quality_assurance:
+  input_validation:
+    schema_validation: true
+    foundation_context_validation: true
+    context_validation: true
+    prerequisite_validation: true
+
+  process_validation:
+    execution_monitoring: true
+    intermediate_validation: false
+    resource_monitoring: true
+    performance_tracking: true
+
+  output_validation:
+    format_validation: true
+    funnel_quality: true
+    completeness_check: true
+    consistency_validation: true
+
+  scoring:
+    quality_metrics:
+      - 'funnel_completeness'
+      - 'metric_measurability'
+      - 'north_star_alignment'
+      - 'optimization_actionability'
+      - 'strategic_integration'
+    scoring_algorithm: 'weighted_average'
+    minimum_score: 0.8
+    improvement_suggestions: true
+
+# Performance and optimization
+performance:
+  resource_limits:
+    max_memory_usage: '2GB'
+    max_cpu_usage: '70%'
+    max_execution_time: 2700 # 45 minutes
+    max_api_calls: 5
+
+  caching:
+    cache_enabled: true
+    cache_scope: 'session'
+    cache_duration: '2h'
+    cache_invalidation:
+      - 'foundation_outputs_changed'
+      - 'agent_config_updated'
+
+  optimization:
+    parallel_processing: false
+    lazy_loading: true
+    batch_processing: false
+    compression: true
+
+# Monitoring and analytics
+monitoring:
+  metrics:
+    execution_metrics: true
+    quality_metrics: true
+    funnel_effectiveness_metrics: true
+    api_usage_metrics: true
+
+  logging:
+    log_level: 'info'
+    log_components:
+      - 'agent_execution'
+      - 'funnel_design'
+      - 'quality_validation'
+      - 'context_handoff'
+    log_format: 'structured_json'
+    log_storage: 'local_files'
+
+  alerting:
+    alert_conditions:
+      - 'execution_time_exceeds_40_minutes'
+      - 'funnel_quality_score_below_0.8'
+      - 'api_error_rate_above_10_percent'
+    notification_channels:
+      - 'system_logs'
+      - 'admin_notifications'
+    escalation_procedures:
+      - 'notify_admin_after_3_failures'
+      - 'halt_workflow_after_critical_error'
+
+  reporting:
+    report_generation: true
+    report_frequency: 'per_execution'
+    report_recipients: ['system_admin', 'workflow_manager']
+    custom_reports:
+      - 'funnel_design_quality_report'
+      - 'metrics_framework_effectiveness'
+
+# Integration points and extensibility
+integration_points:
+  pre_execution_hooks:
+    validation_hooks:
+      - 'validate_foundation_context_funnel_requirements'
+    setup_hooks:
+      - 'prepare_growth_funnel_development_context'
+    notification_hooks:
+      - 'notify_funnel_design_start'
+
+  post_execution_hooks:
+    cleanup_hooks:
+      - 'cleanup_temporary_calculation_files'
+    notification_hooks:
+      - 'notify_acquisition_manager'
+    integration_hooks:
+      - 'save_funnel_framework_to_project_repository'
+
+  extensions:
+    custom_processors:
+      - 'funnel_optimization_enhancer'
+      - 'metrics_validation_analyzer'
+    custom_validators:
+      - 'north_star_alignment_validator'
+      - 'kpi_measurability_validator'
+    custom_formatters:
+      - 'funnel_diagram_formatter'
+      - 'metrics_dashboard_formatter'
+    plugin_support: true
+
+# Security and compliance
+security:
+  data_protection:
+    encryption_at_rest: true
+    encryption_in_transit: true
+    metrics_data_sanitization: true
+    access_logging: true
+
+  access_control:
+    authentication_required: false
+    authorization_levels: ['user', 'agent', 'admin']
+    permission_validation: true
+    audit_trail: true
+
+  compliance:
+    compliance_frameworks: ['data_privacy']
+    data_retention_policies: ['delete_after_30_days']
+    privacy_protection: true
+    regulatory_requirements: []
+
+# Documentation and metadata
+documentation:
+  usage_docs:
+    description: |
+      This task executes the Growth Manager agent to design comprehensive AARRR growth funnel
+      with North Star Metric and KPI framework. Builds on complete strategic foundation to create
+      measurable growth system that guides all subsequent marketing and optimization efforts.
+    usage_examples:
+      - 'SaaS growth funnel with subscription metrics'
+      - 'E-commerce conversion funnel optimization'
+      - 'B2B lead generation and nurturing funnel'
+    best_practices:
+      - 'Ensure North Star Metric aligns with business model and customer value'
+      - 'Focus on leading indicators that enable proactive optimization'
+      - 'Create metrics hierarchy that supports both strategic and tactical decisions'
+    troubleshooting:
+      - 'If metrics lack measurability, review data collection capabilities'
+      - 'If North Star Metric alignment is weak, revisit business model analysis'
+      - 'If optimization opportunities are vague, strengthen current state analysis'
+
+  technical_docs:
+    implementation_details: 'Integrates complete strategic foundation to create comprehensive growth measurement system'
+    api_documentation: 'Uses Anthropic Claude API with growth funnel design prompt engineering'
+    configuration_guide: 'Configure via growth-manager-v2.yaml and growth-funnel-output-v2.yaml files'
+    integration_examples:
+      - 'Foundation integration from GTM, Persona, and Product agents'
+      - 'Funnel framework handoff to Acquisition, Retention, and Viral Growth agents'
+
+# Metadata and governance
+metadata:
+  version_info:
+    major_version: 2
+    minor_version: 0
+    patch_version: 0
+    release_date: '2024-01-15'
+    build_number: '2024.01.15.004'
+
+  governance:
+    owner: 'growth_strategy_team'
+    maintainers: ['system_architect', 'growth_specialist']
+    contributors: ['agent_developers', 'template_designers']
+    reviewers: ['senior_strategist', 'analytics_lead']
+
+  lifecycle:
+    status: 'active'
+    created_date: '2024-01-15'
+    last_modified: '2024-01-15'
+    deprecation_date: null
+    replacement_task: null
+
+  classification:
+    tags: ['growth', 'funnel', 'metrics', 'strategy', 'agent-execution']
+    categories: ['agent-tasks', 'workflow-strategy']
+    priority: 'high'
+    complexity_rating: 8
+    maturity_level: 'stable'

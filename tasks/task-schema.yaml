@@ -1,0 +1,443 @@
+# Task Schema v2.0 - Standardized Configuration for Agent Task Integration
+# This schema defines the structure for linking agents, workflows, and templates
+
+schema_version: '2.0'
+description: 'Standardized task configuration for integrating agents, workflows, and templates in Growth & Marketing Strategy AI system'
+
+# Core task identification and metadata
+task:
+  id: string # Unique task identifier (e.g., "gtm-consultant-execution")
+  name: string # Human-friendly task name
+  version: string # Task version for tracking updates
+  description: string # Detailed description of task purpose
+  category: string # Task category (e.g., "agent-execution", "workflow-utility", "template-processing")
+  type: string # Task type (e.g., "agent-task", "workflow-task", "utility-task")
+
+  # Task scope and applicability
+  use_cases: array # Use cases this task supports
+  complexity_level: string # "simple", "intermediate", "complex"
+  estimated_duration: string # Expected execution time
+  requires_user_interaction: boolean # Whether user interaction is needed
+
+# Agent integration configuration
+agent_integration:
+  agent_config_path: string # Path to agent configuration file
+  agent_id: string # Agent identifier for reference
+  agent_role: string # Agent role in workflow
+
+  # Agent behavior overrides
+  behavior_overrides:
+    temperature: float # Override default temperature
+    max_tokens: integer # Override default token limit
+    system_prompt_additions: string # Additional system prompt context
+    knowledge_focus: array # Specific knowledge domains to emphasize
+
+  # Agent capabilities for this task
+  capabilities:
+    tools_available: array # Tools available for this specific task
+    apis_accessible: array # External APIs agent can access
+    permissions: array # Permissions for this task execution
+    restrictions: array # Any restrictions on agent behavior
+
+# Workflow integration specifications
+workflow_integration:
+  workflow_id: string # ID of the workflow this task belongs to
+  workflow_stage: string # Stage within workflow (e.g., "foundation", "strategy")
+  step_id: string # Specific step ID in workflow sequence
+  sequence_order: integer # Order in workflow execution
+
+  # Input/Output specifications
+  inputs:
+    required_inputs: array # Required inputs from previous steps
+    optional_inputs: array # Optional inputs that enhance execution
+    user_inputs: array # Direct user inputs needed
+    context_requirements: object # Context requirements from workflow
+
+  outputs:
+    primary_output: string # Primary output artifact
+    secondary_outputs: array # Additional outputs generated
+    output_format: string # Format of outputs (markdown, json, yaml)
+    storage_location: string # Where outputs should be stored
+
+  # Workflow coordination
+  coordination:
+    depends_on: array # Tasks that must complete before this one
+    blocks: array # Tasks that wait for this one to complete
+    parallel_execution: boolean # Whether task can run in parallel
+    timeout: string # Maximum execution time
+
+  # Quality gates and validation
+  quality_gates:
+    pre_execution: array # Checks before task execution
+    post_execution: array # Checks after task completion
+    validation_rules: array # Rules for validating task outputs
+    success_criteria: array # Criteria for successful task completion
+
+# Task specification and requirements
+task_specification:
+  # Primary task definition
+  primary_objective: string # Clear statement of what this task accomplishes
+  secondary_objectives: array # Additional goals this task addresses
+  
+  # Specific deliverables
+  deliverables:
+    primary_deliverables: array # Must-have outputs from this task
+    secondary_deliverables: array # Nice-to-have additional outputs
+    deliverable_format: string # Expected format of deliverables
+    quality_standards: array # Quality standards for each deliverable
+  
+  # Success criteria and constraints
+  success_criteria:
+    mandatory_criteria: array # Criteria that must be met for success
+    optional_criteria: array # Additional criteria for excellence
+    measurement_approach: string # How success will be measured
+    validation_method: string # How outputs will be validated
+  
+  constraints:
+    scope_constraints: array # What this task should NOT do
+    resource_constraints: array # Limitations on resources/time/complexity
+    dependency_constraints: array # Constraints based on workflow position
+    quality_constraints: array # Quality/accuracy requirements
+  
+  # Context and workflow awareness
+  context_awareness:
+    workflow_stage: string # Current stage in overall workflow
+    stage_purpose: string # Purpose of this stage in workflow
+    previous_stage_outputs: array # What previous stages provide
+    next_stage_requirements: array # What next stages need
+    
+  handoff_requirements:
+    context_to_provide: array # Context this task must provide to next tasks
+    format_requirements: array # How context should be formatted
+    validation_requirements: array # What must be validated before handoff
+    transformation_needs: array # How outputs need to be transformed
+
+# Prompt generation configuration
+prompt_generation:
+  # Prompt template configuration
+  templates:
+    system_prompt_template: string # Template for system prompt generation
+    user_prompt_template: string # Template for user prompt generation
+    context_injection_template: string # How to inject context into prompts
+    knowledge_injection_template: string # How to inject knowledge base content
+  
+  # Dynamic prompt generation
+  dynamic_generation:
+    context_injection_points: array # Where to inject workflow context
+    variable_substitution: object # Variables to substitute in prompts
+    conditional_sections: object # Conditional prompt sections based on context
+    personalization_options: object # How to personalize prompts for user/business
+  
+  # Prompt optimization
+  optimization:
+    token_optimization: boolean # Optimize prompts for token efficiency
+    clarity_enhancement: boolean # Enhance prompt clarity and specificity
+    context_compression: boolean # Compress context while maintaining relevance
+    quality_instructions: boolean # Include quality and formatting instructions
+  
+  # Prompt validation
+  validation:
+    prompt_validation: boolean # Validate generated prompts before API calls
+    length_limits: object # Token/character limits for different prompt sections
+    required_elements: array # Elements that must be present in prompts
+    quality_checks: array # Quality checks for generated prompts
+
+# Template integration configuration
+template_integration:
+  primary_template: string # Primary template for output generation
+  fallback_templates: array # Fallback templates if primary fails
+  template_variables: object # Variables to be extracted/provided
+
+  # Template processing configuration
+  processing:
+    auto_variable_extraction: boolean # Automatically extract variables from agent output
+    variable_validation: boolean # Validate variables against template schema
+    quality_enhancement: boolean # Apply quality enhancements to output
+    multi_format_generation: boolean # Generate multiple output formats
+
+  # Template customization
+  customization:
+    section_overrides: object # Override specific template sections
+    variable_defaults: object # Default values for template variables
+    conditional_sections: object # Conditions for including sections
+    personalization: object # Personalization options for output
+
+# Execution configuration
+execution:
+  # Pre-execution steps
+  pre_execution:
+    setup_steps: array # Steps to perform before agent execution
+    context_preparation: string # How to prepare context for agent
+    knowledge_injection: string # How to inject knowledge base content
+    validation_checks: array # Validation checks before execution
+
+  # Main execution
+  main_execution:
+    execution_method: string # "api_call", "local_processing", "hybrid"
+    api_configuration: object # Configuration for API calls
+    processing_options: object # Options for processing
+    error_handling: string # How to handle execution errors
+
+  # Post-execution steps
+  post_execution:
+    output_processing: array # Steps to process agent output
+    template_application: string # How to apply templates
+    quality_validation: array # Quality validation steps
+    context_handoff: string # How to prepare context for next task
+
+  # Error handling and recovery
+  error_handling:
+    retry_strategy: string # "immediate", "exponential_backoff", "manual"
+    max_retries: integer # Maximum number of retry attempts
+    fallback_behavior: string # What to do if all retries fail
+    escalation_rules: array # When to escalate to human intervention
+
+# API integration configuration
+api_integration:
+  # Primary API configuration
+  primary_api:
+    provider: string # API provider (e.g., "anthropic", "openai")
+    model: string # Specific model to use
+    endpoint: string # API endpoint
+    authentication: object # Authentication configuration
+
+  # Request configuration
+  request_config:
+    timeout: integer # Request timeout in seconds
+    rate_limiting: object # Rate limiting configuration
+    request_headers: object # Custom headers for requests
+    retry_config: object # Retry configuration for failed requests
+
+  # Response processing
+  response_processing:
+    response_validation: boolean # Validate API responses
+    content_extraction: string # How to extract content from responses
+    error_detection: array # How to detect errors in responses
+    quality_scoring: boolean # Score response quality
+
+# Knowledge base integration
+knowledge_integration:
+  # Knowledge source configuration
+  knowledge_sources:
+    primary_sources: array # Primary knowledge base files/directories
+    secondary_sources: array # Secondary reference materials
+    dynamic_sources: array # Dynamically loaded knowledge sources
+
+  # Knowledge injection strategy
+  injection_strategy:
+    method: string # "auto", "manual", "selective", "context_aware"
+    relevance_threshold: float # Minimum relevance score for injection
+    max_knowledge_tokens: integer # Maximum tokens for injected knowledge
+    prioritization: string # How to prioritize knowledge ("recent", "relevant", "comprehensive")
+
+  # Knowledge processing
+  processing:
+    preprocessing: array # Steps to preprocess knowledge before injection
+    formatting: string # How to format injected knowledge
+    context_integration: string # How to integrate with existing context
+    validation: boolean # Validate knowledge before injection
+
+# Context management
+context_management:
+  # Context sources
+  context_sources:
+    workflow_context: boolean # Include context from workflow state
+    previous_outputs: boolean # Include outputs from previous tasks
+    user_context: boolean # Include user-provided context
+    system_context: boolean # Include system-level context
+
+  # Context processing
+  processing:
+    context_merging: string # How to merge different context sources
+    context_compression: boolean # Compress context to fit token limits
+    context_prioritization: string # How to prioritize context elements
+    context_validation: boolean # Validate context before use
+
+  # Context passing
+  handoff:
+    next_task_context: object # Context to pass to next task
+    context_transformation: string # How to transform context for next task
+    context_storage: boolean # Whether to store context for later use
+    context_cleanup: array # Steps to clean up context after use
+
+# Quality assurance and validation
+quality_assurance:
+  # Input validation
+  input_validation:
+    schema_validation: boolean # Validate inputs against schema
+    content_validation: boolean # Validate content quality and completeness
+    context_validation: boolean # Validate context integrity
+    prerequisite_validation: boolean # Validate prerequisites are met
+
+  # Process validation
+  process_validation:
+    execution_monitoring: boolean # Monitor execution for issues
+    intermediate_validation: boolean # Validate intermediate results
+    resource_monitoring: boolean # Monitor resource usage
+    performance_tracking: boolean # Track performance metrics
+
+  # Output validation
+  output_validation:
+    format_validation: boolean # Validate output format
+    content_quality: boolean # Validate content quality
+    completeness_check: boolean # Check output completeness
+    consistency_validation: boolean # Validate consistency across outputs
+
+  # Quality scoring
+  scoring:
+    quality_metrics: array # Metrics for measuring quality
+    scoring_algorithm: string # Algorithm for calculating quality scores
+    minimum_score: float # Minimum acceptable quality score
+    improvement_suggestions: boolean # Provide suggestions for improvement
+
+# Performance and optimization
+performance:
+  # Resource management
+  resource_limits:
+    max_memory_usage: string # Maximum memory usage
+    max_cpu_usage: string # Maximum CPU usage
+    max_execution_time: integer # Maximum execution time in seconds
+    max_api_calls: integer # Maximum API calls per execution
+
+  # Caching strategy
+  caching:
+    cache_enabled: boolean # Whether caching is enabled
+    cache_scope: string # Scope of caching ("task", "session", "global")
+    cache_duration: string # How long to cache results
+    cache_invalidation: array # Conditions for cache invalidation
+
+  # Optimization settings
+  optimization:
+    parallel_processing: boolean # Enable parallel processing where possible
+    lazy_loading: boolean # Load resources only when needed
+    batch_processing: boolean # Process multiple items in batches
+    compression: boolean # Compress data for efficiency
+
+# Monitoring and analytics
+monitoring:
+  # Metrics collection
+  metrics:
+    execution_metrics: boolean # Collect execution time, resource usage
+    quality_metrics: boolean # Collect quality scores and validation results
+    user_interaction_metrics: boolean # Collect user interaction data
+    api_usage_metrics: boolean # Collect API usage statistics
+
+  # Logging configuration
+  logging:
+    log_level: string # Logging level (debug, info, warn, error)
+    log_components: array # Components to log
+    log_format: string # Format for log messages
+    log_storage: string # Where to store logs
+
+  # Alerting and notifications
+  alerting:
+    alert_conditions: array # Conditions that trigger alerts
+    notification_channels: array # How to send notifications
+    escalation_procedures: array # Escalation procedures for alerts
+
+  # Reporting
+  reporting:
+    report_generation: boolean # Generate execution reports
+    report_frequency: string # How often to generate reports
+    report_recipients: array # Who receives reports
+    custom_reports: array # Custom report configurations
+
+# Integration points and extensibility
+integration_points:
+  # Pre-execution hooks
+  pre_execution_hooks:
+    validation_hooks: array # Custom validation hooks
+    setup_hooks: array # Custom setup hooks
+    notification_hooks: array # Notification hooks
+
+  # Post-execution hooks
+  post_execution_hooks:
+    cleanup_hooks: array # Custom cleanup hooks
+    notification_hooks: array # Post-execution notifications
+    integration_hooks: array # Integration with external systems
+
+  # Custom extensions
+  extensions:
+    custom_processors: array # Custom processing extensions
+    custom_validators: array # Custom validation extensions
+    custom_formatters: array # Custom formatting extensions
+    plugin_support: boolean # Whether plugins are supported
+
+# Security and compliance
+security:
+  # Data protection
+  data_protection:
+    encryption_at_rest: boolean # Encrypt data at rest
+    encryption_in_transit: boolean # Encrypt data in transit
+    data_sanitization: boolean # Sanitize sensitive data
+    access_logging: boolean # Log data access
+
+  # Access control
+  access_control:
+    authentication_required: boolean # Require authentication
+    authorization_levels: array # Authorization levels
+    permission_validation: boolean # Validate permissions
+    audit_trail: boolean # Maintain audit trail
+
+  # Compliance
+  compliance:
+    compliance_frameworks: array # Compliance frameworks to adhere to
+    data_retention_policies: array # Data retention policies
+    privacy_protection: boolean # Privacy protection measures
+    regulatory_requirements: array # Regulatory requirements
+
+# Documentation and metadata
+documentation:
+  # Usage documentation
+  usage_docs:
+    description: string # Detailed task description
+    usage_examples: array # Examples of task usage
+    best_practices: array # Best practices for using task
+    troubleshooting: array # Common issues and solutions
+
+  # Technical documentation
+  technical_docs:
+    implementation_details: string # Implementation details
+    api_documentation: string # API documentation
+    configuration_guide: string # Configuration guide
+    integration_examples: array # Integration examples
+
+  # Change management
+  change_management:
+    changelog: string # Change log
+    version_history: array # Version history
+    migration_guide: string # Migration guide for updates
+    deprecation_notices: array # Deprecation notices
+
+# Metadata and governance
+metadata:
+  # Version information
+  version_info:
+    major_version: integer # Major version number
+    minor_version: integer # Minor version number
+    patch_version: integer # Patch version number
+    release_date: string # Release date
+    build_number: string # Build number
+
+  # Ownership and maintenance
+  governance:
+    owner: string # Task owner
+    maintainers: array # Task maintainers
+    contributors: array # Task contributors
+    reviewers: array # Code reviewers
+
+  # Lifecycle management
+  lifecycle:
+    status: string # "development", "testing", "active", "deprecated"
+    created_date: string # When task was created
+    last_modified: string # When task was last modified
+    deprecation_date: string # When task will be deprecated
+    replacement_task: string # Replacement task if deprecated
+
+  # Classification and organization
+  classification:
+    tags: array # Tags for organization
+    categories: array # Categories for grouping
+    priority: string # Priority level
+    complexity_rating: integer # Complexity rating (1-10)
+    maturity_level: string # "experimental", "beta", "stable", "mature"

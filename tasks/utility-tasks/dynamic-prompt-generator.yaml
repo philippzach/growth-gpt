@@ -1,0 +1,330 @@
+# Dynamic Prompt Generator - Utility Task for Converting Task Specifications to API Prompts
+# Converts task specifications and agent configurations into optimized prompts for LLM API calls
+
+schema_version: "2.0"
+description: "Utility task for generating dynamic, context-aware prompts from task specifications and agent configurations"
+
+# Core task identification
+task:
+  id: "dynamic-prompt-generator"
+  name: "Dynamic Prompt Generation Engine"
+  version: "2.0"
+  description: "Converts agent task specifications into optimized, context-aware prompts for LLM API execution with variable substitution and quality validation"
+  category: "prompt-processing"
+  type: "utility-task"
+  
+  use_cases:
+    - "agent_execution_prompt_generation"
+    - "context_aware_prompt_optimization"
+    - "workflow_stage_prompt_adaptation"
+    - "knowledge_base_prompt_injection"
+  
+  complexity_level: "complex"
+  estimated_duration: "2-5 minutes"
+  requires_user_interaction: false
+
+# Prompt generation engine configuration
+prompt_generation_engine:
+  # Input processing
+  input_processing:
+    required_inputs:
+      - "agent_configuration" # Agent config from agents/ directory
+      - "task_specification" # Task spec from agent task config
+      - "workflow_context" # Current workflow state and context
+      - "user_inputs" # User-provided information and requirements
+    
+    optional_inputs:
+      - "previous_agent_outputs" # Outputs from previous workflow agents
+      - "knowledge_base_content" # Relevant knowledge base sections
+      - "template_configuration" # Template config for output formatting
+      - "personalization_data" # User/business-specific customization data
+    
+    input_validation:
+      - "validate_agent_config_completeness"
+      - "validate_task_spec_format"
+      - "validate_workflow_context_integrity"
+      - "validate_user_input_sufficiency"
+  
+  # Prompt template processing
+  template_processing:
+    template_loading:
+      system_prompt_template: "from_task_config.prompt_generation.templates.system_prompt_template"
+      user_prompt_template: "from_task_config.prompt_generation.templates.user_prompt_template"
+      context_injection_template: "from_task_config.prompt_generation.templates.context_injection_template"
+      knowledge_injection_template: "from_task_config.prompt_generation.templates.knowledge_injection_template"
+    
+    variable_substitution:
+      substitution_engine: "nunjucks_with_custom_filters"
+      variable_sources:
+        agent_config: "agent_configuration.*"
+        task_spec: "task_specification.*"
+        workflow_context: "workflow_context.*"
+        user_data: "user_inputs.*"
+        system_data: "system_generated.*"
+      
+      custom_filters:
+        - "format_list" # Format arrays as bullet points or numbered lists
+        - "format_criteria" # Format success criteria with emphasis
+        - "compress_context" # Compress context while maintaining key information
+        - "format_knowledge" # Format knowledge base content for agent consumption
+        - "format_deliverables" # Format deliverables with clear structure
+    
+    conditional_processing:
+      conditional_sections: "from_task_config.prompt_generation.dynamic_generation.conditional_sections"
+      condition_evaluation: "rule_based_evaluation"
+      section_inclusion_logic: "if_then_else_with_defaults"
+  
+  # Context and knowledge injection
+  context_injection:
+    workflow_context_injection:
+      stage_information: "current_stage_purpose_and_position"
+      previous_outputs: "relevant_previous_agent_outputs"
+      next_stage_requirements: "what_next_agents_need"
+      handoff_context: "context_preparation_requirements"
+    
+    knowledge_base_injection:
+      relevance_scoring: "semantic_similarity_and_keyword_matching"
+      content_selection: "top_k_relevant_sections_with_token_limits"
+      formatting: "structured_sections_with_clear_headings"
+      compression: "intelligent_summarization_while_preserving_key_concepts"
+    
+    personalization_injection:
+      business_context: "industry_stage_size_specific_adaptations"
+      user_experience: "complexity_adjustment_based_on_user_level"
+      cultural_context: "language_and_cultural_adaptations"
+      use_case_context: "specific_use_case_optimizations"
+  
+  # Prompt optimization
+  optimization:
+    token_optimization:
+      target_efficiency: "maximize_information_density_within_limits"
+      compression_techniques: ["redundancy_removal", "summarization", "abbreviation"]
+      priority_preservation: "preserve_critical_information_first"
+    
+    clarity_enhancement:
+      instruction_clarity: "clear_specific_actionable_instructions"
+      structure_optimization: "logical_flow_and_clear_sections"
+      example_inclusion: "relevant_examples_where_helpful"
+    
+    quality_instructions:
+      output_quality_requirements: "specific_quality_standards_and_criteria"
+      format_requirements: "clear_output_format_specifications"
+      validation_instructions: "self_validation_and_quality_check_instructions"
+
+# Prompt validation and quality control
+validation:
+  # Pre-generation validation
+  pre_generation_validation:
+    input_completeness: "ensure_all_required_inputs_present"
+    template_integrity: "validate_template_syntax_and_structure"
+    variable_availability: "ensure_all_template_variables_have_values"
+    constraint_compliance: "validate_against_task_constraints"
+  
+  # Post-generation validation
+  post_generation_validation:
+    prompt_completeness: "ensure_all_sections_populated"
+    token_limits: "validate_against_model_and_task_token_limits"
+    instruction_clarity: "validate_instruction_specificity_and_clarity"
+    context_relevance: "validate_context_relevance_and_accuracy"
+  
+  # Quality scoring
+  quality_scoring:
+    scoring_dimensions:
+      - "instruction_clarity" # How clear and specific are the instructions
+      - "context_relevance" # How relevant is the injected context
+      - "completeness" # Are all required elements present
+      - "optimization" # Is the prompt optimized for efficiency and effectiveness
+      - "consistency" # Is the prompt internally consistent
+    
+    scoring_algorithm: "weighted_composite_score"
+    minimum_quality_threshold: 0.8
+    quality_improvement_suggestions: true
+  
+  # Error handling
+  error_handling:
+    missing_variables: "use_defaults_or_placeholders_with_warnings"
+    template_errors: "fallback_to_simple_template_with_notification"
+    token_limit_exceeded: "intelligent_compression_with_priority_preservation"
+    context_unavailable: "graceful_degradation_with_minimal_context"
+
+# Output generation and formatting
+output_generation:
+  # Prompt structure
+  prompt_structure:
+    system_prompt:
+      sections: ["agent_identity", "task_objective", "deliverables", "success_criteria", "constraints", "workflow_context", "knowledge_base", "output_format", "quality_standards"]
+      formatting: "clear_section_headers_with_structured_content"
+      token_target: "2000-4000_tokens_depending_on_agent_complexity"
+    
+    user_prompt:
+      sections: ["context_summary", "specific_inputs", "task_execution_request"]
+      formatting: "conversational_but_structured"
+      token_target: "500-1500_tokens_depending_on_context"
+    
+    combined_validation:
+      total_token_limit: "validate_against_model_context_window"
+      coherence_check: "ensure_system_and_user_prompts_are_coherent"
+      redundancy_check: "eliminate_unnecessary_repetition"
+  
+  # Output formats
+  output_formats:
+    api_ready_format:
+      system_prompt: "formatted_for_direct_api_consumption"
+      user_prompt: "formatted_for_direct_api_consumption"
+      metadata: "execution_metadata_and_context"
+    
+    debug_format:
+      original_templates: "original_template_content"
+      variable_substitutions: "all_variable_substitutions_made"
+      validation_results: "all_validation_checks_and_results"
+      optimization_applied: "optimization_steps_taken"
+    
+    human_readable_format:
+      formatted_prompts: "well_formatted_for_human_review"
+      explanation: "explanation_of_prompt_generation_decisions"
+      suggestions: "suggestions_for_improvement"
+
+# Performance and caching
+performance:
+  # Caching strategy
+  caching:
+    template_compilation: "cache_compiled_templates_for_reuse"
+    knowledge_base_content: "cache_processed_knowledge_sections"
+    variable_substitutions: "cache_common_variable_combinations"
+    validation_results: "cache_validation_results_for_similar_prompts"
+  
+  # Performance optimization
+  optimization:
+    parallel_processing: "process_independent_sections_in_parallel"
+    lazy_loading: "load_knowledge_base_content_only_when_needed"
+    batch_processing: "process_multiple_similar_prompts_together"
+    incremental_updates: "update_only_changed_sections_when_possible"
+  
+  # Resource management
+  resource_management:
+    memory_optimization: "efficient_memory_usage_for_large_contexts"
+    cpu_optimization: "optimized_algorithms_for_template_processing"
+    storage_optimization: "compressed_storage_of_cached_content"
+
+# Integration with workflow system
+workflow_integration:
+  # Workflow coordination
+  coordination:
+    trigger_conditions: ["before_agent_execution", "context_change_detected", "template_update_required"]
+    execution_timing: "just_in_time_prompt_generation"
+    failure_handling: "fallback_to_cached_or_default_prompts"
+  
+  # Context management
+  context_management:
+    context_sources: ["workflow_state", "previous_outputs", "user_session", "system_configuration"]
+    context_processing: "intelligent_context_selection_and_formatting"
+    context_caching: "cache_processed_context_for_efficiency"
+  
+  # Quality integration
+  quality_integration:
+    quality_feedback_loop: "incorporate_execution_results_into_prompt_optimization"
+    continuous_improvement: "learn_from_successful_prompt_patterns"
+    a_b_testing: "support_for_prompt_variant_testing"
+
+# Monitoring and analytics
+monitoring:
+  # Performance metrics
+  performance_metrics:
+    generation_time: "time_to_generate_prompts"
+    quality_scores: "prompt_quality_assessment_scores"
+    success_rates: "successful_prompt_generation_rates"
+    optimization_effectiveness: "impact_of_optimization_techniques"
+  
+  # Usage analytics
+  usage_analytics:
+    template_usage: "which_templates_are_used_most_frequently"
+    variable_patterns: "common_variable_substitution_patterns"
+    optimization_impact: "effectiveness_of_different_optimization_techniques"
+    error_patterns: "common_errors_and_failure_modes"
+  
+  # Quality tracking
+  quality_tracking:
+    prompt_effectiveness: "correlation_between_prompt_quality_and_agent_performance"
+    user_satisfaction: "user_satisfaction_with_generated_prompts"
+    continuous_improvement: "identification_of_improvement_opportunities"
+
+# Configuration and customization
+configuration:
+  # Default settings
+  default_settings:
+    token_optimization: true
+    clarity_enhancement: true
+    context_compression: true
+    quality_validation: true
+    caching_enabled: true
+  
+  # Customization options
+  customization_options:
+    agent_specific_overrides: "allow_agent_specific_prompt_generation_settings"
+    workflow_specific_settings: "different_settings_for_different_workflows"
+    user_preferences: "user_configurable_prompt_generation_preferences"
+    environment_settings: "different_settings_for_dev_staging_prod"
+  
+  # Advanced configuration
+  advanced_configuration:
+    custom_filters: "support_for_custom_template_filters"
+    custom_validators: "support_for_custom_validation_rules"
+    custom_optimizers: "support_for_custom_optimization_techniques"
+    plugin_architecture: "extensible_plugin_system_for_custom_functionality"
+
+# Documentation and usage
+documentation:
+  usage_guide: |
+    The Dynamic Prompt Generator converts task specifications into optimized LLM prompts:
+    
+    1. Input Processing: Loads agent config, task spec, workflow context, and user inputs
+    2. Template Processing: Applies variable substitution to prompt templates
+    3. Context Injection: Adds relevant workflow context and knowledge base content
+    4. Optimization: Optimizes prompts for clarity, efficiency, and effectiveness
+    5. Validation: Validates prompts for completeness, quality, and compliance
+    6. Output Generation: Produces API-ready prompts with metadata
+    
+    Key benefits:
+    - Consistent prompt quality across all agents
+    - Context-aware prompt adaptation
+    - Automatic optimization for efficiency and effectiveness
+    - Quality validation and improvement suggestions
+    - Integration with workflow orchestration system
+  
+  best_practices:
+    - "Define clear task specifications with specific deliverables"
+    - "Use structured prompt templates with proper variable substitution"
+    - "Include relevant context and knowledge base content"
+    - "Validate prompts before API execution"
+    - "Monitor prompt effectiveness and continuously improve"
+  
+  troubleshooting:
+    - "If prompts are too long, enable token optimization"
+    - "If prompts are unclear, enhance clarity settings"
+    - "If context is missing, check context injection configuration"
+    - "If quality is low, review validation settings and requirements"
+
+# Metadata and governance
+metadata:
+  version_info:
+    major_version: 2
+    minor_version: 0
+    patch_version: 0
+    release_date: "2024-01-15"
+  
+  governance:
+    owner: "prompt_engineering_team"
+    maintainers: ["system_architects", "ai_specialists"]
+    contributors: ["agent_developers", "workflow_designers"]
+  
+  lifecycle:
+    status: "active"
+    created_date: "2024-01-15"
+    last_modified: "2024-01-15"
+  
+  classification:
+    tags: ["prompt-generation", "ai-integration", "workflow-utility", "quality-control"]
+    categories: ["utility-tasks", "ai-processing"]
+    priority: "critical"
+    complexity_rating: 9
+    maturity_level: "stable"

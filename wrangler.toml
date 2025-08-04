@@ -1,0 +1,94 @@
+# Cloudflare Workers Configuration
+name = "growth-strategy-system"
+main = "src/workers/chat-gateway.ts"
+compatibility_date = "2024-01-15"
+compatibility_flags = ["nodejs_compat"]
+
+# Environment Variables
+[vars]
+ENVIRONMENT = "development"
+# Add your Supabase credentials here:
+SUPABASE_URL = "https://bnqjkqxfvotzbkvyhyvq.supabase.co"
+SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJucWprcXhmdm90emJrdnloeXZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQwNjQ0NzUsImV4cCI6MjA2OTY0MDQ3NX0.-uUUHOXEQpQ_b3J37rSZNGHgXfXoxLx_Xk4SYcSIm9E"
+SUPABASE_SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJucWprcXhmdm90emJrdnloeXZxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NDA2NDQ3NSwiZXhwIjoyMDY5NjQwNDc1fQ.9Jsii-6f_eF8K2LXaQJCZSvNoQYal1d1wV50jwEYQrA"
+# Add your other credentials:
+ANTHROPIC_API_KEY = "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"
+WEBHOOK_SECRET = "M8367IsjzZvy6SjB1v5uDGWNAp38UlEoYyzY4bWu7Yk*"
+
+# KV Namespaces for configuration storage
+[[kv_namespaces]]
+binding = "CONFIG_STORE"
+id = "e741dd4d5e924b78a4b79698f4003317"
+
+[[kv_namespaces]]
+binding = "SESSION_STORE"
+id = "940ab5b9be764ec5b59c17bc62788b98"
+
+
+# Durable Objects for session state management
+[[durable_objects.bindings]]
+name = "SESSION_STATE"
+class_name = "SessionStateManager"
+script_name = "growth-strategy-system"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["SessionStateManager"]
+
+# Environment-specific configurations
+[env.development]
+name = "growth-strategy-system-dev"
+vars = { ENVIRONMENT = "development" }
+
+[env.staging]
+name = "growth-strategy-system-staging"
+vars = { ENVIRONMENT = "staging" }
+
+[env.production]
+name = "growth-strategy-system"
+vars = { ENVIRONMENT = "production" }
+
+# Build configuration
+[build]
+command = "npm run build"
+
+# Worker Services for individual agents
+[[services]]
+binding = "GTM_CONSULTANT"
+service = "gtm-consultant-worker"
+environment = "production"
+
+[[services]]
+binding = "PERSONA_STRATEGIST"
+service = "persona-strategist-worker"
+environment = "production"
+
+[[services]]
+binding = "PRODUCT_MANAGER"
+service = "product-manager-worker"
+environment = "production"
+
+[[services]]
+binding = "GROWTH_MANAGER"
+service = "growth-manager-worker"
+environment = "production"
+
+[[services]]
+binding = "HEAD_OF_ACQUISITION"
+service = "head-of-acquisition-worker"
+environment = "production"
+
+[[services]]
+binding = "HEAD_OF_RETENTION"
+service = "head-of-retention-worker"
+environment = "production"
+
+[[services]]
+binding = "VIRAL_GROWTH_ARCHITECT"
+service = "viral-growth-architect-worker"
+environment = "production"
+
+[[services]]
+binding = "GROWTH_HACKER"
+service = "growth-hacker-worker"
+environment = "production"

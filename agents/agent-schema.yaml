@@ -1,0 +1,179 @@
+# Agent Schema v2.0 - Standardized Configuration for Anthropic API Integration
+# This schema defines the structure for all growth strategy agents
+
+schema_version: "2.0"
+description: "Standardized agent configuration for Growth & Marketing Strategy AI Agents integrated with Anthropic Claude API"
+
+# Core agent identification and metadata
+agent:
+  id: string              # Unique identifier (e.g., "gtm-consultant")
+  name: string            # Human-friendly name (e.g., "Angelina")
+  title: string           # Professional title (e.g., "Go-To-Market Consultant")
+  version: string         # Agent version for tracking updates
+  icon: string            # Emoji or icon for UI representation
+  description: string     # Brief description of agent purpose
+  whenToUse: string       # Clear guidance on when to use this agent
+
+# Anthropic Claude API configuration
+claude_config:
+  model: string           # Claude model to use (e.g., "claude-3-5-sonnet-20241022")
+  temperature: float      # Temperature setting (0.0-1.0)
+  max_tokens: integer     # Maximum response tokens
+  top_p: float           # Optional: top_p parameter
+  top_k: integer         # Optional: top_k parameter
+  stop_sequences: array   # Optional: custom stop sequences
+
+# Agent persona and behavior definition
+persona:
+  role: string                    # Primary professional role
+  identity: string               # Core identity statement
+  style: string                  # Communication style descriptors
+  focus: string                  # Primary areas of focus
+  personality_traits: array      # List of personality characteristics
+  
+  core_principles: array         # Fundamental principles the agent follows
+  # Example: "Value Proposition Excellence - Design products people actually want"
+  
+  behavioral_guidelines:
+    communication_style: string  # How the agent communicates
+    interaction_patterns: array  # Specific interaction behaviors
+    decision_making: string      # How agent makes decisions
+    problem_solving: string      # Problem-solving approach
+
+# System prompt construction
+system_prompt:
+  base_template: string         # Path to base prompt template file
+  dynamic_sections:             # Sections that change based on context
+    context_awareness: boolean  # Include workflow context
+    knowledge_injection: boolean # Inject relevant knowledge base content
+    template_awareness: boolean  # Include output template structure
+    previous_outputs: boolean   # Include previous agent outputs
+  
+  prompt_sections:
+    identity: string            # Core identity prompt section
+    expertise: string           # Expertise and skills section
+    principles: string          # Core principles section
+    behavior: string           # Behavioral guidelines section
+    output_format: string      # Output formatting instructions
+
+# Knowledge base integration
+knowledge_domains:
+  primary: array              # Primary knowledge base files/sections
+  secondary: array            # Secondary reference materials
+  dynamic_injection:          # Rules for automatic knowledge injection
+    relevance_threshold: float # Minimum relevance score (0.0-1.0)
+    max_tokens: integer       # Maximum tokens for injected knowledge
+    prioritization: string    # How to prioritize knowledge ("recent", "relevant", "comprehensive")
+
+# Workflow integration specifications
+workflow:
+  stage: string               # Workflow stage this agent operates in
+  sequence_order: integer     # Order in workflow sequence
+  
+  inputs:
+    required: array           # Required inputs from previous agents
+    optional: array           # Optional inputs that enhance performance
+    user_inputs: array        # Direct user inputs needed
+  
+  outputs:
+    primary: string           # Primary output filename/type
+    secondary: array          # Additional outputs this agent creates
+    format: string            # Output format (markdown, json, yaml)
+  
+  handoff_context: string     # Context provided to next agent
+  quality_gates: array       # Quality checks before proceeding
+
+# Tools and capabilities
+tools:
+  available: array            # Tools this agent can use
+  templates:
+    primary: string           # Primary template for output generation
+    fallback: string          # Fallback template if primary fails
+    custom: array            # Custom templates for specific scenarios
+  
+  external_apis: object       # External API integrations
+  # Example:
+  # market_data:
+  #   provider: "example_api"
+  #   required: false
+  #   rate_limit: "100/hour"
+
+# Validation and quality control
+validation:
+  required_outputs: array     # Must-have elements in output
+  quality_checks: array       # Quality validation rules
+  success_criteria: array     # Criteria for successful completion
+  
+  error_handling:
+    retry_attempts: integer   # Number of retry attempts on failure
+    fallback_behavior: string # What to do if all retries fail
+    escalation_rules: array   # When to escalate to human
+
+# Performance optimization
+performance:
+  context_window_usage: string    # "low", "medium", "high"
+  typical_response_length: integer # Average response length in tokens
+  processing_time: string         # Expected processing time category
+  
+  caching:
+    cache_responses: boolean      # Whether to cache responses
+    cache_duration: string        # Cache duration (e.g., "1h", "1d")
+    cache_keys: array            # What to use as cache keys
+  
+  streaming:
+    supports_streaming: boolean   # Whether agent supports streaming
+    streaming_mode: string        # "incremental", "section-based", "none"
+
+# Dependencies and relationships
+dependencies:
+  tasks: array                # Task files this agent can execute
+  templates: array            # Template files this agent uses
+  data: array                # Data files this agent references
+  other_agents: array         # Other agents this one collaborates with
+
+# Monitoring and analytics
+monitoring:
+  log_level: string           # "debug", "info", "warn", "error"
+  track_metrics: array        # Metrics to track
+  # Examples: "response_time", "token_usage", "output_quality_score", "user_satisfaction"
+  
+  performance_alerts:
+    response_time_threshold: integer  # Alert if response takes longer (seconds)
+    error_rate_threshold: float       # Alert if error rate exceeds (percentage)
+    token_usage_threshold: integer    # Alert if token usage exceeds limit
+
+# Integration hooks
+integration:
+  webhooks:
+    on_start: string          # Webhook URL to call when agent starts
+    on_completion: string     # Webhook URL to call when agent completes
+    on_error: string         # Webhook URL to call on error
+  
+  lifecycle_hooks:
+    pre_execution: array      # Actions to take before execution
+    post_execution: array     # Actions to take after execution
+    on_failure: array        # Actions to take on failure
+
+# Customization options
+customization:
+  user_configurable: array   # Parameters users can modify
+  organization_overrides: object # Org-specific configuration overrides
+  environment_specific: object   # Environment-specific settings (dev/staging/prod)
+
+# Example agent-specific extensions
+extensions:
+  custom_fields: object     # Agent-specific custom configuration
+  # This allows each agent to define unique properties not covered above
+
+# Metadata for management
+metadata:
+  created_date: string      # ISO 8601 date
+  last_updated: string      # ISO 8601 date
+  created_by: string        # Creator identifier
+  tags: array              # Tags for categorization and search
+  status: string           # "active", "deprecated", "experimental"
+  
+  documentation:
+    readme: string          # Link to detailed documentation
+    examples: array         # Example usage scenarios
+    changelog: string       # Link to version changelog

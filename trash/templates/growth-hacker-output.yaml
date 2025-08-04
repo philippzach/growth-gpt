@@ -1,0 +1,815 @@
+# =============================================================================
+# GROWTH HACKER OUTPUT TEMPLATE - Schema v2.0
+# =============================================================================
+
+---
+# Growth Hacker Output Template - Schema v2.0 Implementation
+# Comprehensive template for Growth Hacker agent output with experimentation framework and testing roadmap
+
+template:
+  id: 'growth-hacker-output-v2'
+  name: 'Growth Experimentation Framework & Testing Roadmap Results'
+  version: '2.0'
+  description: 'Comprehensive template for growth experimentation with hypothesis formation and testing methodology'
+  category: 'validation'
+  type: 'output'
+  agent_compatibility: ['growth-hacker']
+  workflow_stages: ['validation']
+
+# Key sections for Growth Hacker
+sections:
+  # Document Header
+  - section_id: 'document_header'
+    title: null
+    order: 1
+    required: true
+    content_type: 'template'
+    content: |
+      # Growth Experimentation Framework & Testing Roadmap: {{project_name}}
+
+      **Session Date:** {{session_date}}
+      **Facilitator:** {{agent_name}} ({{agent_role}})
+      **Project:** {{project_name}}
+      **Business Stage:** {{business_stage}}
+
+    variables:
+      - variable_name: 'agent_name'
+        default_value: 'Zara'
+        description: 'Growth Hacker agent name'
+      - variable_name: 'agent_role'
+        default_value: 'Growth Experimentation Lead'
+
+  # Executive Summary
+  - section_id: 'executive_summary'
+    title: 'Executive Summary'
+    order: 2
+    required: true
+    content_type: 'template'
+    content: |
+      **Experimentation Philosophy:** {{experimentation_philosophy}}
+
+      **Primary Growth Hypothesis:** {{primary_hypothesis}}
+
+      **Testing Velocity Target:** {{testing_velocity}}
+
+      **Expected Learning Rate:** {{learning_rate}}
+
+      **Resource Allocation:** {{resource_allocation}}
+
+      **Implementation Timeline:** {{implementation_timeline}}
+
+  # Growth Hypothesis Framework
+  - section_id: 'hypothesis_framework'
+    title: 'Growth Hypothesis Framework'
+    order: 3
+    required: true
+
+    subsections:
+      - section_id: 'hypothesis_generation'
+        title: 'Hypothesis Generation Methodology'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Hypothesis Generation Process:**
+          {{hypothesis_generation_process}}
+
+          **Data Sources for Hypothesis:**
+          {{#data_sources}}
+          - **{{source_name}}**: {{source_description}}
+            - Insights Generated: {{insights_generated}}
+            - Confidence Level: {{confidence_level}}
+          {{/data_sources}}
+
+          **Hypothesis Categories:**
+          {{#hypothesis_categories}}
+          - **{{category}}**: {{category_description}}
+            - Priority Level: {{priority_level}}
+            - Testing Complexity: {{testing_complexity}}
+          {{/hypothesis_categories}}
+
+          **Hypothesis Validation Criteria:**
+          {{hypothesis_validation_criteria}}
+
+      - section_id: 'priority_hypotheses'
+        title: 'Priority Growth Hypotheses'
+        order: 2
+        repeatable: true
+        content_type: 'template'
+        content: |
+          **Hypothesis #{{hypothesis_number}}**
+
+          **Statement:** {{hypothesis_statement}}
+
+          **Rationale:** {{hypothesis_rationale}}
+
+          **Supporting Evidence:**
+          {{#supporting_evidence}}
+          - {{evidence}}
+          {{/supporting_evidence}}
+
+          **Success Criteria:**
+          - Primary Metric: {{primary_metric}}
+          - Secondary Metrics: {{secondary_metrics}}
+          - Minimum Detectable Effect: {{minimum_effect}}
+          - Statistical Significance: {{significance_level}}
+
+          **Risk Assessment:**
+          - Risk Level: {{risk_level}}
+          - Potential Downside: {{potential_downside}}
+          - Mitigation Strategy: {{mitigation_strategy}}
+
+          **Resource Requirements:**
+          - Time Investment: {{time_investment}}
+          - Team Resources: {{team_resources}}
+          - Budget Requirements: {{budget_requirements}}
+
+  # Experimentation Framework
+  - section_id: 'experimentation_framework'
+    title: 'Experimentation Framework & Methodology'
+    order: 4
+    required: true
+
+    subsections:
+      - section_id: 'experiment_design'
+        title: 'Experiment Design Principles'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Design Methodology:**
+          {{design_methodology}}
+
+          **Statistical Framework:**
+          - Confidence Level: {{confidence_level}}
+          - Power: {{statistical_power}}
+          - Sample Size Calculation: {{sample_size_method}}
+          - Duration Calculation: {{duration_method}}
+
+          **Experiment Types:**
+          {{#experiment_types}}
+          - **{{type_name}}**: {{type_description}}
+            - Use Cases: {{use_cases}}
+            - Complexity Level: {{complexity_level}}
+            - Typical Duration: {{typical_duration}}
+          {{/experiment_types}}
+
+          **Quality Gates:**
+          {{#quality_gates}}
+          - {{gate_name}}: {{gate_criteria}}
+          {{/quality_gates}}
+
+      - section_id: 'measurement_framework'
+        title: 'Measurement & Analytics Framework'
+        order: 2
+        content_type: 'template'
+        content: |
+          **Measurement Philosophy:**
+          {{measurement_philosophy}}
+
+          **Key Metrics Hierarchy:**
+          {{#metrics_hierarchy}}
+          - **{{metric_level}}**: {{metric_description}}
+            - Metrics: {{level_metrics}}
+            - Measurement Frequency: {{measurement_frequency}}
+            - Responsible Team: {{responsible_team}}
+          {{/metrics_hierarchy}}
+
+          **Analytics Infrastructure:**
+          {{#analytics_tools}}
+          - **{{tool_name}}**: {{tool_purpose}}
+            - Implementation Status: {{implementation_status}}
+            - Data Quality Score: {{data_quality_score}}
+          {{/analytics_tools}}
+
+          **Reporting & Dashboards:**
+          {{#reporting_setup}}
+          - **{{report_name}}**: {{report_purpose}}
+            - Frequency: {{report_frequency}}
+            - Audience: {{report_audience}}
+            - Key Insights: {{key_insights}}
+          {{/reporting_setup}}
+
+  # Testing Roadmap
+  - section_id: 'testing_roadmap'
+    title: 'Growth Testing Roadmap'
+    order: 5
+    required: true
+
+    subsections:
+      - section_id: 'immediate_tests'
+        title: 'Immediate Priority Tests (Next 30 Days)'
+        order: 1
+        repeatable: true
+        content_type: 'template'
+        content: |
+          **Test Name:** {{test_name}}
+
+          **Hypothesis:** {{test_hypothesis}}
+
+          **Test Design:**
+          - Type: {{test_type}}
+          - Duration: {{test_duration}}
+          - Sample Size: {{sample_size}}
+          - Traffic Split: {{traffic_split}}
+
+          **Implementation Requirements:**
+          - Engineering Effort: {{engineering_effort}}
+          - Design Requirements: {{design_requirements}}
+          - Analytics Setup: {{analytics_setup}}
+
+          **Success Criteria:**
+          - Primary KPI: {{primary_kpi}}
+          - Success Threshold: {{success_threshold}}
+          - Secondary Metrics: {{secondary_metrics}}
+
+          **Risk Mitigation:**
+          {{#risk_mitigation}}
+          - {{risk}}: {{mitigation}}
+          {{/risk_mitigation}}
+
+      - section_id: 'medium_term_tests'
+        title: 'Medium-Term Tests (30-90 Days)'
+        order: 2
+        content_type: 'template'
+        formatting:
+          type: 'bullet-list'
+        content: |
+          {{#medium_term_tests}}
+          - **{{test_name}}**
+            - Hypothesis: {{hypothesis}}
+            - Expected Impact: {{expected_impact}}
+            - Complexity: {{complexity_level}}
+            - Dependencies: {{dependencies}}
+            - Timeline: {{timeline}}
+          {{/medium_term_tests}}
+
+      - section_id: 'long_term_experiments'
+        title: 'Long-Term Experiments (90+ Days)'
+        order: 3
+        content_type: 'template'
+        formatting:
+          type: 'bullet-list'
+        content: |
+          {{#long_term_experiments}}
+          - **{{experiment_name}}**
+            - Strategic Value: {{strategic_value}}
+            - Resource Investment: {{resource_investment}}
+            - Expected Learning: {{expected_learning}}
+            - Success Probability: {{success_probability}}
+          {{/long_term_experiments}}
+
+  # Funnel-Specific Testing
+  - section_id: 'funnel_testing'
+    title: 'Funnel-Specific Testing Strategy'
+    order: 6
+    required: true
+
+    subsections:
+      - section_id: 'awareness_testing'
+        title: 'Awareness Stage Testing'
+        order: 1
+        content_type: 'template'
+        content: |
+          **Testing Focus Areas:**
+          {{#awareness_focus_areas}}
+          - {{focus_area}}: {{area_description}}
+          {{/awareness_focus_areas}}
+
+          **Key Experiments:**
+          {{#awareness_experiments}}
+          - **{{experiment_name}}**: {{experiment_description}}
+            - Hypothesis: {{hypothesis}}
+            - Success Metric: {{success_metric}}
+            - Timeline: {{timeline}}
+          {{/awareness_experiments}}
+
+          **Testing Methodology:**
+          {{awareness_testing_methodology}}
+
+      - section_id: 'acquisition_testing'
+        title: 'Acquisition Stage Testing'
+        order: 2
+        content_type: 'template'
+        content: |
+          **Testing Focus Areas:**
+          {{#acquisition_focus_areas}}
+          - {{focus_area}}: {{area_description}}
+          {{/acquisition_focus_areas}}
+
+          **Key Experiments:**
+          {{#acquisition_experiments}}
+          - **{{experiment_name}}**: {{experiment_description}}
+            - Hypothesis: {{hypothesis}}
+            - Success Metric: {{success_metric}}
+            - Timeline: {{timeline}}
+          {{/acquisition_experiments}}
+
+          **Channel-Specific Testing:**
+          {{#channel_testing}}
+          - **{{channel_name}}**: {{testing_approach}}
+          {{/channel_testing}}
+
+      - section_id: 'activation_testing'
+        title: 'Activation Stage Testing'
+        order: 3
+        content_type: 'template'
+        content: |
+          **Testing Focus Areas:**
+          {{#activation_focus_areas}}
+          - {{focus_area}}: {{area_description}}
+          {{/activation_focus_areas}}
+
+          **Key Experiments:**
+          {{#activation_experiments}}
+          - **{{experiment_name}}**: {{experiment_description}}
+            - Hypothesis: {{hypothesis}}
+            - Success Metric: {{success_metric}}
+            - Timeline: {{timeline}}
+          {{/activation_experiments}}
+
+          **Aha Moment Optimization:**
+          {{aha_moment_optimization}}
+
+      - section_id: 'retention_testing'
+        title: 'Retention Stage Testing'
+        order: 4
+        content_type: 'template'
+        content: |
+          **Testing Focus Areas:**
+          {{#retention_focus_areas}}
+          - {{focus_area}}: {{area_description}}
+          {{/retention_focus_areas}}
+
+          **Key Experiments:**
+          {{#retention_experiments}}
+          - **{{experiment_name}}**: {{experiment_description}}
+            - Hypothesis: {{hypothesis}}
+            - Success Metric: {{success_metric}}
+            - Timeline: {{timeline}}
+          {{/retention_experiments}}
+
+          **Churn Prevention Testing:**
+          {{churn_prevention_testing}}
+
+      - section_id: 'revenue_testing'
+        title: 'Revenue Stage Testing'
+        order: 5
+        content_type: 'template'
+        content: |
+          **Testing Focus Areas:**
+          {{#revenue_focus_areas}}
+          - {{focus_area}}: {{area_description}}
+          {{/revenue_focus_areas}}
+
+          **Key Experiments:**
+          {{#revenue_experiments}}
+          - **{{experiment_name}}**: {{experiment_description}}
+            - Hypothesis: {{hypothesis}}
+            - Success Metric: {{success_metric}}
+            - Timeline: {{timeline}}
+          {{/revenue_experiments}}
+
+          **Monetization Optimization:**
+          {{monetization_optimization}}
+
+  # Learning Framework
+  - section_id: 'learning_framework'
+    title: 'Learning Framework & Knowledge Management'
+    order: 7
+    required: true
+
+    content_type: 'template'
+    content: |
+      **Learning Philosophy:**
+      {{learning_philosophy}}
+
+      **Knowledge Capture Process:**
+      {{knowledge_capture_process}}
+
+      **Learning Categories:**
+      {{#learning_categories}}
+      - **{{category}}**: {{category_description}}
+        - Documentation Method: {{documentation_method}}
+        - Sharing Process: {{sharing_process}}
+      {{/learning_categories}}
+
+      **Success & Failure Analysis:**
+      {{success_failure_analysis}}
+
+      **Knowledge Sharing Mechanisms:**
+      {{#sharing_mechanisms}}
+      - {{mechanism}}: {{mechanism_description}}
+      {{/sharing_mechanisms}}
+
+      **Continuous Improvement Process:**
+      {{continuous_improvement_process}}
+
+  # Resource Planning
+  - section_id: 'resource_planning'
+    title: 'Resource Planning & Capacity Management'
+    order: 8
+    required: true
+
+    content_type: 'template'
+    content: |
+      **Team Structure:**
+      {{#team_roles}}
+      - **{{role_name}}**: {{role_description}}
+        - Time Allocation: {{time_allocation}}
+        - Key Responsibilities: {{key_responsibilities}}
+        - Skills Required: {{skills_required}}
+      {{/team_roles}}
+
+      **Tool & Platform Requirements:**
+      {{#required_tools}}
+      - **{{tool_name}}**: {{tool_purpose}}
+        - Cost: {{tool_cost}}
+        - Implementation Timeline: {{implementation_timeline}}
+        - Training Required: {{training_required}}
+      {{/required_tools}}
+
+      **Budget Allocation:**
+      - Testing Budget: {{testing_budget}}
+      - Tool Licenses: {{tool_licenses}}
+      - External Resources: {{external_resources}}
+      - Total Monthly Cost: {{total_monthly_cost}}
+
+      **Capacity Planning:**
+      {{capacity_planning_approach}}
+
+  # Implementation Guidelines
+  - section_id: 'implementation_guidelines'
+    title: 'Implementation Guidelines & Best Practices'
+    order: 9
+    required: true
+
+    content_type: 'template'
+    content: |
+      **Implementation Methodology:**
+      {{implementation_methodology}}
+
+      **Phase 1 - Setup & Foundation (Weeks 1-2):**
+      {{#phase1_tasks}}
+      - {{task}}: {{task_description}}
+      {{/phase1_tasks}}
+
+      **Phase 2 - Initial Testing (Weeks 3-6):**
+      {{#phase2_tasks}}
+      - {{task}}: {{task_description}}
+      {{/phase2_tasks}}
+
+      **Phase 3 - Optimization & Scale (Weeks 7+):**
+      {{#phase3_tasks}}
+      - {{task}}: {{task_description}}
+      {{/phase3_tasks}}
+
+      **Quality Assurance Process:**
+      {{quality_assurance_process}}
+
+      **Risk Management:**
+      {{#implementation_risks}}
+      - **{{risk}}**: {{mitigation_strategy}}
+      {{/implementation_risks}}
+
+  # Success Metrics & KPIs
+  - section_id: 'success_metrics'
+    title: 'Success Metrics & Performance KPIs'
+    order: 10
+    required: true
+
+    content_type: 'template'
+    content: |
+      **Experimentation Program KPIs:**
+      {{#program_kpis}}
+      - **{{kpi_name}}**: {{current_baseline}} → {{target_value}}
+        - Calculation: {{calculation_method}}
+        - Frequency: {{measurement_frequency}}
+        - Owner: {{kpi_owner}}
+      {{/program_kpis}}
+
+      **Learning Velocity Metrics:**
+      {{#learning_metrics}}
+      - {{metric}}: {{metric_definition}}
+      {{/learning_metrics}}
+
+      **Business Impact Metrics:**
+      {{#impact_metrics}}
+      - {{metric}}: {{expected_impact}}
+      {{/impact_metrics}}
+
+      **Reporting Schedule:**
+      - Daily: {{daily_metrics}}
+      - Weekly: {{weekly_reports}}
+      - Monthly: {{monthly_reviews}}
+      - Quarterly: {{quarterly_assessments}}
+
+  # Next Steps & Final Recommendations
+  - section_id: 'next_steps'
+    title: 'Next Steps & Strategic Recommendations'
+    order: 11
+    required: true
+
+    content_type: 'template'
+    content: |
+      **Immediate Actions (Next 7 Days):**
+      {{#immediate_actions}}
+      - **{{action}}**: {{owner}} - {{completion_date}}
+        - Success Criteria: {{success_criteria}}
+        - Dependencies: {{dependencies}}
+      {{/immediate_actions}}
+
+      **30-Day Milestones:**
+      {{#thirty_day_milestones}}
+      - {{milestone}}: {{milestone_description}}
+      {{/thirty_day_milestones}}
+
+      **90-Day Objectives:**
+      {{#ninety_day_objectives}}
+      - {{objective}}: {{objective_description}}
+      {{/ninety_day_objectives}}
+
+      **Strategic Recommendations:**
+      {{#strategic_recommendations}}
+      - **{{recommendation}}**: {{recommendation_rationale}}
+        - Expected Impact: {{expected_impact}}
+        - Implementation Complexity: {{implementation_complexity}}
+        - Priority Level: {{priority_level}}
+      {{/strategic_recommendations}}
+
+      **Long-Term Vision:**
+      {{long_term_vision}}
+
+      **Success Indicators:**
+      {{#success_indicators}}
+      - {{indicator}}: {{indicator_threshold}}
+      {{/success_indicators}}
+
+# Variable management and data binding for all templates
+variables:
+  global_variables:
+    current_date: '{{current_timestamp}}'
+    agent_version: '2.0'
+    template_version: '2.0'
+
+  sources:
+    agent_outputs: true
+    user_inputs: true
+    workflow_context: true
+    external_apis: false
+
+  processing:
+    auto_extraction: true
+    type_conversion: true
+    validation: true
+    sanitization: true
+
+  binding:
+    late_binding: true
+    dynamic_binding: true
+    context_awareness: true
+
+  defaults:
+    strategy: 'context_based'
+    placeholder_pattern: '[{{variable_name}}]'
+    missing_variable_behavior: 'substitute'
+
+# Content generation and AI integration for all templates
+content_generation:
+  ai_generation:
+    enabled: true
+    model_preferences: ['claude-3-5-sonnet-20241022']
+    quality_thresholds:
+      completeness: 0.9
+      strategic_depth: 0.85
+      actionability: 0.85
+      scientific_rigor: 0.9 # Higher for Growth Hacker
+
+  enhancement:
+    grammar_checking: true
+    style_consistency: true
+    fact_checking: false
+    readability_optimization: true
+
+  validation:
+    schema_validation: true
+    content_completeness: true
+    variable_consistency: true
+    format_compliance: true
+
+# Quality assurance and validation for all templates
+quality_assurance:
+  quality_checks:
+    completeness: true
+    consistency: true
+    strategic_depth: true
+    actionability: true
+    scientific_rigor: true # Especially important for Growth Hacker
+
+  validation_rules:
+    required_sections:
+      head_of_acquisition:
+        [
+          'channel_strategy',
+          'campaign_frameworks',
+          'budget_roi',
+          'scaling_strategy',
+        ]
+      head_of_retention:
+        [
+          'lifecycle_mapping',
+          'engagement_programs',
+          'retention_strategies',
+          'customer_success',
+        ]
+      viral_growth_architect:
+        [
+          'viral_loops',
+          'network_effects',
+          'referral_programs',
+          'implementation_roadmap',
+        ]
+      growth_hacker:
+        [
+          'hypothesis_framework',
+          'experimentation_framework',
+          'testing_roadmap',
+          'learning_framework',
+        ]
+
+    minimum_content_length:
+      acquisition_strategy: 500
+      retention_strategy: 450
+      viral_strategy: 400
+      experimentation_framework: 600
+
+  scoring:
+    enabled: true
+    scoring_criteria:
+      - 'strategic_alignment'
+      - 'implementation_feasibility'
+      - 'measurement_quality'
+      - 'actionability'
+      - 'innovation_level'
+    minimum_score: 0.8
+    improvement_suggestions: true
+
+# Metadata and governance for all templates
+metadata:
+  version_info:
+    major_version: 2
+    minor_version: 0
+    patch_version: 0
+    release_date: '2024-01-15'
+
+  governance:
+    owner: 'growth_strategy_team'
+    maintainers:
+      [
+        'acquisition_specialist',
+        'retention_specialist',
+        'viral_growth_specialist',
+        'experimentation_specialist',
+      ]
+    contributors: ['growth_team', 'data_analysts', 'product_managers']
+
+  lifecycle:
+    status: 'active'
+    deprecation_date: null
+    replacement_template: null
+
+  classification:
+    tags:
+      acquisition:
+        [
+          'customer-acquisition',
+          'channel-optimization',
+          'campaign-management',
+          'budget-allocation',
+        ]
+      retention:
+        [
+          'customer-retention',
+          'lifecycle-optimization',
+          'engagement-programs',
+          'churn-prevention',
+        ]
+      viral:
+        ['viral-growth', 'network-effects', 'referral-programs', 'viral-loops']
+      experimentation:
+        [
+          'growth-hacking',
+          'experimentation',
+          'hypothesis-testing',
+          'data-driven-growth',
+        ]
+    categories: ['strategy_templates', 'output_templates', 'growth_templates']
+    maturity_level: 'stable'
+    usage_frequency: 'frequent'
+
+# Workflow integration specifications
+workflow_integration:
+  agent_sequence:
+    - head_of_acquisition: 5
+    - head_of_retention: 6
+    - viral_growth_architect: 7
+    - growth_hacker: 8
+
+  context_handoffs:
+    acquisition_to_retention:
+      - customer_quality_metrics
+      - acquisition_cost_data
+      - channel_performance_insights
+      - customer_onboarding_requirements
+
+    retention_to_viral:
+      - customer_satisfaction_data
+      - engagement_patterns
+      - advocacy_opportunities
+      - network_potential_assessment
+
+    viral_to_experimentation:
+      - viral_hypotheses
+      - network_effect_assumptions
+      - referral_program_concepts
+      - sharing_behavior_insights
+
+  template_dependencies:
+    all_templates_require:
+      - gtm_strategy_foundation
+      - customer_persona_insights
+      - product_positioning_framework
+      - growth_funnel_metrics
+
+    acquisition_requires:
+      - growth_funnel_awareness_metrics
+      - persona_behavioral_insights
+      - brand_positioning_framework
+
+    retention_requires:
+      - acquisition_quality_metrics
+      - customer_journey_mapping
+      - activation_success_criteria
+
+    viral_requires:
+      - retention_engagement_patterns
+      - customer_satisfaction_levels
+      - network_density_analysis
+
+    experimentation_requires:
+      - all_previous_agent_hypotheses
+      - complete_funnel_metrics
+      - strategic_priority_ranking
+
+# Template validation and testing
+template_testing:
+  validation_scenarios:
+    - scenario: 'complete_workflow_execution'
+      description: 'Test all templates in sequence with full context'
+      success_criteria:
+        ['all_variables_populated', 'consistent_formatting', 'logical_flow']
+
+    - scenario: 'partial_context_handling'
+      description: 'Test templates with missing context elements'
+      success_criteria:
+        ['graceful_degradation', 'placeholder_handling', 'error_recovery']
+
+    - scenario: 'multi_format_generation'
+      description: 'Test generation in markdown, PDF, and HTML formats'
+      success_criteria:
+        ['format_compliance', 'visual_consistency', 'content_preservation']
+
+  quality_gates:
+    pre_generation:
+      - validate_agent_output_completeness
+      - verify_context_availability
+      - check_template_schema_compliance
+
+    post_generation:
+      - validate_all_variables_substituted
+      - verify_content_quality_thresholds
+      - check_formatting_compliance
+      - ensure_handoff_context_preparation
+
+# Documentation and usage guidelines
+documentation:
+  template_usage:
+    description: |
+      These templates support the complete 8-agent growth strategy workflow, providing
+      structured output generation for acquisition, retention, viral, and experimentation
+      strategies. Each template is designed for seamless integration with the overall
+      workflow and includes comprehensive variable extraction and context handoff mechanisms.
+
+  best_practices:
+    - 'Always validate agent output completeness before template application'
+    - 'Use context-aware variable substitution for optimal results'
+    - 'Enable multi-format generation for maximum utility'
+    - 'Implement quality validation at each stage'
+    - 'Ensure proper context handoff between agents'
+
+  troubleshooting:
+    common_issues:
+      - issue: 'Missing variables in agent output'
+        solution: 'Use fallback_template or placeholder_pattern substitution'
+      - issue: 'Context handoff failures'
+        solution: 'Validate required context elements before next agent execution'
+      - issue: 'Format generation errors'
+        solution: 'Check template syntax and variable consistency'

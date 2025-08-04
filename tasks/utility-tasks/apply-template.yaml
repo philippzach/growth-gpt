@@ -1,0 +1,394 @@
+# Apply Template Task - Template Processing Engine
+# Processes templates with dynamic variable binding and multi-format output generation
+
+schema_version: "2.0"
+description: "Template processing engine for applying templates to agent outputs with dynamic variable binding and quality validation"
+
+# Core task identification
+task:
+  id: "apply-template-processor"
+  name: "Template Processing Engine"
+  version: "2.0"
+  description: "Processes templates by extracting variables from agent outputs, applying template schemas, and generating high-quality formatted documents"
+  category: "template-processing"
+  type: "utility-task"
+  
+  use_cases:
+    - "agent_output_formatting"
+    - "document_generation"
+    - "multi_format_output"
+    - "template_variable_binding"
+  
+  complexity_level: "complex"
+  estimated_duration: "5-15 minutes"
+  requires_user_interaction: false
+
+# Template processing configuration
+template_processing:
+  # Template loading and validation
+  template_loading:
+    discovery_method: "configuration_based"
+    template_registry: "templates/"
+    schema_validation: "validate_against_template_schema"
+    dependency_resolution: "resolve_template_dependencies"
+  
+  # Variable extraction and binding
+  variable_processing:
+    auto_extraction: "intelligent_content_analysis"
+    variable_validation: "schema_based_validation"
+    type_conversion: "automatic_with_validation"
+    default_handling: "context_aware_defaults"
+  
+  # Content generation
+  content_generation:
+    generation_method: "template_engine_processing"
+    quality_enhancement: "grammar_and_style_optimization"
+    consistency_checking: "cross_section_consistency"
+    completeness_validation: "required_content_verification"
+  
+  # Output formatting
+  output_formatting:
+    multi_format_support: true
+    format_optimization: "format_specific_enhancements"
+    styling_application: "template_defined_styling"
+    accessibility_compliance: "wcag_compliant_where_applicable"
+
+# Variable extraction and management
+variable_management:
+  # Extraction strategies
+  extraction_strategies:
+    pattern_matching: "regex_and_nlp_based"
+    semantic_analysis: "context_aware_extraction"
+    structured_parsing: "yaml_json_markdown_parsing"
+    ai_assisted_extraction: "llm_based_intelligent_extraction"
+  
+  # Variable validation
+  validation:
+    type_validation: "strict_type_checking"
+    format_validation: "format_pattern_validation"
+    content_validation: "business_logic_validation"
+    completeness_validation: "required_variable_checking"
+  
+  # Variable binding
+  binding:
+    binding_strategy: "late_binding_with_context"
+    transformation_support: "variable_transformation_functions"
+    conditional_binding: "condition_based_variable_inclusion"
+    nested_binding: "hierarchical_variable_structures"
+  
+  # Default value handling
+  defaults:
+    default_strategy: "context_aware_intelligent_defaults"
+    placeholder_handling: "descriptive_placeholder_generation"
+    missing_variable_behavior: "graceful_degradation_with_notification"
+    user_override_support: "user_provided_default_overrides"
+
+# Template engine configuration
+template_engine:
+  # Engine selection and configuration
+  engine_config:
+    primary_engine: "nunjucks"
+    fallback_engines: ["mustache", "handlebars"]
+    custom_functions: "growth_strategy_specific_functions"
+    security_settings: "sandboxed_execution"
+  
+  # Processing pipeline
+  processing_pipeline:
+    preprocessing: "template_optimization_and_validation"
+    main_processing: "variable_substitution_and_logic_evaluation"
+    postprocessing: "formatting_and_quality_enhancement"
+    output_generation: "multi_format_output_generation"
+  
+  # Custom functions and filters
+  custom_extensions:
+    functions:
+      - "format_currency"
+      - "format_percentage"  
+      - "calculate_metrics"
+      - "generate_insights"
+    filters:
+      - "business_format"
+      - "strategy_format"
+      - "markdown_enhance"
+      - "html_sanitize"
+    macros:
+      - "strategy_section"
+      - "metric_table"
+      - "action_plan"
+      - "risk_matrix"
+
+# Multi-format output generation
+output_generation:
+  # Supported formats
+  supported_formats:
+    primary_formats:
+      - "markdown"
+      - "html"
+      - "pdf"
+    secondary_formats:
+      - "docx"
+      - "json"
+      - "yaml"
+    experimental_formats:
+      - "epub"
+      - "latex"
+  
+  # Format-specific processing
+  format_processing:
+    markdown:
+      syntax_highlighting: true
+      table_formatting: "github_flavored"
+      toc_generation: "automatic_based_on_headers"
+      link_validation: "validate_internal_links"
+    
+    html:
+      responsive_design: true
+      css_framework: "bootstrap_5"
+      javascript_enhancements: "interactive_charts_and_tables"
+      seo_optimization: "meta_tags_and_structured_data"
+    
+    pdf:
+      layout_engine: "weasyprint"
+      styling: "professional_business_template"
+      page_numbers: true
+      table_of_contents: true
+      
+    docx:
+      template_base: "professional_business_template"
+      style_preservation: true
+      comment_support: false
+      track_changes: false
+  
+  # Output optimization
+  optimization:
+    compression: "format_appropriate_compression"
+    quality_settings: "high_quality_output"
+    accessibility: "accessibility_enhancements_where_supported"
+    performance: "optimized_generation_pipeline"
+
+# Quality assurance and validation
+quality_assurance:
+  # Content quality checks
+  content_quality:
+    completeness_check: "verify_all_required_sections_populated"
+    consistency_check: "cross_reference_consistency_validation"
+    accuracy_check: "business_logic_and_calculation_validation"
+    readability_check: "readability_score_and_enhancement"
+  
+  # Format quality checks
+  format_quality:
+    formatting_validation: "proper_formatting_and_styling"
+    link_validation: "validate_all_links_and_references"
+    image_validation: "image_accessibility_and_optimization"
+    table_validation: "table_structure_and_accessibility"
+  
+  # Template compliance
+  template_compliance:
+    schema_compliance: "full_template_schema_adherence"
+    variable_compliance: "all_variables_properly_bound"
+    section_compliance: "all_required_sections_present"
+    conditional_compliance: "conditional_logic_properly_evaluated"
+  
+  # Quality scoring
+  scoring:
+    quality_metrics:
+      - "content_completeness"
+      - "formatting_quality"
+      - "readability_score"
+      - "business_value"
+    scoring_algorithm: "weighted_composite_score"
+    minimum_threshold: 0.8
+    improvement_suggestions: "actionable_improvement_recommendations"
+
+# Error handling and recovery
+error_handling:
+  # Error detection
+  error_detection:
+    template_errors: "syntax_and_logic_error_detection"
+    variable_errors: "missing_and_invalid_variable_detection"
+    processing_errors: "runtime_processing_error_detection"
+    output_errors: "output_generation_error_detection"
+  
+  # Recovery strategies
+  recovery_strategies:
+    template_fallback: "fallback_to_simpler_template"
+    variable_substitution: "intelligent_variable_substitution"
+    partial_generation: "generate_partial_output_with_notifications"
+    user_intervention: "request_user_input_for_missing_data"
+  
+  # Error reporting
+  error_reporting:
+    detailed_logging: "comprehensive_error_logging"
+    user_notifications: "user_friendly_error_messages"
+    admin_alerts: "technical_error_notifications"
+    recovery_suggestions: "suggested_recovery_actions"
+
+# Performance optimization
+performance:
+  # Processing optimization
+  processing_optimization:
+    template_caching: "compiled_template_caching"
+    variable_caching: "extracted_variable_caching"
+    output_caching: "generated_output_caching"
+    incremental_processing: "only_process_changed_sections"
+  
+  # Resource management
+  resource_management:
+    memory_optimization: "efficient_memory_usage"
+    cpu_optimization: "optimized_processing_algorithms"
+    storage_optimization: "compressed_intermediate_storage"
+    network_optimization: "minimize_external_resource_requests"
+  
+  # Scalability features
+  scalability:
+    parallel_processing: "parallel_section_processing"
+    batch_processing: "batch_similar_operations"
+    streaming_output: "streaming_large_document_generation"
+    load_balancing: "distribute_processing_load"
+
+# Integration capabilities
+integration:
+  # Input integration
+  input_integration:
+    agent_output_integration: "seamless_agent_output_processing"
+    file_input_support: "multiple_file_format_input"
+    api_input_support: "rest_and_graphql_input"
+    database_integration: "database_query_and_integration"
+  
+  # Output integration
+  output_integration:
+    file_system_output: "flexible_file_system_storage"
+    cloud_storage_integration: "cloud_storage_provider_support"
+    api_output_support: "rest_api_output_endpoints"
+    webhook_notifications: "completion_and_error_webhooks"
+  
+  # External tool integration
+  external_tools:
+    grammar_checkers: "integration_with_grammar_checking_services"
+    image_processors: "image_optimization_and_processing"
+    chart_generators: "dynamic_chart_and_graph_generation"
+    translation_services: "multi_language_output_support"
+
+# Customization and extensibility
+customization:
+  # Template customization
+  template_customization:
+    theme_support: "multiple_visual_themes"
+    branding_support: "custom_branding_and_styling"
+    layout_options: "flexible_layout_configurations"
+    section_customization: "custom_section_definitions"
+  
+  # Processing customization
+  processing_customization:
+    custom_processors: "plugin_architecture_for_custom_processors"
+    validation_rules: "custom_validation_rule_definitions"
+    transformation_functions: "custom_data_transformation_functions"
+    output_filters: "custom_output_filtering_and_enhancement"
+  
+  # User preferences
+  user_preferences:
+    format_preferences: "user_preferred_output_formats"
+    styling_preferences: "user_preferred_styling_options"
+    content_preferences: "user_preferred_content_organization"
+    notification_preferences: "user_preferred_notifications"
+
+# Monitoring and analytics
+monitoring:
+  # Processing metrics
+  processing_metrics:
+    processing_time: "template_processing_time_tracking"
+    resource_usage: "memory_and_cpu_usage_monitoring"
+    success_rate: "successful_processing_rate_tracking"
+    error_rate: "error_occurrence_and_type_tracking"
+  
+  # Quality metrics
+  quality_metrics:
+    output_quality_scores: "quality_score_distribution_tracking"
+    user_satisfaction: "user_satisfaction_with_outputs"
+    template_effectiveness: "template_usage_and_effectiveness"
+    improvement_tracking: "quality_improvement_over_time"
+  
+  # Usage analytics
+  usage_analytics:
+    template_usage_patterns: "most_used_templates_and_features"
+    format_preferences: "output_format_usage_statistics"
+    processing_patterns: "processing_time_and_complexity_patterns"
+    error_patterns: "common_error_types_and_causes"
+
+# Security and compliance
+security:
+  # Data security
+  data_security:
+    input_sanitization: "comprehensive_input_sanitization"
+    output_sanitization: "secure_output_generation"
+    template_security: "template_injection_prevention"
+    variable_security: "secure_variable_handling"
+  
+  # Access control
+  access_control:
+    template_access_control: "role_based_template_access"
+    processing_permissions: "permission_based_processing"
+    output_access_control: "secure_output_access_management"
+    audit_logging: "comprehensive_security_audit_logging"
+  
+  # Compliance
+  compliance:
+    data_privacy: "privacy_compliant_data_handling"
+    content_compliance: "content_policy_compliance_checking"
+    regulatory_compliance: "industry_specific_compliance_features"
+    security_standards: "security_standard_adherence"
+
+# Documentation and support
+documentation:
+  usage_guide: |
+    The Template Processing Engine applies templates to agent outputs by:
+    1. Loading and validating template configurations
+    2. Extracting variables from agent outputs using intelligent analysis
+    3. Binding variables to template placeholders with validation
+    4. Generating high-quality, multi-format outputs
+    5. Performing quality assurance and validation
+    
+    Key features:
+    - Intelligent variable extraction from unstructured content
+    - Multi-format output generation (Markdown, HTML, PDF, DOCX)
+    - Quality enhancement with grammar and style optimization
+    - Comprehensive error handling and recovery
+    - Performance optimization with caching and parallel processing
+  
+  best_practices:
+    - "Always validate template schemas before processing"
+    - "Use appropriate variable extraction strategies for content type"
+    - "Implement proper error handling for production use"
+    - "Monitor processing performance and optimize as needed"
+    - "Regularly update templates based on user feedback"
+  
+  troubleshooting:
+    - "If variables are missing, check extraction configuration"
+    - "If output quality is low, review template structure"
+    - "If processing is slow, enable caching and optimization"
+    - "If formats fail, check format-specific dependencies"
+
+# Metadata and governance
+metadata:
+  version_info:
+    major_version: 2
+    minor_version: 0
+    patch_version: 0
+    release_date: "2024-01-15"
+  
+  governance:
+    owner: "template_processing_team"
+    maintainers: ["template_engineers", "content_specialists"]
+    contributors: ["frontend_developers", "ux_designers"]
+  
+  lifecycle:
+    status: "active"
+    created_date: "2024-01-15"
+    last_modified: "2024-01-15"
+  
+  classification:
+    tags: ["template", "processing", "formatting", "document-generation"]
+    categories: ["utility-tasks", "content-processing"]
+    priority: "high"
+    complexity_rating: 7
+    maturity_level: "stable"

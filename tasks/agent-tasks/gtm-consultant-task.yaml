@@ -1,0 +1,712 @@
+# GTM Consultant Agent Task - Integration Configuration
+# Links GTM Consultant agent with workflow and template processing
+
+schema_version: '2.0'
+description: 'Agent task configuration for GTM Consultant execution with workflow and template integration'
+
+# Core task identification
+task:
+  id: 'gtm-consultant-execution'
+  name: 'GTM Consultant Strategy Development'
+  version: '2.0'
+  description: 'Execute GTM Consultant agent to develop comprehensive go-to-market strategy with value proposition design and business model validation'
+  category: 'agent-execution'
+  type: 'agent-task'
+
+  use_cases:
+    - 'initial_strategy_development'
+    - 'market_entry_planning'
+    - 'value_proposition_design'
+    - 'business_model_validation'
+    - 'unique_value_proposition_development'
+
+  complexity_level: 'complex'
+  estimated_duration: '30-45 minutes'
+  requires_user_interaction: true
+
+# Agent integration configuration
+agent_integration:
+  agent_config_path: 'agents/gtm-consultant-v2.yaml'
+  agent_id: 'gtm-consultant'
+  agent_role: 'Go-To-Market Consultant'
+
+  behavior_overrides:
+    temperature: 0.7
+    max_tokens: 4000
+    system_prompt_additions: |
+      You are executing within the Growth Strategy workflow at the foundation stage.
+      Your output will be used by the Persona Strategist and Product Manager agents.
+      Focus on creating a solid strategic foundation that enables subsequent agents to build upon.
+    knowledge_focus:
+      - 'value-proposition'
+      - 'problem-solution-fit'
+      - 'business-model'
+      - 'market-segmentation'
+      - 'unique-value-proposition'
+
+  capabilities:
+    tools_available:
+      - 'value_proposition_canvas'
+      - 'business_model_canvas'
+      - 'market_research_generator'
+      - 'competitive_analysis_tool'
+    apis_accessible:
+      - 'anthropic_claude_api'
+    permissions:
+      - 'read_knowledge_base'
+      - 'generate_strategy_documents'
+      - 'access_market_data'
+    restrictions:
+      - 'no_financial_advice'
+      - 'no_legal_recommendations'
+
+# Workflow integration specifications
+workflow_integration:
+  workflow_id: 'master-workflow-v2'
+  workflow_stage: 'foundation'
+  step_id: 'foundation_gtm'
+  sequence_order: 1
+
+  inputs:
+    required_inputs: []
+    optional_inputs:
+      - 'initial_business_concept'
+      - 'market_research_data'
+      - 'competitive_analysis'
+    user_inputs:
+      - 'business_idea_description'
+      - 'target_market_hypothesis'
+      - 'problem_statement'
+      - 'solution_concept'
+    context_requirements:
+      user_context: true
+      business_context: true
+      market_context: false
+
+  outputs:
+    primary_output: 'gtm-strategy-output-v2'
+    secondary_outputs:
+      - 'value-proposition-canvas.md'
+      - 'business-model-overview.md'
+    output_format: 'markdown'
+    storage_location: 'docs/'
+
+  coordination:
+    depends_on: []
+    blocks:
+      - 'persona_development'
+      - 'product_brand_development'
+    parallel_execution: false
+    timeout: '45 minutes'
+
+  quality_gates:
+    pre_execution:
+      - 'validate_user_input_completeness'
+      - 'check_knowledge_base_accessibility'
+    post_execution:
+      - 'validate_output_completeness'
+      - 'check_value_proposition_clarity'
+      - 'verify_market_definition_specificity'
+    validation_rules:
+      - 'value_proposition_must_be_specific'
+      - 'target_market_must_be_defined'
+      - 'problem_solution_fit_must_be_articulated'
+      - 'business_model_components_must_be_identified'
+    success_criteria:
+      - 'Clear and compelling value proposition'
+      - 'Specific target market definition'
+      - 'Testable problem-solution fit hypothesis'
+      - 'Complete business model framework'
+      - 'Unique value proposition'
+
+# Task specification and requirements
+task_specification:
+  # Primary task definition
+  primary_objective: 'Develop comprehensive go-to-market strategy foundation including value proposition design, business model validation, and market analysis that serves as the strategic foundation for all subsequent workflow agents'
+  secondary_objectives:
+    - 'Establish clear problem-solution fit hypothesis for validation'
+    - 'Create actionable strategic insights for persona development'
+    - 'Define market opportunity sizing and accessibility'
+    - 'Identify key differentiators and competitive positioning'
+  
+  # Specific deliverables
+  deliverables:
+    primary_deliverables:
+      - 'Comprehensive GTM strategy brief with executive summary'
+      - 'Clear and differentiated value proposition framework'
+      - 'Specific target market definition with characteristics and sizing'
+      - 'Complete business model canvas with all 9 building blocks'
+      - 'Problem-solution fit hypothesis with validation approach'
+      - 'Go-to-market channel strategy and launch timeline'
+    secondary_deliverables:
+      - 'Competitive positioning analysis (if competitors identified)'
+      - 'Market research synthesis (if data available)'
+      - 'Risk analysis and mitigation strategies'
+      - 'Key strategic assumptions requiring validation'
+    deliverable_format: 'Structured markdown document following gtm-strategy-output-v2 template'
+    quality_standards:
+      - 'Value proposition must be specific, measurable, and differentiated'
+      - 'Target market must be quantified with clear accessibility path'
+      - 'Business model must have interconnected and validated components'
+      - 'Strategic insights must enable subsequent agent execution'
+  
+  # Success criteria and constraints
+  success_criteria:
+    mandatory_criteria:
+      - 'Value proposition clearly articulates unique value and differentiation'
+      - 'Target market is specific, quantified, and accessible'
+      - 'Problem-solution fit hypothesis is testable and actionable'
+      - 'Business model components are complete and interconnected'
+      - 'GTM strategy provides clear next steps and timeline'
+      - 'All outputs enable effective persona strategist execution'
+    optional_criteria:
+      - 'Competitive analysis provides clear positioning advantages'
+      - 'Market opportunity is quantified with TAM/SAM/SOM breakdown'
+      - 'Strategic insights reveal non-obvious opportunities'
+      - 'Risk mitigation strategies are proactive and comprehensive'
+    measurement_approach: 'Quality scoring based on strategic clarity, market specificity, value proposition strength, business model completeness, and actionability'
+    validation_method: 'Template compliance check, strategic coherence validation, and handoff context preparation assessment'
+  
+  constraints:
+    scope_constraints:
+      - 'Do not create detailed tactical execution plans (acquisition agent handles this)'
+      - 'Do not develop detailed customer personas (persona strategist handles this)'
+      - 'Do not design specific product features (product manager handles this)'
+      - 'Focus on strategic foundation, not operational details'
+    resource_constraints:
+      - 'Maximum 45-minute execution time'
+      - 'Use available knowledge base and user inputs'
+      - 'Generate actionable insights within token limits'
+    dependency_constraints:
+      - 'First agent in workflow - no previous agent dependencies'
+      - 'Must provide comprehensive foundation for all subsequent agents'
+      - 'Cannot rely on outputs from other workflow agents'
+    quality_constraints:
+      - 'All strategic claims must be supported by reasoning'
+      - 'Recommendations must be specific and actionable'
+      - 'Market assumptions must be clearly stated'
+      - 'Business model must be internally consistent'
+  
+  # Context and workflow awareness
+  context_awareness:
+    workflow_stage: 'foundation'
+    stage_purpose: 'Establish strategic foundation and framework for entire growth strategy development'
+    previous_stage_outputs: [] # First agent in workflow
+    next_stage_requirements:
+      - 'Clear target market definition for persona development'
+      - 'Value proposition framework for product positioning'
+      - 'Strategic context for growth funnel design'
+      - 'Business model foundation for strategy development'
+    
+  handoff_requirements:
+    context_to_provide:
+      - 'Complete GTM brief content for all subsequent agents'
+      - 'Target market definition with characteristics for persona strategist'
+      - 'Value proposition framework for product manager positioning work'
+      - 'Strategic insights and assumptions for growth manager'
+      - 'Business model foundation for acquisition and retention strategies'
+    format_requirements:
+      - 'Structured markdown following template format'
+      - 'Clearly delineated sections for easy agent consumption'
+      - 'Executive summary for quick context understanding'
+      - 'Detailed sections for deep agent analysis'
+    validation_requirements:
+      - 'All primary deliverables must be complete'
+      - 'Value proposition must pass clarity and differentiation tests'
+      - 'Target market must be specific enough for persona development'
+      - 'Business model must have all components filled'
+    transformation_needs:
+      - 'Extract key insights for persona strategist context'
+      - 'Prepare value proposition elements for product manager'
+      - 'Format strategic assumptions for validation by growth hacker'
+
+# Prompt generation configuration
+prompt_generation:
+  # Prompt template configuration
+  templates:
+    system_prompt_template: |
+      {agent_identity}
+      
+      task_objective_statement: {primary_objective}
+      
+      deliverables_specification:
+      {primary_deliverables}
+      
+      success_criteria_definition:
+      {mandatory_criteria}
+      
+      CONSTRAINTS AND SCOPE:
+      {scope_constraints}
+      
+      WORKFLOW CONTEXT:
+      - Stage: {workflow_stage} ({stage_purpose})
+      - Next agents depend on: {next_stage_requirements}
+      
+      knowledge_base_injection: {injected_knowledge}
+      
+      output_format_instruction: Follow template structure exactly - {primary_template}
+      
+      QUALITY STANDARDS: {quality_standards}
+    
+    user_prompt_template: |
+      Based on the user's business concept and requirements, develop a comprehensive GTM strategy following the specified deliverables and success criteria.
+      
+      User Input: {user_message}
+      Business Context: {business_context}
+      Previous Outputs: {previous_outputs}
+    
+    context_injection_template: |
+      WORKFLOW CONTEXT:
+      Current Stage: {workflow_stage}
+      Stage Purpose: {stage_purpose}
+      Previous Outputs: {previous_outputs}
+      Next Stage Needs: {next_stage_requirements}
+      
+      USER CONTEXT:
+      Business Stage: {business_stage}
+      Project Name: {project_name}
+      Industry/Market: {industry_context}
+    
+    knowledge_injection_template: |
+      RELEVANT KNOWLEDGE BASE:
+      
+      Value Proposition Development:
+      {value_proposition_knowledge}
+      
+      Business Model Design:
+      {business_model_knowledge}
+      
+      Problem-Solution Fit:
+      {problem_solution_fit_knowledge}
+      
+      Market Analysis:
+      {market_analysis_knowledge}
+  
+  # Dynamic prompt generation
+  dynamic_generation:
+    context_injection_points:
+      - 'after_system_prompt_identity'
+      - 'before_deliverables_section'
+      - 'after_constraints_section'
+      - 'before_output_format_section'
+    variable_substitution:
+      agent_identity: 'from_agent_config.persona.identity'
+      primary_objective: 'from_task_spec.primary_objective'
+      primary_deliverables: 'from_task_spec.deliverables.primary_deliverables'
+      mandatory_criteria: 'from_task_spec.success_criteria.mandatory_criteria'
+      scope_constraints: 'from_task_spec.constraints.scope_constraints'
+      workflow_stage: 'from_task_spec.context_awareness.workflow_stage'
+      stage_purpose: 'from_task_spec.context_awareness.stage_purpose'
+      next_stage_requirements: 'from_task_spec.context_awareness.next_stage_requirements'
+      quality_standards: 'from_task_spec.deliverables.quality_standards'
+      injected_knowledge: 'from_knowledge_base.combined_knowledge'
+      primary_template: 'from_template_config.primary_template'
+    conditional_sections:
+      competitive_analysis_guidance: 'if_competitors_mentioned_in_user_input'
+      market_research_synthesis: 'if_market_data_provided'
+      risk_analysis_focus: 'if_high_uncertainty_indicators'
+    personalization_options:
+      industry_specific_examples: 'based_on_user_industry'
+      business_stage_guidance: 'based_on_user_business_stage'
+      complexity_adjustment: 'based_on_user_experience_level'
+  
+  # Prompt optimization
+  optimization:
+    token_optimization: true
+    clarity_enhancement: true
+    context_compression: true
+    quality_instructions: true
+  
+  # Prompt validation
+  validation:
+    prompt_validation: true
+    length_limits:
+      system_prompt_max_tokens: 8000
+      user_prompt_max_tokens: 2000
+      total_prompt_max_tokens: 10000
+    required_elements:
+      - 'task_objective_statement'
+      - 'deliverables_specification'
+      - 'success_criteria_definition'
+      - 'output_format_instruction'
+      - 'knowledge_base_injection'
+    quality_checks:
+      - 'all_variables_substituted'
+      - 'context_relevance_validated'
+      - 'instruction_clarity_confirmed'
+      - 'token_limits_respected'
+
+# Template integration configuration
+template_integration:
+  primary_template: 'templates/gtm-strategy-output-v2.yaml'
+  fallback_templates:
+    - 'templates/project-brief-tmpl.yaml'
+  template_variables:
+    auto_extract:
+      - 'value_proposition'
+      - 'target_market'
+      - 'business_model'
+      - 'key_insights'
+      - 'market_opportunity'
+    user_provided:
+      - 'project_name'
+      - 'business_stage'
+      - 'user_name'
+    system_generated:
+      - 'session_date'
+      - 'agent_name'
+      - 'agent_role'
+
+  processing:
+    auto_variable_extraction: true
+    variable_validation: true
+    quality_enhancement: true
+    multi_format_generation: true
+
+  customization:
+    section_overrides:
+      executive_summary:
+        emphasis: 'strategic_foundation'
+      market_customer_analysis:
+        depth: 'comprehensive'
+    variable_defaults:
+      agent_name: 'Angelina'
+      agent_role: 'Go-To-Market Consultant'
+      session_duration: '45 minutes'
+    conditional_sections:
+      competitive_analysis: 'if_competitors_identified'
+      market_research: 'if_research_data_available'
+
+# Execution configuration
+execution:
+  pre_execution:
+    setup_steps:
+      - 'load_agent_configuration'
+      - 'validate_dependencies'
+      - 'prepare_knowledge_base'
+    context_preparation: 'selective_injection'
+    knowledge_injection: 'auto_inject_relevant_knowledge'
+    validation_checks:
+      - 'user_input_completeness'
+      - 'system_readiness'
+      - 'template_availability'
+
+  main_execution:
+    execution_method: 'api_call'
+    api_configuration:
+      provider: 'anthropic'
+      model: 'claude-3-5-sonnet-20241022'
+      temperature: 0.7
+      max_tokens: 4000
+    processing_options:
+      streaming: false
+      parallel_processing: false
+      batch_size: 1
+    error_handling: 'retry_with_fallback'
+
+  post_execution:
+    output_processing:
+      - 'extract_template_variables'
+      - 'validate_output_quality'
+      - 'apply_formatting'
+    template_application: 'dynamic_variable_binding'
+    quality_validation:
+      - 'completeness_check'
+      - 'consistency_validation'
+      - 'strategic_value_assessment'
+    context_handoff: 'prepare_persona_strategist_context'
+
+  error_handling:
+    retry_strategy: 'exponential_backoff'
+    max_retries: 3
+    fallback_behavior: 'use_fallback_template_and_notify'
+    escalation_rules:
+      - 'if_user_input_insufficient_after_2_attempts'
+      - 'if_output_quality_below_0.7_after_3_attempts'
+      - 'if_api_errors_persist_after_5_minutes'
+
+# API integration configuration
+api_integration:
+  primary_api:
+    provider: 'anthropic'
+    model: 'claude-3-5-sonnet-20241022'
+    endpoint: 'https://api.anthropic.com/v1/messages'
+    authentication:
+      type: 'api_key'
+      key_source: 'environment_variable'
+      key_name: 'ANTHROPIC_API_KEY'
+
+  request_config:
+    timeout: 120
+    rate_limiting:
+      requests_per_minute: 50
+      tokens_per_minute: 40000
+    request_headers:
+      content_type: 'application/json'
+      user_agent: 'GrowthStrategyAgent/2.0'
+    retry_config:
+      max_retries: 3
+      backoff_factor: 2
+      retry_on_status: [429, 500, 502, 503, 504]
+
+  response_processing:
+    response_validation: true
+    content_extraction: 'extract_assistant_message'
+    error_detection:
+      - 'check_api_error_codes'
+      - 'validate_response_format'
+      - 'detect_incomplete_responses'
+    quality_scoring: true
+
+# Knowledge base integration
+knowledge_integration:
+  knowledge_sources:
+    primary_sources:
+      - 'knowledge-base/method/01value-proposition.md'
+      - 'knowledge-base/method/02problem-solution-fit.md'
+      - 'knowledge-base/method/03business-model.md'
+    secondary_sources:
+      - 'knowledge-base/resources/unique-value-proposition.md'
+      - 'knowledge-base/resources/market-segmentation.md'
+      - 'knowledge-base/glossary/growth-hacking-dictionary.md'
+    dynamic_sources:
+      - 'data/brainstorming-techniques.md'
+
+  injection_strategy:
+    method: 'context_aware'
+    relevance_threshold: 0.7
+    max_knowledge_tokens: 2000
+    prioritization: 'relevant'
+
+  processing:
+    preprocessing:
+      - 'extract_key_concepts'
+      - 'format_for_agent_consumption'
+    formatting: 'structured_sections'
+    context_integration: 'merge_with_user_context'
+    validation: true
+
+# Context management
+context_management:
+  context_sources:
+    workflow_context: true
+    previous_outputs: false
+    user_context: true
+    system_context: true
+
+  processing:
+    context_merging: 'priority_based'
+    context_compression: true
+    context_prioritization: 'user_input_first'
+    context_validation: true
+
+  handoff:
+    next_task_context:
+      persona_strategist:
+        - 'gtm_brief_content'
+        - 'target_market_definition'
+        - 'value_proposition_framework'
+        - 'key_strategic_insights'
+    context_transformation: 'extract_relevant_for_persona_development'
+    context_storage: true
+    context_cleanup:
+      - 'remove_sensitive_data'
+      - 'compress_large_contexts'
+
+# Quality assurance and validation
+quality_assurance:
+  input_validation:
+    schema_validation: true
+    content_validation: true
+    context_validation: true
+    prerequisite_validation: true
+
+  process_validation:
+    execution_monitoring: true
+    intermediate_validation: false
+    resource_monitoring: true
+    performance_tracking: true
+
+  output_validation:
+    format_validation: true
+    content_quality: true
+    completeness_check: true
+    consistency_validation: true
+
+  scoring:
+    quality_metrics:
+      - 'strategic_clarity'
+      - 'market_specificity'
+      - 'value_proposition_strength'
+      - 'business_model_completeness'
+      - 'actionability'
+    scoring_algorithm: 'weighted_average'
+    minimum_score: 0.75
+    improvement_suggestions: true
+
+# Performance and optimization
+performance:
+  resource_limits:
+    max_memory_usage: '2GB'
+    max_cpu_usage: '70%'
+    max_execution_time: 2700 # 45 minutes
+    max_api_calls: 5
+
+  caching:
+    cache_enabled: true
+    cache_scope: 'session'
+    cache_duration: '2h'
+    cache_invalidation:
+      - 'user_input_changed'
+      - 'agent_config_updated'
+
+  optimization:
+    parallel_processing: false
+    lazy_loading: true
+    batch_processing: false
+    compression: true
+
+# Monitoring and analytics
+monitoring:
+  metrics:
+    execution_metrics: true
+    quality_metrics: true
+    user_interaction_metrics: true
+    api_usage_metrics: true
+
+  logging:
+    log_level: 'info'
+    log_components:
+      - 'agent_execution'
+      - 'template_processing'
+      - 'quality_validation'
+      - 'user_interactions'
+    log_format: 'structured_json'
+    log_storage: 'local_files'
+
+  alerting:
+    alert_conditions:
+      - 'execution_time_exceeds_40_minutes'
+      - 'quality_score_below_0.7'
+      - 'api_error_rate_above_10_percent'
+    notification_channels:
+      - 'system_logs'
+      - 'admin_notifications'
+    escalation_procedures:
+      - 'notify_admin_after_3_failures'
+      - 'halt_workflow_after_critical_error'
+
+  reporting:
+    report_generation: true
+    report_frequency: 'per_execution'
+    report_recipients: ['system_admin', 'workflow_manager']
+    custom_reports:
+      - 'strategy_quality_report'
+      - 'execution_performance_report'
+
+# Integration points and extensibility
+integration_points:
+  pre_execution_hooks:
+    validation_hooks:
+      - 'validate_business_concept_completeness'
+    setup_hooks:
+      - 'prepare_market_research_context'
+    notification_hooks:
+      - 'notify_workflow_start'
+
+  post_execution_hooks:
+    cleanup_hooks:
+      - 'cleanup_temporary_files'
+    notification_hooks:
+      - 'notify_next_agent'
+    integration_hooks:
+      - 'save_to_project_repository'
+
+  extensions:
+    custom_processors:
+      - 'market_data_enricher'
+      - 'competitive_intelligence_integrator'
+    custom_validators:
+      - 'strategic_coherence_validator'
+      - 'market_opportunity_validator'
+    custom_formatters:
+      - 'executive_summary_formatter'
+      - 'action_plan_formatter'
+    plugin_support: true
+
+# Security and compliance
+security:
+  data_protection:
+    encryption_at_rest: true
+    encryption_in_transit: true
+    data_sanitization: true
+    access_logging: true
+
+  access_control:
+    authentication_required: false
+    authorization_levels: ['user', 'agent', 'admin']
+    permission_validation: true
+    audit_trail: true
+
+  compliance:
+    compliance_frameworks: ['data_privacy']
+    data_retention_policies: ['delete_after_30_days']
+    privacy_protection: true
+    regulatory_requirements: []
+
+# Documentation and metadata
+documentation:
+  usage_docs:
+    description: |
+      This task executes the GTM Consultant agent to develop comprehensive go-to-market strategies.
+      It serves as the foundation stage of the growth strategy workflow, creating strategic frameworks
+      that subsequent agents build upon.
+    usage_examples:
+      - 'Startup developing initial GTM strategy'
+      - 'Product launch planning'
+      - 'Market entry strategy development'
+    best_practices:
+      - 'Ensure user provides clear business concept'
+      - 'Validate market definition specificity'
+      - 'Focus on actionable strategic insights'
+    troubleshooting:
+      - 'If output is too generic, request more specific user input'
+      - 'If API timeouts occur, check system resources'
+      - 'If quality scores are low, review knowledge base injection'
+
+  technical_docs:
+    implementation_details: 'Integrates Claude API with template processing and workflow orchestration'
+    api_documentation: 'Uses Anthropic Claude API with structured prompt engineering'
+    configuration_guide: 'Configure via agent-v2.yaml and template-v2.yaml files'
+    integration_examples:
+      - 'Workflow integration with persona-strategist'
+      - 'Template processing with variable extraction'
+
+# Metadata and governance
+metadata:
+  version_info:
+    major_version: 2
+    minor_version: 0
+    patch_version: 0
+    release_date: '2024-01-15'
+    build_number: '2024.01.15.001'
+
+  governance:
+    owner: 'growth_strategy_team'
+    maintainers: ['system_architect', 'gtm_specialist']
+    contributors: ['agent_developers', 'template_designers']
+    reviewers: ['senior_strategist', 'technical_lead']
+
+  lifecycle:
+    status: 'active'
+    created_date: '2024-01-15'
+    last_modified: '2024-01-15'
+    deprecation_date: null
+    replacement_task: null
+
+  classification:
+    tags: ['gtm', 'strategy', 'foundation', 'agent-execution']
+    categories: ['agent-tasks', 'workflow-foundation']
+    priority: 'high'
+    complexity_rating: 8
+    maturity_level: 'stable'

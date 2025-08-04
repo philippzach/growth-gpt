@@ -1,0 +1,383 @@
+# Workflow Schema v2.0 - Standardized Configuration for Growth Strategy Agent Workflows
+# This schema defines the structure for orchestrating multi-agent workflows with Anthropic API integration
+
+schema_version: "2.0"
+description: "Standardized workflow configuration for orchestrating Growth & Marketing Strategy AI Agent sequences"
+
+# Core workflow identification and metadata
+workflow:
+  id: string                    # Unique workflow identifier (e.g., "master-workflow")
+  name: string                  # Human-friendly workflow name
+  version: string               # Workflow version for tracking updates
+  description: string           # Detailed description of workflow purpose
+  type: string                  # Workflow type (e.g., "master-workflow", "sub-workflow")
+  category: string              # Category for organization (e.g., "strategy", "analysis", "execution")
+  
+  # Workflow applicability and scope
+  project_types: array          # Types of projects this workflow supports
+  # Example: ["growth-strategy", "marketing-strategy", "product-strategy"]
+  
+  complexity_level: string      # "simple", "intermediate", "complex"
+  estimated_duration: string    # Expected completion time (e.g., "2-4 hours", "1-2 days")
+  user_involvement: string      # "low", "medium", "high" - how much user interaction needed
+
+# Execution configuration
+execution:
+  mode: string                  # "sequential", "parallel", "hybrid"
+  parallelization:              # Rules for parallel execution
+    max_concurrent_agents: integer  # Maximum agents running simultaneously
+    parallel_groups: array          # Groups of agents that can run in parallel
+    synchronization_points: array   # Points where all parallel agents must complete
+  
+  error_handling:
+    strategy: string            # "fail_fast", "continue_on_error", "retry_failed"
+    max_retries: integer        # Maximum retry attempts per step
+    rollback_on_failure: boolean # Whether to rollback on critical failures
+    
+  state_management:
+    persist_state: boolean      # Whether to save workflow state
+    checkpoint_frequency: string # "per_agent", "per_stage", "manual"
+    resume_capability: boolean  # Whether workflow can be resumed after interruption
+
+# Agent sequence and orchestration
+sequence:
+  - step_id: string             # Unique identifier for this step
+    step_name: string           # Human-readable step name
+    agent_id: string            # Agent to execute (matches agent schema)
+    stage: string               # Workflow stage (e.g., "foundation", "development", "validation")
+    
+    # Execution conditions
+    condition: string           # Optional condition for step execution
+    # Example: "user_wants_detailed_analysis", "previous_step_successful"
+    
+    # Input/Output management
+    inputs:
+      required: array           # Required inputs from previous steps
+      optional: array           # Optional inputs that enhance execution
+      user_inputs: array        # Direct user inputs needed for this step
+      context_injection: boolean # Whether to inject full workflow context
+    
+    outputs:
+      primary: string           # Primary output artifact
+      secondary: array          # Additional outputs created
+      format: string            # Output format (markdown, json, yaml, pdf)
+      storage_location: string  # Where to store outputs (e.g., "docs/", "outputs/")
+    
+    # Agent configuration overrides
+    agent_overrides:
+      temperature: float        # Override default agent temperature
+      max_tokens: integer       # Override default token limit
+      custom_prompt_additions: string # Additional prompt context for this step
+    
+    # Quality and validation
+    validation:
+      required_elements: array  # Elements that must be present in output
+      quality_gates: array      # Quality checks before proceeding
+      human_review_required: boolean # Whether human review is needed
+      
+    # Timing and dependencies
+    dependencies:
+      hard_dependencies: array  # Steps that must complete successfully
+      soft_dependencies: array  # Steps that should complete but can be skipped
+      timeout: string          # Maximum time to wait for step completion
+    
+    # Step-specific configuration
+    optional_steps: array       # Optional sub-steps within this agent execution
+    tools_available: array      # Additional tools available for this step
+    knowledge_focus: array      # Specific knowledge domains to emphasize
+    
+    # User interaction
+    user_interaction:
+      required: boolean         # Whether user interaction is required
+      interaction_type: string  # "approval", "input", "selection", "review"
+      prompt_template: string   # Template for user prompts
+      timeout_behavior: string  # What to do if user doesn't respond
+    
+    # Documentation and guidance
+    notes: string              # Execution notes and guidance
+    success_criteria: array    # Criteria for successful step completion
+    common_issues: array       # Common problems and solutions
+    
+    # Branching and routing
+    next_steps:
+      default: string          # Default next step
+      conditional_routing: array # Conditional next steps based on outcomes
+      # Example:
+      # - condition: "output_quality_low"
+      #   next_step: "quality_improvement"
+      # - condition: "user_wants_iteration"
+      #   next_step: "refinement_loop"
+
+# Workflow control flow
+control_flow:
+  entry_point: string          # First step to execute
+  exit_conditions: array       # Conditions that end the workflow
+  
+  # Loops and iterations
+  loops:
+    - loop_id: string          # Loop identifier
+      steps: array             # Steps included in loop
+      condition: string        # Loop continuation condition
+      max_iterations: integer  # Maximum loop iterations
+      
+  # Decision points and branching
+  decision_points:
+    - decision_id: string      # Decision point identifier
+      step_id: string          # Step where decision occurs
+      criteria: object         # Decision criteria
+      outcomes: array          # Possible outcomes and next steps
+  
+  # Sub-workflows
+  sub_workflows:
+    - sub_workflow_id: string  # Sub-workflow identifier
+      trigger_condition: string # When to invoke sub-workflow
+      workflow_file: string    # Sub-workflow file reference
+      integration_mode: string # "embedded", "separate", "optional"
+
+# Context and state management
+context:
+  global_context: object      # Global context available to all agents
+  
+  # Context passing rules
+  context_passing:
+    strategy: string          # "full", "selective", "minimal"
+    include_previous_outputs: boolean
+    include_user_preferences: boolean
+    include_workflow_history: boolean
+    max_context_tokens: integer
+    
+  # State persistence
+  state_persistence:
+    storage_backend: string   # "local", "database", "cloud"
+    encryption: boolean       # Whether to encrypt stored state
+    retention_period: string  # How long to keep state data
+    
+  # Memory management
+  memory:
+    working_memory_limit: integer  # Max tokens for working memory
+    long_term_storage: boolean     # Whether to use long-term storage
+    memory_compression: boolean    # Whether to compress old memories
+
+# Integration and external systems
+integrations:
+  # API integrations
+  external_apis: array        # External APIs this workflow can use
+  
+  # Tool integrations
+  tools:
+    required: array           # Tools required for workflow execution
+    optional: array           # Tools that enhance workflow capabilities
+    
+  # File system integration
+  file_system:
+    input_directories: array  # Directories to read inputs from
+    output_directories: array # Directories to write outputs to
+    temp_directories: array   # Temporary directories for processing
+    
+  # Webhooks and notifications
+  webhooks:
+    workflow_start: string    # Webhook URL for workflow start
+    workflow_complete: string # Webhook URL for workflow completion
+    step_complete: string     # Webhook URL for step completion
+    error_occurred: string    # Webhook URL for errors
+    
+  # Database integration
+  database:
+    connection_string: string # Database connection if needed
+    tables_used: array       # Database tables accessed
+    read_only: boolean       # Whether database access is read-only
+
+# Performance and optimization
+performance:
+  # Resource management
+  resource_limits:
+    max_memory_usage: string  # Maximum memory usage (e.g., "2GB")
+    max_cpu_usage: string     # Maximum CPU usage (e.g., "80%")
+    max_concurrent_api_calls: integer
+    
+  # Caching strategy
+  caching:
+    cache_agent_responses: boolean
+    cache_intermediate_results: boolean
+    cache_knowledge_lookups: boolean
+    cache_duration: string    # How long to cache (e.g., "1h", "1d")
+    
+  # Optimization settings
+  optimization:
+    token_usage_optimization: boolean
+    response_time_optimization: boolean
+    cost_optimization: boolean
+    quality_optimization: boolean
+
+# Monitoring and analytics
+monitoring:
+  # Metrics collection
+  metrics:
+    track_execution_time: boolean
+    track_token_usage: boolean
+    track_error_rates: boolean
+    track_user_satisfaction: boolean
+    track_output_quality: boolean
+    
+  # Logging configuration
+  logging:
+    log_level: string         # "debug", "info", "warn", "error"
+    log_agent_interactions: boolean
+    log_user_interactions: boolean
+    log_system_events: boolean
+    log_performance_metrics: boolean
+    
+  # Alerting rules
+  alerts:
+    execution_time_threshold: integer  # Alert if workflow takes too long
+    error_rate_threshold: float       # Alert if error rate exceeds limit
+    quality_score_threshold: float    # Alert if quality drops below threshold
+    
+  # Analytics and reporting
+  analytics:
+    generate_execution_reports: boolean
+    track_workflow_effectiveness: boolean
+    collect_user_feedback: boolean
+    performance_benchmarking: boolean
+
+# User experience and interface
+user_experience:
+  # Progress tracking
+  progress_tracking:
+    show_progress_bar: boolean
+    show_step_details: boolean
+    show_estimated_time: boolean
+    
+  # User interface preferences
+  interface:
+    interaction_style: string  # "conversational", "form-based", "wizard"
+    confirmation_level: string # "minimal", "standard", "verbose"
+    error_reporting_style: string # "technical", "user-friendly", "adaptive"
+    
+  # Customization options
+  customization:
+    user_configurable_steps: array
+    workflow_variants: array
+    personalization_options: array
+
+# Quality assurance and validation
+quality_assurance:
+  # Output validation
+  output_validation:
+    schema_validation: boolean
+    content_validation: boolean
+    consistency_checks: boolean
+    completeness_checks: boolean
+    
+  # Quality gates
+  quality_gates:
+    - gate_id: string
+      step_id: string
+      validation_rules: array
+      failure_action: string   # "stop", "retry", "escalate", "continue"
+      
+  # Review processes
+  review_processes:
+    peer_review: boolean      # Whether to include peer review
+    expert_review: boolean    # Whether to include expert review
+    automated_review: boolean # Whether to include automated review
+    
+  # Testing and validation
+  testing:
+    unit_tests: array         # Unit tests for individual steps
+    integration_tests: array  # Tests for step interactions
+    end_to_end_tests: array   # Full workflow tests
+    performance_tests: array  # Performance and load tests
+
+# Security and compliance
+security:
+  # Data protection
+  data_protection:
+    encryption_at_rest: boolean
+    encryption_in_transit: boolean
+    data_anonymization: boolean
+    
+  # Access control
+  access_control:
+    authentication_required: boolean
+    authorization_levels: array
+    audit_logging: boolean
+    
+  # Compliance
+  compliance:
+    gdpr_compliant: boolean
+    hipaa_compliant: boolean
+    sox_compliant: boolean
+    custom_compliance_rules: array
+
+# Deployment and environment
+deployment:
+  # Environment configuration
+  environments:
+    development: object       # Development environment config
+    staging: object          # Staging environment config
+    production: object       # Production environment config
+    
+  # Deployment settings
+  deployment_settings:
+    auto_deployment: boolean
+    rollback_capability: boolean
+    blue_green_deployment: boolean
+    canary_deployment: boolean
+    
+  # Configuration management
+  configuration:
+    environment_variables: array
+    config_files: array
+    secrets_management: string
+
+# Documentation and help
+documentation:
+  # User documentation
+  user_guide: string          # Link to user guide
+  step_by_step_instructions: string
+  troubleshooting_guide: string
+  faq: string
+  
+  # Technical documentation
+  technical_docs:
+    architecture_overview: string
+    api_documentation: string
+    integration_guide: string
+    developer_guide: string
+    
+  # Examples and templates
+  examples:
+    sample_workflows: array
+    use_case_examples: array
+    best_practices: string
+
+# Metadata and governance
+metadata:
+  # Versioning
+  version_info:
+    major_version: integer
+    minor_version: integer
+    patch_version: integer
+    release_date: string
+    
+  # Ownership and governance
+  governance:
+    owner: string
+    maintainers: array
+    reviewers: array
+    approval_required: boolean
+    
+  # Lifecycle management
+  lifecycle:
+    status: string            # "development", "testing", "active", "deprecated"
+    deprecation_date: string
+    replacement_workflow: string
+    migration_guide: string
+    
+  # Tags and classification
+  classification:
+    tags: array
+    categories: array
+    complexity_rating: integer
+    maturity_level: string    # "experimental", "beta", "stable", "mature"

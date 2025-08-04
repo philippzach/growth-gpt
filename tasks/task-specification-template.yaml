@@ -1,0 +1,315 @@
+# Task Specification Template - Standardized Format for Agent Task Definitions
+# Use this template to create consistent task specifications across all agents
+
+schema_version: "2.0"
+description: "Template for creating consistent task specifications for Growth & Marketing Strategy AI agents"
+
+# Task specification template structure
+task_specification_template:
+  # Primary task definition
+  primary_objective: "[Clear, specific statement of what this agent accomplishes in 1-2 sentences]"
+  secondary_objectives:
+    - "[Additional goal 1 that supports the primary objective]"
+    - "[Additional goal 2 that supports the primary objective]"
+    - "[Additional goal 3 that supports workflow coordination]"
+  
+  # Specific deliverables
+  deliverables:
+    primary_deliverables:
+      - "[Must-have output 1 with specific format/structure]"
+      - "[Must-have output 2 with specific format/structure]"
+      - "[Must-have output 3 with specific format/structure]"
+      - "[Must-have output 4 with specific format/structure]"
+    secondary_deliverables:
+      - "[Nice-to-have output 1 if conditions met]"
+      - "[Nice-to-have output 2 if data available]"
+      - "[Nice-to-have output 3 for enhanced quality]"
+    deliverable_format: "[Expected format: markdown, structured document, specific template]"
+    quality_standards:
+      - "[Quality standard 1: specificity/measurability requirement]"
+      - "[Quality standard 2: actionability/usefulness requirement]" 
+      - "[Quality standard 3: workflow integration requirement]"
+      - "[Quality standard 4: consistency/coherence requirement]"
+  
+  # Success criteria and constraints
+  success_criteria:
+    mandatory_criteria:
+      - "[Criterion 1: Primary deliverable quality measure]"
+      - "[Criterion 2: Workflow integration effectiveness]"
+      - "[Criterion 3: Strategic value/actionability measure]"
+      - "[Criterion 4: Next agent enablement measure]"
+      - "[Criterion 5: Template compliance measure]"
+    optional_criteria:
+      - "[Excellence criterion 1: Above-average insight quality]"
+      - "[Excellence criterion 2: Innovation/creativity measure]"
+      - "[Excellence criterion 3: Comprehensive coverage measure]"
+    measurement_approach: "[How success will be quantified - scoring algorithm, validation method]"
+    validation_method: "[Specific validation steps - template compliance, coherence check, handoff validation]"
+  
+  constraints:
+    scope_constraints:
+      - "[What this agent should NOT do - delegated to other agents]"
+      - "[Boundaries of responsibility within workflow]"
+      - "[Focus areas vs. out-of-scope areas]"
+    resource_constraints:
+      - "[Time limit: Maximum X-minute execution time]"
+      - "[Input dependencies: Available knowledge base and user inputs]"
+      - "[Token/complexity limits for processing]"
+    dependency_constraints:
+      - "[Dependencies on previous agents: specific outputs needed]"
+      - "[Workflow position responsibilities and limitations]"
+      - "[Context availability and handoff requirements]"
+    quality_constraints:
+      - "[All claims must be supported by reasoning/evidence]"
+      - "[Recommendations must be specific and actionable]"
+      - "[Assumptions must be clearly stated and validated]"
+      - "[Outputs must maintain internal consistency]"
+  
+  # Context and workflow awareness
+  context_awareness:
+    workflow_stage: "[foundation/strategy/validation - current stage]"
+    stage_purpose: "[Why this stage exists in the overall workflow]"
+    previous_stage_outputs: 
+      - "[Output 1 from previous agent that this agent uses]"
+      - "[Output 2 from previous agent that provides context]"
+    next_stage_requirements:
+      - "[What next agent 1 needs from this agent]"
+      - "[What next agent 2 needs from this agent]"
+      - "[General context requirements for workflow continuation]"
+    
+  handoff_requirements:
+    context_to_provide:
+      - "[Specific context element 1 for next agents]"
+      - "[Specific context element 2 for workflow continuation]"
+      - "[Comprehensive output content for agent coordination]"
+    format_requirements:
+      - "[How outputs should be structured for next agents]"
+      - "[Required sections/elements for easy consumption]"
+      - "[Summary/detailed format specifications]"
+    validation_requirements:
+      - "[What must be validated before handoff]"
+      - "[Quality gates that must be passed]"
+      - "[Completeness checks required]"
+    transformation_needs:
+      - "[How outputs need to be prepared for specific next agents]"
+      - "[Context extraction/formatting for workflow efficiency]"
+      - "[Summary generation for different consumption needs]"
+
+# Prompt generation template
+prompt_generation_template:
+  # Prompt template configuration
+  templates:
+    system_prompt_template: |
+      {agent_identity}
+      
+      TASK OBJECTIVE: {primary_objective}
+      
+      SPECIFIC DELIVERABLES:
+      {primary_deliverables}
+      
+      SUCCESS CRITERIA:
+      {mandatory_criteria}
+      
+      CONSTRAINTS AND SCOPE:
+      {scope_constraints}
+      
+      WORKFLOW CONTEXT:
+      - Stage: {workflow_stage} ({stage_purpose})
+      - Previous stage provided: {previous_stage_outputs}
+      - Next agents depend on: {next_stage_requirements}
+      
+      KNOWLEDGE BASE: {injected_knowledge}
+      
+      OUTPUT FORMAT: Follow template structure exactly - {primary_template}
+      
+      QUALITY STANDARDS: {quality_standards}
+    
+    user_prompt_template: |
+      Based on the provided inputs and context, execute your agent role following the specified deliverables and success criteria.
+      
+      [AGENT-SPECIFIC USER INPUTS - customize based on agent role]
+      Primary Input: {primary_user_input}
+      Secondary Context: {secondary_context}
+      Previous Agent Outputs: {previous_outputs}
+      
+      Additional Context: {additional_context}
+    
+    context_injection_template: |
+      WORKFLOW CONTEXT:
+      Current Stage: {workflow_stage}
+      Stage Purpose: {stage_purpose}
+      Previous Outputs: {previous_outputs}
+      Next Stage Needs: {next_stage_requirements}
+      
+      USER CONTEXT:
+      Business Stage: {business_stage}
+      Project Name: {project_name}
+      Industry/Market: {industry_context}
+      User Experience Level: {user_experience}
+    
+    knowledge_injection_template: |
+      RELEVANT KNOWLEDGE BASE:
+      
+      [AGENT-SPECIFIC KNOWLEDGE SECTIONS - customize based on agent domain]
+      Primary Domain Knowledge:
+      {primary_domain_knowledge}
+      
+      Secondary Reference Knowledge:
+      {secondary_reference_knowledge}
+      
+      Process/Methodology Knowledge:
+      {process_methodology_knowledge}
+  
+  # Dynamic prompt generation
+  dynamic_generation:
+    context_injection_points:
+      - "after_system_prompt_identity"
+      - "before_deliverables_section"
+      - "after_constraints_section" 
+      - "before_output_format_section"
+    variable_substitution:
+      agent_identity: "from_agent_config.persona.identity"
+      primary_objective: "from_task_spec.primary_objective"
+      primary_deliverables: "from_task_spec.deliverables.primary_deliverables"
+      mandatory_criteria: "from_task_spec.success_criteria.mandatory_criteria"
+      scope_constraints: "from_task_spec.constraints.scope_constraints"
+      workflow_stage: "from_task_spec.context_awareness.workflow_stage"
+      stage_purpose: "from_task_spec.context_awareness.stage_purpose"
+      previous_stage_outputs: "from_task_spec.context_awareness.previous_stage_outputs"
+      next_stage_requirements: "from_task_spec.context_awareness.next_stage_requirements"
+      quality_standards: "from_task_spec.deliverables.quality_standards"
+    conditional_sections:
+      "[condition_name]": "[when_to_include_this_section]"
+      # Examples:
+      # competitive_analysis_guidance: "if_competitors_mentioned_in_user_input"
+      # market_research_synthesis: "if_market_data_provided"
+      # risk_analysis_focus: "if_high_uncertainty_indicators"
+    personalization_options:
+      "[personalization_aspect]": "[how_to_customize]"
+      # Examples:
+      # industry_specific_examples: "based_on_user_industry"
+      # business_stage_guidance: "based_on_user_business_stage"
+      # complexity_adjustment: "based_on_user_experience_level"
+  
+  # Prompt optimization
+  optimization:
+    token_optimization: true
+    clarity_enhancement: true
+    context_compression: true
+    quality_instructions: true
+  
+  # Prompt validation
+  validation:
+    prompt_validation: true
+    length_limits:
+      system_prompt_max_tokens: "[agent-specific limit, typically 2000-4000]"
+      user_prompt_max_tokens: "[agent-specific limit, typically 500-1500]"
+      total_prompt_max_tokens: "[agent-specific limit, typically 3000-5000]"
+    required_elements:
+      - "task_objective_statement"
+      - "deliverables_specification"
+      - "success_criteria_definition"
+      - "output_format_instruction"
+      - "knowledge_base_injection"
+    quality_checks:
+      - "all_variables_substituted"
+      - "context_relevance_validated"
+      - "instruction_clarity_confirmed"
+      - "token_limits_respected"
+
+# Agent-specific customization guidelines
+customization_guidelines:
+  # Foundation stage agents
+  foundation_agents:
+    focus_areas:
+      - "Strategic foundation establishment"
+      - "Framework creation for subsequent agents"
+      - "Core concept validation and definition"
+    common_deliverables:
+      - "Strategic framework/foundation document"
+      - "Clear definitions and concepts"
+      - "Context for next stage agents"
+    handoff_emphasis:
+      - "Provide comprehensive foundation"
+      - "Enable next stage execution"
+      - "Clear context and definitions"
+  
+  # Strategy stage agents  
+  strategy_agents:
+    focus_areas:
+      - "Tactical strategy development"
+      - "Implementation planning"
+      - "Resource allocation and optimization"
+    common_deliverables:
+      - "Detailed strategy documents"
+      - "Implementation frameworks"
+      - "Resource and channel plans"
+    handoff_emphasis:
+      - "Actionable strategic plans"
+      - "Clear implementation guidance"
+      - "Integrated strategy coherence"
+  
+  # Validation stage agents
+  validation_agents:
+    focus_areas:
+      - "Hypothesis formation and testing"
+      - "Validation methodology design"  
+      - "Risk assessment and mitigation"
+    common_deliverables:
+      - "Testing frameworks and plans"
+      - "Validation methodologies"
+      - "Risk mitigation strategies"
+    handoff_emphasis:
+      - "Testable hypotheses"
+      - "Clear validation approaches"
+      - "Implementation feasibility"
+
+# Template completion checklist
+completion_checklist:
+  task_specification:
+    - "[ ] Primary objective is clear and specific"
+    - "[ ] Secondary objectives support primary and workflow"
+    - "[ ] All primary deliverables are specific and measurable"
+    - "[ ] Quality standards enable validation"
+    - "[ ] Success criteria are quantifiable"
+    - "[ ] Constraints clearly define scope boundaries"
+    - "[ ] Context awareness reflects workflow position"
+    - "[ ] Handoff requirements enable next agents"
+  
+  prompt_generation:
+    - "[ ] System prompt template includes all required elements"
+    - "[ ] User prompt template matches agent input needs"
+    - "[ ] Context injection covers all necessary dimensions"
+    - "[ ] Knowledge injection targets agent domain expertise"
+    - "[ ] Variable substitution mappings are complete"
+    - "[ ] Conditional sections address relevant scenarios"
+    - "[ ] Token limits are appropriate for agent complexity"
+    - "[ ] Validation elements ensure prompt quality"
+  
+  integration:
+    - "[ ] Agent config path is correct"
+    - "[ ] Template integration matches deliverables"
+    - "[ ] Workflow coordination reflects dependencies"
+    - "[ ] Quality gates align with success criteria"
+    - "[ ] Context management supports handoffs"
+    - "[ ] Performance settings match agent complexity"
+
+# Usage instructions
+usage_instructions: |
+  To create a new agent task using this template:
+  
+  1. Copy this template file
+  2. Replace all [bracketed placeholders] with agent-specific content
+  3. Customize the prompt templates for the agent's domain
+  4. Adjust token limits and validation rules for agent complexity
+  5. Update knowledge injection to match agent expertise areas
+  6. Define conditional sections for agent-specific scenarios
+  7. Validate against the completion checklist
+  8. Test prompt generation with sample inputs
+  
+  Key principles:
+  - Be specific and measurable in all requirements
+  - Focus on workflow integration and handoff quality
+  - Balance comprehensiveness with execution efficiency
+  - Ensure consistency with other agents in the workflow
+  - Maintain clear boundaries and scope definitions
