@@ -181,8 +181,7 @@ wrangler kv key put "tasks/agent-tasks/viral-growth-architect-task.yaml" --path=
 wrangler kv key put "tasks/agent-tasks/growth-hacker-task.yaml" --path="tasks/agent-tasks/growth-hacker-task.yaml" --binding="CONFIG_STORE"
 
 # System configurations
-wrangler kv key put "config/runtime-config.yaml" --path="config/runtime-config.yaml" --binding="CONFIG_STORE"
-wrangler kv key put "config/integrations.yaml" --path="config/integrations.yaml" --binding="CONFIG_STORE"
+wrangler kv key put "config/runtime-config.json" --path="config/runtime-config.json" --binding="CONFIG_STORE"
 ```
 
 **Upload Knowledge Base Content (35 files):**

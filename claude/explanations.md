@@ -772,3 +772,51 @@ app.post('/api/sessions', async (c) => {
 The genius: This single file acts as the orchestration hub for an entire AI-powered growth strategy platform,
 handling everything from authentication to real-time chat to AI agent coordination - all running at the edge for
 maximum performance! 🎯
+
+Prompt Engineering Control Points
+
+1. System Prompts (Agent Identity + Capabilities + Knowledge)
+
+Primary Location: src/lib/simple-prompt-builder.ts
+
+- Method: buildEnhancedSystemPrompt() (lines ~97-147)
+- Controls: Agent identity, capabilities, constraints, and static knowledge integration
+
+Configuration Source: agents/[agent-name]-unified.yaml
+
+- agent_identity.persona.identity → Agent identity description
+- agent_identity.persona.expertise → Core competencies
+- agent_identity.persona.communication_style → Communication style
+- capabilities_constraints.capabilities → What the agent can do
+- static_knowledge.knowledge_files → Knowledge base integration
+
+2. Instruction Prompts (Task + Context + Specifications)
+
+Primary Location: src/lib/simple-prompt-builder.ts
+
+- Method: buildEnhancedInstructionPrompt() (lines ~156-240)
+- Controls: Task primer, business context, previous outputs, output format
+
+Key Sections You Can Modify:
+
+- Context Primer: Workflow position and agent sequence information
+- Task Instructions: Primary objectives and deliverables
+- Business Context: How user inputs are presented
+- Previous Agent Outputs: How full context is shared between agents
+- Output Specifications: Required format and structure
+
+3. Agent-Specific Configurations
+
+Enhanced Agents (Using unified configs):
+
+- agents/gtm-consultant-unified.yaml ✅
+- agents/persona-strategist-unified.yaml ✅
+- agents/product-manager-unified.yaml ✅
+
+Legacy Agents (Original format):
+
+- agents/growth-manager.yaml
+- agents/head-of-acquisition.yaml
+- agents/head-of-retention.yaml
+- agents/viral-growth-architect.yaml
+- agents/growth-hacker.yaml

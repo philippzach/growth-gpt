@@ -1,0 +1,1126 @@
+{
+  "schema_version": "2.0",
+  "description": "Complete growth and marketing strategy development workflow using standardized agent orchestration",
+  "workflow": {
+    "id": "master-workflow-v2",
+    "name": "Growth and Marketing Strategy Development",
+    "version": "2.0",
+    "description": "End-to-end agent workflow for building comprehensive growth and marketing strategies.\nSupports both detailed strategic planning for complex projects and rapid prototyping for MVPs.\nIntegrates 8 specialized agents in sequential execution with quality gates and validation.\n",
+    "type": "master-workflow",
+    "category": "strategy",
+    "project_types": [
+      "growth-strategy",
+      "marketing-strategy",
+      "product-strategy",
+      "go-to-market-strategy",
+      "mvp-strategy",
+      "startup-strategy"
+    ],
+    "complexity_level": "complex",
+    "estimated_duration": "4-8 hours",
+    "user_involvement": "medium"
+  },
+  "execution": {
+    "mode": "sequential",
+    "parallelization": {
+      "max_concurrent_agents": 1,
+      "parallel_groups": [],
+      "synchronization_points": [
+        "foundation_complete",
+        "strategy_complete",
+        "validation_complete"
+      ]
+    },
+    "error_handling": {
+      "strategy": "retry_failed",
+      "max_retries": 2,
+      "rollback_on_failure": true
+    },
+    "state_management": {
+      "persist_state": true,
+      "checkpoint_frequency": "per_agent",
+      "resume_capability": true
+    }
+  },
+  "sequence": [
+    {
+      "step_id": "foundation_gtm",
+      "step_name": "Market Foundation & Value Proposition",
+      "agent_id": "gtm-consultant",
+      "stage": "foundation",
+      "condition": null,
+      "inputs": {
+        "required": [],
+        "optional": [
+          "initial_business_concept",
+          "market_research_data"
+        ],
+        "user_inputs": [
+          "business_idea",
+          "target_market_hypothesis",
+          "problem_statement"
+        ],
+        "context_injection": false
+      },
+      "outputs": {
+        "primary": "gtm-brief.md",
+        "secondary": [],
+        "format": "markdown",
+        "storage_location": "docs/"
+      },
+      "agent_overrides": {
+        "temperature": 0.7,
+        "max_tokens": 4000,
+        "custom_prompt_additions": "Focus on creating a solid foundation for all subsequent agents."
+      },
+      "validation": {
+        "required_elements": [
+          "value_proposition",
+          "target_market",
+          "problem_validation",
+          "business_model_overview"
+        ],
+        "quality_gates": [
+          "value_prop_clarity",
+          "market_specificity",
+          "problem_urgency"
+        ],
+        "human_review_required": false
+      },
+      "dependencies": {
+        "hard_dependencies": [],
+        "soft_dependencies": [],
+        "timeout": "30 minutes"
+      },
+      "optional_steps": [
+        "brainstorming_session",
+        "market_research_prompt",
+        "competitive_landscape_analysis"
+      ],
+      "tools_available": [
+        "value_proposition_canvas",
+        "business_model_canvas",
+        "market_research_generator"
+      ],
+      "knowledge_focus": [
+        "value-proposition",
+        "problem-solution-fit",
+        "business-model"
+      ],
+      "user_interaction": {
+        "required": true,
+        "interaction_type": "input",
+        "prompt_template": "Please provide your business concept and target market ideas",
+        "timeout_behavior": "request_clarification"
+      },
+      "notes": "Creates the foundational market strategy and value proposition. Can include optional \nbrainstorming and market research before generating the brief. Output serves as \nprimary context for all subsequent agents.\n",
+      "success_criteria": [
+        "Clear and compelling value proposition articulated",
+        "Target market specifically defined with characteristics",
+        "Problem-solution fit hypothesis clearly stated",
+        "Business model components identified and validated"
+      ],
+      "common_issues": [
+        "Vague target market definition",
+        "Weak value proposition differentiation",
+        "Insufficient problem validation"
+      ],
+      "next_steps": {
+        "default": "persona_development",
+        "conditional_routing": []
+      }
+    },
+    {
+      "step_id": "persona_development",
+      "step_name": "Psychographic Persona Development",
+      "agent_id": "persona-strategist",
+      "stage": "foundation",
+      "condition": null,
+      "inputs": {
+        "required": [
+          "gtm-brief.md"
+        ],
+        "optional": [
+          "market_research_data",
+          "customer_interview_data"
+        ],
+        "user_inputs": [
+          "customer_insights",
+          "behavioral_preferences"
+        ],
+        "context_injection": true
+      },
+      "outputs": {
+        "primary": "psychographic-personas.md",
+        "secondary": [
+          "persona-journey-maps.md"
+        ],
+        "format": "markdown",
+        "storage_location": "docs/"
+      },
+      "agent_overrides": {
+        "temperature": 0.8,
+        "max_tokens": 4000,
+        "custom_prompt_additions": "Create detailed, actionable personas based on psychographic analysis."
+      },
+      "validation": {
+        "required_elements": [
+          "persona_profiles",
+          "psychographic_analysis",
+          "behavioral_patterns",
+          "journey_mapping"
+        ],
+        "quality_gates": [
+          "persona_specificity",
+          "behavioral_insights",
+          "actionability"
+        ],
+        "human_review_required": false
+      },
+      "dependencies": {
+        "hard_dependencies": [
+          "foundation_gtm"
+        ],
+        "soft_dependencies": [],
+        "timeout": "25 minutes"
+      },
+      "optional_steps": [
+        "customer_interview_analysis",
+        "behavioral_data_analysis"
+      ],
+      "tools_available": [
+        "psychographic_analyzer",
+        "journey_mapper",
+        "persona_generator"
+      ],
+      "knowledge_focus": [
+        "psychographic-persona",
+        "market-segmentation",
+        "behavioral-psychology"
+      ],
+      "user_interaction": {
+        "required": false,
+        "interaction_type": "review",
+        "prompt_template": "Review generated personas for accuracy and completeness",
+        "timeout_behavior": "proceed_with_defaults"
+      },
+      "notes": "Develops detailed psychographic personas from the GTM brief. Creates actionable \ncustomer profiles that inform all subsequent strategy decisions.\n",
+      "success_criteria": [
+        "Detailed personas with psychographic depth",
+        "Clear behavioral patterns identified",
+        "Customer journey touchpoints mapped",
+        "Actionable insights for targeting"
+      ],
+      "common_issues": [
+        "Generic persona descriptions",
+        "Missing behavioral insights",
+        "Insufficient journey mapping"
+      ],
+      "next_steps": {
+        "default": "product_brand_development",
+        "conditional_routing": []
+      }
+    },
+    {
+      "step_id": "product_brand_development",
+      "step_name": "Product-Market Fit & Brand Positioning",
+      "agent_id": "product-manager",
+      "stage": "foundation",
+      "condition": null,
+      "inputs": {
+        "required": [
+          "gtm-brief.md",
+          "psychographic-personas.md"
+        ],
+        "optional": [
+          "competitive_analysis",
+          "user_research_data"
+        ],
+        "user_inputs": [
+          "product_features",
+          "brand_preferences"
+        ],
+        "context_injection": true
+      },
+      "outputs": {
+        "primary": "product-brand-guide.md",
+        "secondary": [
+          "brand-messaging-framework.md",
+          "product-positioning.md"
+        ],
+        "format": "markdown",
+        "storage_location": "docs/"
+      },
+      "agent_overrides": {
+        "temperature": 0.7,
+        "max_tokens": 4000,
+        "custom_prompt_additions": "Focus on product-market fit validation and distinctive brand positioning."
+      },
+      "validation": {
+        "required_elements": [
+          "product_market_fit_analysis",
+          "brand_positioning",
+          "messaging_framework",
+          "competitive_differentiation"
+        ],
+        "quality_gates": [
+          "market_fit_validation",
+          "brand_distinctiveness",
+          "message_clarity"
+        ],
+        "human_review_required": false
+      },
+      "dependencies": {
+        "hard_dependencies": [
+          "foundation_gtm",
+          "persona_development"
+        ],
+        "soft_dependencies": [],
+        "timeout": "30 minutes"
+      },
+      "optional_steps": [
+        "user_research_prompt",
+        "competitive_positioning_analysis",
+        "brand_perception_audit"
+      ],
+      "tools_available": [
+        "brand_canvas",
+        "positioning_matrix",
+        "message_testing"
+      ],
+      "knowledge_focus": [
+        "product-market-fit",
+        "brand-identity",
+        "competitive-analysis"
+      ],
+      "user_interaction": {
+        "required": false,
+        "interaction_type": "approval",
+        "prompt_template": "Approve brand positioning and messaging framework",
+        "timeout_behavior": "proceed_with_current"
+      },
+      "notes": "Validates product-market fit and creates comprehensive brand positioning. \nEstablishes messaging framework that guides all marketing communications.\n",
+      "success_criteria": [
+        "Product-market fit clearly validated",
+        "Distinctive brand positioning established",
+        "Consistent messaging framework created",
+        "Competitive differentiation articulated"
+      ],
+      "common_issues": [
+        "Weak product-market fit validation",
+        "Generic brand positioning",
+        "Inconsistent messaging"
+      ],
+      "next_steps": {
+        "default": "growth_funnel_design",
+        "conditional_routing": []
+      }
+    },
+    {
+      "step_id": "growth_funnel_design",
+      "step_name": "Growth Funnel & Metrics Framework",
+      "agent_id": "growth-manager",
+      "stage": "strategy",
+      "condition": null,
+      "inputs": {
+        "required": [
+          "gtm-brief.md",
+          "psychographic-personas.md",
+          "product-brand-guide.md"
+        ],
+        "optional": [
+          "analytics_data",
+          "funnel_benchmarks"
+        ],
+        "user_inputs": [
+          "current_metrics",
+          "growth_targets"
+        ],
+        "context_injection": true
+      },
+      "outputs": {
+        "primary": "growth-funnel.md",
+        "secondary": [
+          "metrics-dashboard.md",
+          "kpi-framework.md"
+        ],
+        "format": "markdown",
+        "storage_location": "docs/"
+      },
+      "agent_overrides": {
+        "temperature": 0.6,
+        "max_tokens": 4000,
+        "custom_prompt_additions": "Create measurable, actionable growth funnel with clear KPIs."
+      },
+      "validation": {
+        "required_elements": [
+          "funnel_architecture",
+          "metrics_framework",
+          "north_star_metric",
+          "conversion_optimization"
+        ],
+        "quality_gates": [
+          "metrics_measurability",
+          "funnel_completeness",
+          "optimization_potential"
+        ],
+        "human_review_required": false
+      },
+      "dependencies": {
+        "hard_dependencies": [
+          "foundation_gtm",
+          "persona_development",
+          "product_brand_development"
+        ],
+        "soft_dependencies": [],
+        "timeout": "35 minutes"
+      },
+      "optional_steps": [
+        "funnel_audit",
+        "benchmark_analysis",
+        "metrics_dashboard_design"
+      ],
+      "tools_available": [
+        "funnel_analyzer",
+        "metrics_calculator",
+        "optimization_planner"
+      ],
+      "knowledge_focus": [
+        "pirate-funnel",
+        "north-star-metric",
+        "growth-hacking-process"
+      ],
+      "user_interaction": {
+        "required": true,
+        "interaction_type": "input",
+        "prompt_template": "Provide current metrics and growth targets",
+        "timeout_behavior": "use_industry_benchmarks"
+      },
+      "notes": "Creates comprehensive growth funnel with AARRR framework and establishes \nNorth Star Metric with supporting KPIs for measurement and optimization.\n",
+      "success_criteria": [
+        "Complete AARRR funnel architecture",
+        "Clear North Star Metric identified",
+        "Measurable KPIs for each funnel stage",
+        "Optimization opportunities identified"
+      ],
+      "common_issues": [
+        "Incomplete funnel mapping",
+        "Unmeasurable metrics",
+        "Missing optimization strategies"
+      ],
+      "next_steps": {
+        "default": "acquisition_strategy",
+        "conditional_routing": []
+      }
+    },
+    {
+      "step_id": "acquisition_strategy",
+      "step_name": "Customer Acquisition Strategy",
+      "agent_id": "head-of-acquisition",
+      "stage": "strategy",
+      "condition": null,
+      "inputs": {
+        "required": [
+          "gtm-brief.md",
+          "psychographic-personas.md",
+          "product-brand-guide.md",
+          "growth-funnel.md"
+        ],
+        "optional": [
+          "channel_performance_data",
+          "ad_spend_data"
+        ],
+        "user_inputs": [
+          "budget_constraints",
+          "channel_preferences"
+        ],
+        "context_injection": true
+      },
+      "outputs": {
+        "primary": "acquisition-strategy.md",
+        "secondary": [
+          "channel-mix-strategy.md",
+          "campaign-frameworks.md"
+        ],
+        "format": "markdown",
+        "storage_location": "docs/"
+      },
+      "agent_overrides": {
+        "temperature": 0.7,
+        "max_tokens": 4500,
+        "custom_prompt_additions": "Focus on cost-effective, scalable acquisition channels aligned with personas."
+      },
+      "validation": {
+        "required_elements": [
+          "channel_strategy",
+          "campaign_frameworks",
+          "budget_allocation",
+          "acquisition_funnels"
+        ],
+        "quality_gates": [
+          "channel_persona_alignment",
+          "scalability_potential",
+          "cost_effectiveness"
+        ],
+        "human_review_required": false
+      },
+      "dependencies": {
+        "hard_dependencies": [
+          "foundation_gtm",
+          "persona_development",
+          "product_brand_development",
+          "growth_funnel_design"
+        ],
+        "soft_dependencies": [],
+        "timeout": "40 minutes"
+      },
+      "optional_steps": [
+        "channel_testing_framework",
+        "creative_strategy_development",
+        "attribution_modeling"
+      ],
+      "tools_available": [
+        "channel_planner",
+        "campaign_optimizer",
+        "attribution_tracker"
+      ],
+      "knowledge_focus": [
+        "pirate-funnel-awareness",
+        "pirate-funnel-acquisition",
+        "facebook-ads",
+        "seo"
+      ],
+      "user_interaction": {
+        "required": true,
+        "interaction_type": "selection",
+        "prompt_template": "Select preferred acquisition channels and budget allocation",
+        "timeout_behavior": "use_recommended_mix"
+      },
+      "notes": "Develops comprehensive customer acquisition strategy with channel mix optimization,\ncampaign frameworks, and budget allocation based on persona insights.\n",
+      "success_criteria": [
+        "Optimized channel mix strategy",
+        "Scalable campaign frameworks",
+        "Clear budget allocation rationale",
+        "Measurable acquisition funnels"
+      ],
+      "common_issues": [
+        "Channel-persona misalignment",
+        "Unrealistic budget expectations",
+        "Missing attribution tracking"
+      ],
+      "next_steps": {
+        "default": "retention_strategy",
+        "conditional_routing": []
+      }
+    },
+    {
+      "step_id": "retention_strategy",
+      "step_name": "Customer Retention & Lifecycle Strategy",
+      "agent_id": "head-of-retention",
+      "stage": "strategy",
+      "condition": null,
+      "inputs": {
+        "required": [
+          "gtm-brief.md",
+          "psychographic-personas.md",
+          "product-brand-guide.md",
+          "growth-funnel.md",
+          "acquisition-strategy.md"
+        ],
+        "optional": [
+          "churn_data",
+          "engagement_metrics"
+        ],
+        "user_inputs": [
+          "retention_challenges",
+          "lifecycle_stage_data"
+        ],
+        "context_injection": true
+      },
+      "outputs": {
+        "primary": "retention-strategy.md",
+        "secondary": [
+          "lifecycle-campaigns.md",
+          "engagement-framework.md"
+        ],
+        "format": "markdown",
+        "storage_location": "docs/"
+      },
+      "agent_overrides": {
+        "temperature": 0.7,
+        "max_tokens": 4000,
+        "custom_prompt_additions": "Create comprehensive retention strategy focusing on lifecycle optimization and engagement."
+      },
+      "validation": {
+        "required_elements": [
+          "retention_framework",
+          "lifecycle_strategy",
+          "engagement_programs",
+          "churn_prevention"
+        ],
+        "quality_gates": [
+          "retention_impact_potential",
+          "lifecycle_completeness",
+          "engagement_measurability"
+        ],
+        "human_review_required": false
+      },
+      "dependencies": {
+        "hard_dependencies": [
+          "foundation_gtm",
+          "persona_development",
+          "product_brand_development",
+          "growth_funnel_design",
+          "acquisition_strategy"
+        ],
+        "soft_dependencies": [],
+        "timeout": "35 minutes"
+      },
+      "optional_steps": [
+        "churn_prediction_modeling",
+        "engagement_optimization",
+        "lifecycle_automation_design"
+      ],
+      "tools_available": [
+        "retention_analyzer",
+        "lifecycle_mapper",
+        "engagement_optimizer"
+      ],
+      "knowledge_focus": [
+        "pirate-funnel-activation",
+        "pirate-funnel-retention",
+        "wow-moment",
+        "retention-lifecycle"
+      ],
+      "user_interaction": {
+        "required": false,
+        "interaction_type": "review",
+        "prompt_template": "Review retention strategy and lifecycle programs",
+        "timeout_behavior": "proceed_with_strategy"
+      },
+      "notes": "Creates comprehensive retention strategy with lifecycle optimization, engagement \nprograms, and churn prevention mechanisms aligned with customer journey.\n",
+      "success_criteria": [
+        "Complete customer lifecycle strategy",
+        "Effective engagement programs",
+        "Proactive churn prevention measures",
+        "Clear retention metrics and goals"
+      ],
+      "common_issues": [
+        "Generic retention approaches",
+        "Missing lifecycle automation",
+        "Weak churn prediction"
+      ],
+      "next_steps": {
+        "default": "viral_growth_strategy",
+        "conditional_routing": []
+      }
+    },
+    {
+      "step_id": "viral_growth_strategy",
+      "step_name": "Viral Growth Loops & Network Effects",
+      "agent_id": "viral-growth-architect",
+      "stage": "strategy",
+      "condition": null,
+      "inputs": {
+        "required": [
+          "gtm-brief.md",
+          "psychographic-personas.md",
+          "product-brand-guide.md",
+          "growth-funnel.md",
+          "acquisition-strategy.md",
+          "retention-strategy.md"
+        ],
+        "optional": [
+          "sharing_behavior_data",
+          "network_analysis"
+        ],
+        "user_inputs": [
+          "viral_potential_assessment",
+          "sharing_preferences"
+        ],
+        "context_injection": true
+      },
+      "outputs": {
+        "primary": "viral-growth-strategy.md",
+        "secondary": [
+          "growth-loops-design.md",
+          "referral-programs.md"
+        ],
+        "format": "markdown",
+        "storage_location": "docs/"
+      },
+      "agent_overrides": {
+        "temperature": 0.8,
+        "max_tokens": 4000,
+        "custom_prompt_additions": "Design sustainable viral growth loops with strong network effects and referral mechanisms."
+      },
+      "validation": {
+        "required_elements": [
+          "viral_loops_design",
+          "network_effects_strategy",
+          "referral_programs",
+          "virality_metrics"
+        ],
+        "quality_gates": [
+          "viral_sustainability",
+          "network_effect_strength",
+          "referral_attractiveness"
+        ],
+        "human_review_required": false
+      },
+      "dependencies": {
+        "hard_dependencies": [
+          "foundation_gtm",
+          "persona_development",
+          "product_brand_development",
+          "growth_funnel_design",
+          "acquisition_strategy",
+          "retention_strategy"
+        ],
+        "soft_dependencies": [],
+        "timeout": "40 minutes"
+      },
+      "optional_steps": [
+        "viral_coefficient_modeling",
+        "network_topology_analysis",
+        "incentive_structure_optimization"
+      ],
+      "tools_available": [
+        "viral_loop_designer",
+        "network_analyzer",
+        "referral_optimizer"
+      ],
+      "knowledge_focus": [
+        "growth-loop",
+        "virality",
+        "pirate-funnel-referrals",
+        "network-effects"
+      ],
+      "user_interaction": {
+        "required": false,
+        "interaction_type": "approval",
+        "prompt_template": "Approve viral growth strategy and referral programs",
+        "timeout_behavior": "proceed_with_strategy"
+      },
+      "notes": "Designs sustainable viral growth loops with network effects, referral programs,\nand sharing mechanisms that amplify organic growth and reduce acquisition costs.\n",
+      "success_criteria": [
+        "Sustainable viral growth loops designed",
+        "Strong network effects identified",
+        "Compelling referral programs created",
+        "Measurable virality metrics established"
+      ],
+      "common_issues": [
+        "Weak viral loop sustainability",
+        "Poor incentive alignment",
+        "Missing network effects"
+      ],
+      "next_steps": {
+        "default": "experiment_design",
+        "conditional_routing": []
+      }
+    },
+    {
+      "step_id": "experiment_design",
+      "step_name": "Growth Experiments & Testing Framework",
+      "agent_id": "growth-hacker",
+      "stage": "validation",
+      "condition": null,
+      "inputs": {
+        "required": [
+          "gtm-brief.md",
+          "psychographic-personas.md",
+          "product-brand-guide.md",
+          "growth-funnel.md",
+          "acquisition-strategy.md",
+          "retention-strategy.md",
+          "viral-growth-strategy.md"
+        ],
+        "optional": [
+          "existing_experiment_data",
+          "testing_infrastructure"
+        ],
+        "user_inputs": [
+          "experimentation_priorities",
+          "testing_constraints"
+        ],
+        "context_injection": true
+      },
+      "outputs": {
+        "primary": "experiments.md",
+        "secondary": [
+          "testing-framework.md",
+          "experiment-roadmap.md"
+        ],
+        "format": "markdown",
+        "storage_location": "docs/"
+      },
+      "agent_overrides": {
+        "temperature": 0.6,
+        "max_tokens": 4500,
+        "custom_prompt_additions": "Create comprehensive experimentation framework with prioritized test roadmap."
+      },
+      "validation": {
+        "required_elements": [
+          "experiment_framework",
+          "test_prioritization",
+          "hypothesis_formation",
+          "measurement_plan"
+        ],
+        "quality_gates": [
+          "experiment_validity",
+          "measurement_accuracy",
+          "resource_feasibility"
+        ],
+        "human_review_required": true
+      },
+      "dependencies": {
+        "hard_dependencies": [
+          "foundation_gtm",
+          "persona_development",
+          "product_brand_development",
+          "growth_funnel_design",
+          "acquisition_strategy",
+          "retention_strategy",
+          "viral_growth_strategy"
+        ],
+        "soft_dependencies": [],
+        "timeout": "45 minutes"
+      },
+      "optional_steps": [
+        "statistical_power_analysis",
+        "experiment_infrastructure_setup",
+        "results_analysis_framework"
+      ],
+      "tools_available": [
+        "experiment_designer",
+        "hypothesis_generator",
+        "statistical_calculator"
+      ],
+      "knowledge_focus": [
+        "experiment-process",
+        "a-b-testing",
+        "statistical-analysis",
+        "growth-hacking-techniques"
+      ],
+      "user_interaction": {
+        "required": true,
+        "interaction_type": "selection",
+        "prompt_template": "Prioritize experiments and approve testing roadmap",
+        "timeout_behavior": "use_recommended_priorities"
+      },
+      "notes": "Creates comprehensive experimentation framework with prioritized testing roadmap\nto validate all strategic hypotheses and optimize growth initiatives.\n",
+      "success_criteria": [
+        "Complete experimentation framework",
+        "Prioritized testing roadmap",
+        "Valid hypothesis formation process",
+        "Robust measurement and analysis plan"
+      ],
+      "common_issues": [
+        "Invalid experimental design",
+        "Poor hypothesis formation",
+        "Inadequate measurement plans"
+      ],
+      "next_steps": {
+        "default": "workflow_complete",
+        "conditional_routing": [
+          {
+            "condition": "quality_issues_found",
+            "next_step": "quality_review_cycle"
+          }
+        ]
+      }
+    }
+  ],
+  "control_flow": {
+    "entry_point": "foundation_gtm",
+    "exit_conditions": [
+      "all_agents_completed_successfully",
+      "critical_failure_threshold_exceeded",
+      "user_requested_termination"
+    ],
+    "loops": [
+      {
+        "loop_id": "quality_improvement_loop",
+        "steps": [
+          "experiment_design",
+          "retention_strategy",
+          "acquisition_strategy"
+        ],
+        "condition": "output_quality_below_threshold",
+        "max_iterations": 2
+      }
+    ],
+    "decision_points": [
+      {
+        "decision_id": "complexity_assessment",
+        "step_id": "foundation_gtm",
+        "criteria": {
+          "business_complexity": "high",
+          "user_experience_level": "beginner"
+        },
+        "outcomes": [
+          {
+            "condition": "complex_business_beginner_user",
+            "next_step": "guided_persona_development"
+          },
+          {
+            "condition": "simple_business_expert_user",
+            "next_step": "accelerated_strategy_development"
+          }
+        ]
+      }
+    ],
+    "sub_workflows": []
+  },
+  "context": {
+    "global_context": {
+      "workflow_type": "growth_strategy",
+      "execution_mode": "comprehensive",
+      "quality_threshold": 0.8
+    },
+    "context_passing": {
+      "strategy": "selective",
+      "include_previous_outputs": true,
+      "include_user_preferences": true,
+      "include_workflow_history": false,
+      "max_context_tokens": 8000
+    },
+    "state_persistence": {
+      "storage_backend": "local",
+      "encryption": true,
+      "retention_period": "30 days"
+    },
+    "memory": {
+      "working_memory_limit": 10000,
+      "long_term_storage": true,
+      "memory_compression": true
+    }
+  },
+  "integrations": {
+    "external_apis": [
+      "market_data_api",
+      "competitor_intelligence_api"
+    ],
+    "tools": {
+      "required": [
+        "anthropic_claude_api"
+      ],
+      "optional": [
+        "analytics_integration",
+        "crm_integration"
+      ]
+    },
+    "file_system": {
+      "input_directories": [
+        "inputs/",
+        "knowledge-base/"
+      ],
+      "output_directories": [
+        "docs/",
+        "outputs/"
+      ],
+      "temp_directories": [
+        "temp/",
+        "cache/"
+      ]
+    },
+    "webhooks": {
+      "workflow_start": null,
+      "workflow_complete": "notify_completion",
+      "step_complete": null,
+      "error_occurred": "escalate_error"
+    }
+  },
+  "performance": {
+    "resource_limits": {
+      "max_memory_usage": "4GB",
+      "max_cpu_usage": "70%",
+      "max_concurrent_api_calls": 5
+    },
+    "caching": {
+      "cache_agent_responses": true,
+      "cache_intermediate_results": true,
+      "cache_knowledge_lookups": true,
+      "cache_duration": "2h"
+    },
+    "optimization": {
+      "token_usage_optimization": true,
+      "response_time_optimization": true,
+      "cost_optimization": true,
+      "quality_optimization": true
+    }
+  },
+  "monitoring": {
+    "metrics": {
+      "track_execution_time": true,
+      "track_token_usage": true,
+      "track_error_rates": true,
+      "track_user_satisfaction": true,
+      "track_output_quality": true
+    },
+    "logging": {
+      "log_level": "info",
+      "log_agent_interactions": true,
+      "log_user_interactions": true,
+      "log_system_events": true,
+      "log_performance_metrics": true
+    },
+    "alerts": {
+      "execution_time_threshold": 300,
+      "error_rate_threshold": 0.1,
+      "quality_score_threshold": 0.7
+    },
+    "analytics": {
+      "generate_execution_reports": true,
+      "track_workflow_effectiveness": true,
+      "collect_user_feedback": true,
+      "performance_benchmarking": true
+    }
+  },
+  "user_experience": {
+    "progress_tracking": {
+      "show_progress_bar": true,
+      "show_step_details": true,
+      "show_estimated_time": true
+    },
+    "interface": {
+      "interaction_style": "conversational",
+      "confirmation_level": "standard",
+      "error_reporting_style": "user-friendly"
+    },
+    "customization": {
+      "user_configurable_steps": [
+        "optional_steps",
+        "quality_thresholds",
+        "output_formats"
+      ],
+      "workflow_variants": [
+        "rapid_prototyping",
+        "comprehensive_strategy",
+        "validation_focused"
+      ],
+      "personalization_options": [
+        "industry_focus",
+        "business_stage",
+        "complexity_level"
+      ]
+    }
+  },
+  "quality_assurance": {
+    "output_validation": {
+      "schema_validation": true,
+      "content_validation": true,
+      "consistency_checks": true,
+      "completeness_checks": true
+    },
+    "quality_gates": [
+      {
+        "gate_id": "foundation_quality_gate",
+        "step_id": "product_brand_development",
+        "validation_rules": [
+          "value_prop_clarity",
+          "market_definition",
+          "brand_differentiation"
+        ],
+        "failure_action": "retry"
+      },
+      {
+        "gate_id": "strategy_quality_gate",
+        "step_id": "viral_growth_strategy",
+        "validation_rules": [
+          "strategy_coherence",
+          "implementation_feasibility",
+          "metrics_measurability"
+        ],
+        "failure_action": "review_and_retry"
+      }
+    ],
+    "review_processes": {
+      "peer_review": false,
+      "expert_review": true,
+      "automated_review": true
+    },
+    "testing": {
+      "unit_tests": [
+        "agent_response_validation",
+        "template_processing",
+        "context_passing"
+      ],
+      "integration_tests": [
+        "agent_handoff_validation",
+        "workflow_state_management"
+      ],
+      "end_to_end_tests": [
+        "complete_workflow_execution",
+        "error_recovery"
+      ],
+      "performance_tests": [
+        "response_time_benchmarks",
+        "token_usage_optimization"
+      ]
+    }
+  },
+  "security": {
+    "data_protection": {
+      "encryption_at_rest": true,
+      "encryption_in_transit": true,
+      "data_anonymization": false
+    },
+    "access_control": {
+      "authentication_required": false,
+      "authorization_levels": [
+        "user",
+        "admin"
+      ],
+      "audit_logging": true
+    },
+    "compliance": {
+      "gdpr_compliant": true,
+      "hipaa_compliant": false,
+      "sox_compliant": false,
+      "custom_compliance_rules": []
+    }
+  },
+  "metadata": {
+    "version_info": {
+      "major_version": 2,
+      "minor_version": 0,
+      "patch_version": 0,
+      "release_date": "2024-01-15"
+    },
+    "governance": {
+      "owner": "growth_strategy_team",
+      "maintainers": [
+        "system_architect",
+        "growth_specialist"
+      ],
+      "reviewers": [
+        "senior_strategist",
+        "technical_lead"
+      ],
+      "approval_required": true
+    },
+    "lifecycle": {
+      "status": "active",
+      "deprecation_date": null,
+      "replacement_workflow": null,
+      "migration_guide": null
+    },
+    "classification": {
+      "tags": [
+        "growth",
+        "strategy",
+        "marketing",
+        "comprehensive",
+        "multi-agent"
+      ],
+      "categories": [
+        "business_strategy",
+        "growth_hacking",
+        "marketing_strategy"
+      ],
+      "complexity_rating": 8,
+      "maturity_level": "stable"
+    }
+  }
+}

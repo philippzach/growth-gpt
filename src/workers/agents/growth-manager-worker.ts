@@ -1,14 +1,15 @@
 /**
- * Growth Manager Agent Worker - Fourth agent in the growth strategy workflow
- * Specializes in growth funnel design, North Star metrics, and AARRR framework implementation
+ * Enhanced Growth Manager Agent Worker - Fourth agent in the growth strategy workflow
+ * Specializes in North Star metrics, AARRR funnel design, and growth optimization
+ * Uses enhanced prompt engineering with full context sharing
  */
 
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
-import { Env, GeneratedPrompt, PromptGenerationContext } from '../../types';
+import { Env } from '../../types';
 import { ConfigLoader } from '../../lib/config-loader';
-import { DynamicPromptGenerator } from '../../lib/dynamic-prompt-generator';
+import { SimplePromptBuilder } from '../../lib/simple-prompt-builder';
 import { AgentExecutor } from '../../lib/agent-executor';
 import { createAPIResponse, createAPIError } from '../../lib/api-utils';
 
@@ -18,25 +19,26 @@ const app = new Hono<{ Bindings: Env }>();
 app.use('*', logger());
 app.use('*', cors());
 
-// Agent configuration
+// Enhanced agent configuration
 const AGENT_ID = 'growth-manager';
-const AGENT_CONFIG_PATH = 'agents/growth-manager.yaml';
-const TASK_CONFIG_PATH = 'tasks/agent-tasks/growth-manager-task.yaml';
 
 // Health check
 app.get('/health', (c) => {
   return c.json({
     status: 'healthy',
     agentId: AGENT_ID,
+    version: '3.0-enhanced',
     timestamp: new Date().toISOString(),
   });
 });
 
-// Main agent execution endpoint
+// Enhanced agent execution endpoint
 app.post('/execute', async (c) => {
   const startTime = Date.now();
 
   try {
+    console.log(`🚀 Enhanced Growth Manager Worker - Starting execution`);
+    
     // Parse request body
     const body = await c.req.json();
     const {
@@ -49,97 +51,144 @@ app.post('/execute', async (c) => {
 
     if (!sessionId || !userId) {
       return c.json(
-        createAPIError('INVALID_REQUEST', 'sessionId and userId are required'),
+        createAPIError('MISSING_PARAMS', 'sessionId and userId are required'),
         400
       );
     }
 
-    // Validate dependencies - Product positioning and personas
-    if (!previousOutputs['product-manager'] && !previousOutputs['brand-positioning.md']) {
-      return c.json(
-        createAPIError(
-          'MISSING_DEPENDENCY',
-          'Product positioning from Product Manager is required for growth funnel design'
-        ),
-        400
-      );
-    }
+    console.log(`📋 Enhanced Growth Manager - Processing request:`, {
+      sessionId,
+      userId,
+      userInputsKeys: Object.keys(userInputs || {}),
+      previousOutputsCount: Object.keys(previousOutputs).length,
+      previousAgents: Object.keys(previousOutputs),
+    });
 
-    // Initialize components
+    // Initialize enhanced configuration loader
     const configLoader = new ConfigLoader(c.env.CONFIG_STORE);
-    const promptGenerator = new DynamicPromptGenerator(c.env.CONFIG_STORE);
-    const agentExecutor = new AgentExecutor(c.env);
+    
+    // Load unified configuration with fallback to legacy
+    console.log(`🔧 Loading unified configuration for ${AGENT_ID}...`);
+    const unifiedConfig = await configLoader.loadUnifiedAgentConfig(AGENT_ID);
+    const agentConfig = unifiedConfig 
+      ? configLoader.convertUnifiedToLegacyConfig(unifiedConfig)
+      : await configLoader.loadAgentConfig(AGENT_ID);
 
-    // Load configurations
-    const [agentConfig, taskConfig] = await Promise.all([
-      configLoader.loadAgentConfig(AGENT_ID),
-      configLoader.loadTaskConfig(`${AGENT_ID}-task`),
-    ]);
-
-    if (!agentConfig || !taskConfig) {
+    if (!agentConfig) {
+      console.error(`❌ Failed to load agent configuration for ${AGENT_ID}`);
       return c.json(
-        createAPIError(
-          'CONFIG_NOT_FOUND',
-          'Agent or task configuration not found'
-        ),
+        createAPIError('CONFIG_NOT_FOUND', `Agent configuration not found for ${AGENT_ID}`),
         404
       );
     }
 
-    // Prepare execution context
-    const session = {
-      id: sessionId,
-      userId,
-      workflowId: 'master-workflow-v2',
-      status: 'active' as const,
-      currentAgent: AGENT_ID,
-      currentStep: 3,
-      createdAt: new Date().toISOString(),
-      lastActive: new Date().toISOString(),
-      userInputs,
-      agentOutputs: previousOutputs,
-      conversationHistory: [],
-      progress: {
-        totalSteps: 8,
-        completedSteps: 3,
-        currentStepId: 'growth_funnel_design',
-        estimatedTimeRemaining: 150,
-        stageProgress: {
-          foundation: 0.5,
-          strategy: 0.125,
-          validation: 0,
-        },
-      },
-    };
+    console.log(`✅ Configuration loaded successfully:`, {
+      configType: unifiedConfig ? 'unified' : 'legacy',
+      agentName: agentConfig.name,
+      hasCapabilities: !!agentConfig.capabilities,
+      knowledgeDomains: agentConfig.capabilities?.knowledge_domains?.length || 0
+    });
 
-    const context: PromptGenerationContext = {
-      session,
+    // Initialize enhanced prompt builder
+    const promptBuilder = new SimplePromptBuilder();
+    
+    // Create enhanced context with full previous outputs
+    const enhancedContext = promptBuilder.createEnhancedContext({
+      businessIdea: userInputs?.businessIdea || userInputs?.businessConcept || 'Business concept not provided',
+      userInputs,
+      previousOutputs, // Full context - GTM + Persona + Product outputs
       agentConfig,
-      taskConfig,
-      userInputs,
-      previousOutputs,
-      knowledgeBase: await loadRelevantKnowledge(configLoader, taskConfig),
-      businessContext: businessContext || extractBusinessContext(userInputs),
-      workflowStep: 3,
-    };
+      session: {
+        id: sessionId,
+        userId,
+        currentStep: 3, // Growth Manager is 4th agent (0-indexed)
+        conversationHistory: [],
+      } as any,
+      configLoader,
+      workflowPosition: 4, // 4th agent in workflow
+      totalAgents: 8,
+    }, AGENT_ID);
 
-    // Generate optimized prompt
-    const generatedPrompt = await promptGenerator.generatePrompt(context);
+    console.log(`📊 Enhanced context created:`, {
+      businessIdea: enhancedContext.businessIdea?.substring(0, 100) + '...',
+      workflowPosition: enhancedContext.workflowPosition,
+      totalAgents: enhancedContext.totalAgents,
+      previousOutputsReceived: Object.keys(previousOutputs).length,
+      expectedPreviousAgents: ['gtm-consultant', 'persona-strategist', 'product-manager'],
+      actualPreviousAgents: Object.keys(previousOutputs)
+    });
 
-    // Execute agent
-    const agentResult = await agentExecutor.executeAgent(
-      AGENT_ID,
-      generatedPrompt as any,
-      context
+    // Define relevant knowledge files for Growth Manager
+    const knowledgeFiles = [
+      'knowledge-base/method/06one-metric-that-matters.md',
+      'knowledge-base/method/07pirate-funnel.md',
+      'knowledge-base/resources/north-start-metric.md',
+      'knowledge-base/method/08friction-to-value.md',
+      'knowledge-base/resources/hierachy-of-engagement.md',
+      'knowledge-base/resources/growthhacking-process-overview.md',
+      'knowledge-base/method/16growth-loop.md'
+    ];
+
+    // Generate dynamic output format from unified config
+    const outputFormat = unifiedConfig 
+      ? generateOutputFormatFromConfig(unifiedConfig.output_specifications)
+      : `Generate comprehensive growth funnel framework with:
+- North Star Metric identification and validation
+- Complete AARRR funnel architecture 
+- KPI hierarchy and measurement systems
+- Growth optimization roadmap and experimentation framework
+- Implementation timeline with resource requirements`;
+
+    console.log(`🎯 Task definition:`, {
+      taskObjective: unifiedConfig?.task_specification.primary_objective?.substring(0, 150) + '...' || 'Default growth funnel development',
+      outputFormatLength: outputFormat.length,
+      knowledgeFilesCount: knowledgeFiles.length
+    });
+
+    // Generate enhanced prompt with full context
+    const prompt = await promptBuilder.buildPrompt(
+      unifiedConfig?.task_specification.primary_objective || 
+      'Develop comprehensive growth funnel framework with North Star Metric identification, AARRR funnel design, and systematic growth optimization approach',
+      enhancedContext,
+      outputFormat,
+      knowledgeFiles
     );
 
-    // Prepare response (no template processing)
-    const response = {
+    console.log(`✅ Enhanced prompt generated successfully`);
+
+    // Execute agent with enhanced prompt
+    const agentExecutor = new AgentExecutor(c.env);
+    const agentResult = await agentExecutor.executeAgent(
+      AGENT_ID as any,
+      prompt,
+      {
+        session: enhancedContext.session,
+        agentConfig,
+        taskConfig: {} as any, // Simplified for enhanced system
+        userInputs: enhancedContext.userInputs,
+        previousOutputs: enhancedContext.previousOutputs,
+        knowledgeBase: {},
+        businessContext,
+        workflowStep: 3,
+      }
+    );
+
+    const processingTime = Date.now() - startTime;
+    
+    console.log(`🎉 Growth Manager execution completed:`, {
+      processingTime,
+      contentLength: agentResult.content.length,
+      qualityScore: agentResult.qualityScore,
+      tokensUsed: agentResult.tokensUsed
+    });
+
+    // Return enhanced response
+    return c.json(createAPIResponse({
       agentId: AGENT_ID,
       sessionId,
       execution: {
         success: true,
-        processingTime: Date.now() - startTime,
+        processingTime,
         qualityScore: agentResult.qualityScore,
       },
       output: {
@@ -148,114 +197,81 @@ app.post('/execute', async (c) => {
         variables: {},
         structure: {
           type: 'direct-content',
-          sections: ['content'],
+          sections: extractOutputSections(agentResult.content),
         },
       },
       metadata: {
         tokensUsed: agentResult.tokensUsed,
+        qualityScore: agentResult.qualityScore,
+        processingTime,
+        promptValidation: { valid: true, errors: [] },
+        systemType: 'enhanced-prompt-builder',
+        unifiedConfig: !!unifiedConfig,
+        contextType: 'full-previous-outputs',
+        workflowPosition: 4,
+        totalAgents: 8,
         knowledgeSourcesUsed: agentResult.knowledgeSourcesUsed,
         qualityGatesPassed: agentResult.qualityGatesPassed,
-        promptMetadata: generatedPrompt.metadata,
       },
-    };
+    }));
 
-    return c.json(createAPIResponse(response));
   } catch (error) {
-    console.error('Growth Manager execution error:', error);
-
-    const errorResponse = {
-      agentId: AGENT_ID,
-      execution: {
-        success: false,
-        processingTime: Date.now() - startTime,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      },
-    };
-
+    const processingTime = Date.now() - startTime;
+    console.error('Enhanced Growth Manager execution error:', error);
+    
     return c.json(
       createAPIError(
         'EXECUTION_FAILED',
-        'Agent execution failed',
-        errorResponse
+        `Growth Manager execution failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        {
+          agentId: AGENT_ID,
+          processingTime,
+          error: error instanceof Error ? error.message : String(error),
+        }
       ),
       500
     );
   }
 });
 
-// Configuration endpoint
-app.get('/config', async (c) => {
-  try {
-    const configLoader = new ConfigLoader(c.env.CONFIG_STORE);
-    const [agentConfig, taskConfig] = await Promise.all([
-      configLoader.loadAgentConfig(AGENT_ID),
-      configLoader.loadTaskConfig(`${AGENT_ID}-task`),
-    ]);
-
-    return c.json(
-      createAPIResponse({
-        agentConfig,
-        taskConfig,
-        agentId: AGENT_ID,
-      })
-    );
-  } catch (error) {
-    console.error('Growth Manager config error:', error);
-    return c.json(
-      createAPIError('CONFIG_LOAD_FAILED', 'Failed to load configuration'),
-      500
-    );
-  }
-});
-
-// Helper functions
-
-async function loadRelevantKnowledge(
-  configLoader: ConfigLoader,
-  taskConfig: any
-): Promise<Record<string, string>> {
-  const knowledgeBase: Record<string, string> = {};
-
-  try {
-    const knowledgeFocus =
-      taskConfig.agent_integration.behavior_overrides.knowledge_focus || [];
-
-    // Load Growth Manager-specific knowledge
-    const knowledgeMapping: Record<string, string> = {
-      'growth-funnel': 'knowledge-base/method/07pirate-funnel.md',
-      'north-star-metrics': 'knowledge-base/method/06one-metric-that-matters.md',
-      'aarrr-framework': 'knowledge-base/method/07pirate-funnel.md',
-      'growth-loops': 'knowledge-base/method/16growth-loop.md',
-      'friction-analysis': 'knowledge-base/method/08friction-to-value.md',
-      'growth-process': 'knowledge-base/method/00growth-hacking-process.md',
-    };
-
-    for (const focus of knowledgeFocus) {
-      const filePath = knowledgeMapping[focus];
-      if (filePath) {
-        const content = await configLoader.loadKnowledgeBase(filePath);
-        if (content) {
-          knowledgeBase[focus] = content;
-        }
-      }
-    }
-  } catch (error) {
-    console.error('Knowledge loading error:', error);
+/**
+ * Generate output format from unified configuration
+ */
+function generateOutputFormatFromConfig(outputSpecs: any): string {
+  if (!outputSpecs?.required_sections) {
+    return 'Generate comprehensive growth funnel analysis and recommendations in markdown format';
   }
 
-  return knowledgeBase;
+  const sections = Object.entries(outputSpecs.required_sections).map(([key, spec]: [string, any]) => {
+    return `## ${key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+${spec.description}
+${spec.requirements ? spec.requirements.map((req: string) => `- ${req}`).join('\n') : ''}`;
+  }).join('\n\n');
+
+  return `Generate comprehensive growth funnel framework with the following sections:
+
+${sections}
+
+Ensure all recommendations are specific, actionable, and supported by growth methodology principles.`;
 }
 
-function extractBusinessContext(userInputs: Record<string, any>): any {
-  return {
-    businessType:
-      userInputs.businessType || userInputs.businessModel || 'startup',
-    industry: userInputs.industry || userInputs.market || 'technology',
-    stage: userInputs.businessStage || userInputs.stage || 'early-stage',
-    currentMetrics: userInputs.currentMetrics || userInputs.current_metrics || {},
-    growthGoals: userInputs.growthGoals || userInputs.growth_goals || '',
-    currentFunnel: userInputs.currentFunnel || userInputs.current_funnel || '',
-  };
+/**
+ * Extract sections from generated content for structure metadata
+ */
+function extractOutputSections(content: string): string[] {
+  const sections: string[] = [];
+  const lines = content.split('\n');
+  
+  for (const line of lines) {
+    if (line.startsWith('## ') || line.startsWith('# ')) {
+      const section = line.replace(/^#+\s*/, '').trim();
+      if (section && !sections.includes(section)) {
+        sections.push(section);
+      }
+    }
+  }
+  
+  return sections.length > 0 ? sections : ['comprehensive-analysis'];
 }
 
 // Export for Cloudflare Workers

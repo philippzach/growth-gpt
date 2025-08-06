@@ -1,14 +1,18 @@
 /**
  * Product Manager Agent Worker - Third agent in the growth strategy workflow
+ * Enhanced with unified configuration system and full context sharing
  * Specializes in product-market fit validation, brand positioning, and competitive differentiation
  */
 
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
-import { Env, GeneratedPrompt, PromptGenerationContext } from '../../types';
+import { Env } from '../../types';
 import { ConfigLoader } from '../../lib/config-loader';
-import { DynamicPromptGenerator } from '../../lib/dynamic-prompt-generator';
+import {
+  SimplePromptBuilder,
+  SimplePromptContext,
+} from '../../lib/simple-prompt-builder';
 import { AgentExecutor } from '../../lib/agent-executor';
 import { createAPIResponse, createAPIError } from '../../lib/api-utils';
 
@@ -20,8 +24,6 @@ app.use('*', cors());
 
 // Agent configuration
 const AGENT_ID = 'product-manager';
-const AGENT_CONFIG_PATH = 'agents/product-manager.yaml';
-const TASK_CONFIG_PATH = 'tasks/agent-tasks/product-manager-task.yaml';
 
 // Health check
 app.get('/health', (c) => {
@@ -54,22 +56,22 @@ app.post('/execute', async (c) => {
       );
     }
 
-    // Validate dependencies - GTM Brief and Personas
-    if (!previousOutputs['gtm-consultant'] && !previousOutputs['gtm-brief.md']) {
+    // Validate dependencies - GTM Consultant and Persona Strategist
+    if (!previousOutputs['gtm-consultant']) {
       return c.json(
         createAPIError(
           'MISSING_DEPENDENCY',
-          'GTM brief from GTM Consultant is required for product positioning'
+          'GTM Consultant output is required for product positioning'
         ),
         400
       );
     }
 
-    if (!previousOutputs['persona-strategist'] && !previousOutputs['psychographic-personas.md']) {
+    if (!previousOutputs['persona-strategist']) {
       return c.json(
         createAPIError(
           'MISSING_DEPENDENCY',
-          'Personas from Persona Strategist are required for brand positioning'
+          'Persona Strategist output is required for brand positioning'
         ),
         400
       );
@@ -77,22 +79,43 @@ app.post('/execute', async (c) => {
 
     // Initialize components
     const configLoader = new ConfigLoader(c.env.CONFIG_STORE);
-    const promptGenerator = new DynamicPromptGenerator(c.env.CONFIG_STORE);
+    const promptBuilder = new SimplePromptBuilder();
     const agentExecutor = new AgentExecutor(c.env);
 
-    // Load configurations
-    const [agentConfig, taskConfig] = await Promise.all([
-      configLoader.loadAgentConfig(AGENT_ID),
-      configLoader.loadTaskConfig(`${AGENT_ID}-task`),
-    ]);
+    // Load unified agent configuration
+    console.log('Loading unified agent configuration for:', AGENT_ID);
+    const unifiedConfig = await configLoader.loadUnifiedAgentConfig(AGENT_ID);
 
-    if (!agentConfig || !taskConfig) {
+    if (!unifiedConfig) {
+      console.error('Failed to load unified configuration, attempting fallback...');
+      const legacyConfig = await configLoader.loadAgentConfig(AGENT_ID);
+      
+      if (!legacyConfig) {
+        return c.json(
+          createAPIError(
+            'CONFIG_NOT_FOUND',
+            'Agent configuration not found'
+          ),
+          404
+        );
+      }
+
+      // Use legacy path (shouldn't happen in normal operation)
+      console.warn('Using legacy configuration path for', AGENT_ID);
+    }
+
+    // Convert unified config to legacy format for compatibility
+    const agentConfig = unifiedConfig 
+      ? await convertUnifiedToLegacy(unifiedConfig)
+      : await configLoader.loadAgentConfig(AGENT_ID);
+
+    if (!agentConfig) {
       return c.json(
         createAPIError(
-          'CONFIG_NOT_FOUND',
-          'Agent or task configuration not found'
+          'CONFIG_CONVERSION_FAILED',
+          'Failed to convert agent configuration'
         ),
-        404
+        500
       );
     }
 
@@ -107,7 +130,7 @@ app.post('/execute', async (c) => {
       createdAt: new Date().toISOString(),
       lastActive: new Date().toISOString(),
       userInputs,
-      agentOutputs: previousOutputs,
+      agentOutputs: {},
       conversationHistory: [],
       progress: {
         totalSteps: 8,
@@ -122,28 +145,72 @@ app.post('/execute', async (c) => {
       },
     };
 
-    const context: PromptGenerationContext = {
-      session,
-      agentConfig,
-      taskConfig,
-      userInputs,
-      previousOutputs,
-      knowledgeBase: await loadRelevantKnowledge(configLoader, taskConfig),
-      businessContext: businessContext || extractBusinessContext(userInputs),
-      workflowStep: 2,
-    };
+    // Extract business idea from user inputs or session
+    const businessIdea =
+      userInputs.businessIdea ||
+      userInputs.businessConcept ||
+      userInputs.businessDescription ||
+      (session.conversationHistory as any[]).find(
+        (msg: any) => msg.sender === 'user'
+      )?.content ||
+      'Business concept not provided';
 
-    // Generate optimized prompt
-    const generatedPrompt = await promptGenerator.generatePrompt(context);
-
-    // Execute agent
-    const agentResult = await agentExecutor.executeAgent(
-      AGENT_ID,
-      generatedPrompt as any,
-      context
+    // Create enhanced context for prompt builder with full previous outputs
+    const enhancedContext = promptBuilder.createEnhancedContext(
+      {
+        businessIdea,
+        userInputs,
+        previousOutputs, // Full previous outputs, not summaries
+        agentConfig,
+        session,
+        configLoader,
+        workflowPosition: 3,
+        totalAgents: 8,
+      },
+      AGENT_ID
     );
 
-    // Prepare response (no template processing)
+    // Define relevant knowledge files for Product Manager
+    const knowledgeFiles = [
+      'knowledge-base/method/05product-market-fit.md',
+      'knowledge-base/method/03business-model.md',
+      'knowledge-base/ressources/unique-value-proposition.md',
+      'knowledge-base/ressources/market-segmentation.md',
+      'knowledge-base/ressources/copywriting-cheat-sheet.md',
+    ];
+
+    // Generate dynamic output format from unified config
+    const outputFormat = unifiedConfig 
+      ? generateOutputFormatFromConfig(unifiedConfig.output_specifications)
+      : getDefaultOutputFormat();
+
+    // Generate prompt with full context from previous agents
+    const prompt = await promptBuilder.buildPrompt(
+      unifiedConfig?.task_specification.primary_objective || 'Validate product-market fit and develop comprehensive brand positioning strategy',
+      enhancedContext,
+      outputFormat,
+      knowledgeFiles
+    );
+
+    // Validate prompt
+    const validation = promptBuilder.validatePrompt(prompt);
+    if (!validation.isValid) {
+      console.warn('Prompt validation issues:', validation.errors);
+    }
+
+    // Execute agent with enhanced prompt
+    const agentResult = await agentExecutor.executeAgent(AGENT_ID, prompt, {
+      session,
+      agentConfig,
+      taskConfig: null, // Not needed with new unified system
+      userInputs,
+      previousOutputs,
+      knowledgeBase: {},
+      businessContext: businessContext || extractBusinessContext(userInputs),
+      workflowStep: 2,
+    });
+
+    // Prepare response (direct output)
     const response = {
       agentId: AGENT_ID,
       sessionId,
@@ -163,9 +230,12 @@ app.post('/execute', async (c) => {
       },
       metadata: {
         tokensUsed: agentResult.tokensUsed,
-        knowledgeSourcesUsed: agentResult.knowledgeSourcesUsed,
-        qualityGatesPassed: agentResult.qualityGatesPassed,
-        promptMetadata: generatedPrompt.metadata,
+        qualityScore: agentResult.qualityScore,
+        processingTime: agentResult.processingTime,
+        promptValidation: validation,
+        systemType: 'enhanced-prompt-builder',
+        unifiedConfig: !!unifiedConfig,
+        contextType: 'full-previous-outputs',
       },
     };
 
@@ -206,7 +276,7 @@ app.post('/validate', async (c) => {
       );
     }
 
-    const validation = await validateProductManagerOutput(content, validationRules);
+    const validation = await validateProductOutput(content, validationRules);
 
     return c.json(createAPIResponse(validation));
   } catch (error) {
@@ -222,16 +292,15 @@ app.post('/validate', async (c) => {
 app.get('/config', async (c) => {
   try {
     const configLoader = new ConfigLoader(c.env.CONFIG_STORE);
-    const [agentConfig, taskConfig] = await Promise.all([
-      configLoader.loadAgentConfig(AGENT_ID),
-      configLoader.loadTaskConfig(`${AGENT_ID}-task`),
-    ]);
+    const { unified, legacy, task } = await configLoader.loadCompleteAgentConfiguration(AGENT_ID);
 
     return c.json(
       createAPIResponse({
-        agentConfig,
-        taskConfig,
+        unifiedConfig: unified,
+        agentConfig: legacy,
+        taskConfig: task,
         agentId: AGENT_ID,
+        systemType: 'enhanced-prompt-builder',
       })
     );
   } catch (error) {
@@ -245,40 +314,116 @@ app.get('/config', async (c) => {
 
 // Helper functions
 
-async function loadRelevantKnowledge(
-  configLoader: ConfigLoader,
-  taskConfig: any
-): Promise<Record<string, string>> {
-  const knowledgeBase: Record<string, string> = {};
+/**
+ * Convert unified configuration to legacy AgentConfig format
+ */
+async function convertUnifiedToLegacy(unifiedConfig: any): Promise<any> {
+  const identity = unifiedConfig.agent_identity;
+  const capabilities = unifiedConfig.capabilities_constraints;
 
-  try {
-    const knowledgeFocus =
-      taskConfig.agent_integration.behavior_overrides.knowledge_focus || [];
+  return {
+    id: identity.id,
+    name: identity.name,
+    version: identity.version,
+    description: identity.persona.identity,
+    persona: {
+      identity: identity.persona.identity,
+      expertise: identity.persona.expertise || [],
+      communication_style: identity.persona.communication_style,
+      decision_making_approach: 'Data-driven with strategic focus',
+    },
+    capabilities: {
+      core_competencies: capabilities.capabilities.core_competencies || [],
+      tools_available: [],
+      knowledge_domains: unifiedConfig.static_knowledge?.knowledge_files?.primary || [],
+      output_formats: ['markdown'],
+    },
+    configuration: {
+      model: unifiedConfig.claude_config?.model || 'claude-3-5-sonnet-20241022',
+      temperature: unifiedConfig.claude_config?.temperature || 0.7,
+      max_tokens: unifiedConfig.claude_config?.max_tokens || 4000,
+      timeout: 120000,
+      retry_attempts: 3,
+    },
+    workflow_integration: {
+      workflow_position: unifiedConfig.workflow_integration.sequence_order,
+      stage: unifiedConfig.workflow_integration.stage as 'foundation' | 'strategy' | 'validation',
+      dependencies: [],
+      handoff_requirements: [],
+    },
+  };
+}
 
-    // Load Product Manager-specific knowledge
-    const knowledgeMapping: Record<string, string> = {
-      'product-market-fit': 'knowledge-base/method/05product-market-fit.md',
-      'brand-positioning': 'knowledge-base/ressources/unique-value-proposition.md',
-      'competitive-analysis': 'knowledge-base/ressources/market-segmentation.md',
-      'messaging-strategy': 'knowledge-base/ressources/lift-model.md',
-      'value-proposition': 'knowledge-base/method/01value-proposition.md',
-      'market-intelligence': 'knowledge-base/glossary/growth-hacking-dictionary.md',
-    };
-
-    for (const focus of knowledgeFocus) {
-      const filePath = knowledgeMapping[focus];
-      if (filePath) {
-        const content = await configLoader.loadKnowledgeBase(filePath);
-        if (content) {
-          knowledgeBase[focus] = content;
-        }
-      }
+/**
+ * Generate output format string from unified configuration
+ */
+function generateOutputFormatFromConfig(outputSpecs: any): string {
+  let format = `# ${outputSpecs.required_sections.executive_summary?.description || 'Product Manager Analysis & Recommendations'}\n\n`;
+  
+  // Add each required section
+  for (const [sectionKey, sectionConfig] of Object.entries(outputSpecs.required_sections)) {
+    if (sectionKey === 'executive_summary') continue; // Already added
+    
+    const config = sectionConfig as any;
+    const sectionTitle = sectionKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    
+    format += `## ${sectionTitle}\n`;
+    format += `${config.description}\n\n`;
+    
+    if (config.requirements && Array.isArray(config.requirements)) {
+      config.requirements.forEach((req: string) => {
+        format += `- ${req}\n`;
+      });
+      format += '\n';
     }
-  } catch (error) {
-    console.error('Knowledge loading error:', error);
   }
+  
+  return format;
+}
 
-  return knowledgeBase;
+/**
+ * Default output format when unified config is not available
+ */
+function getDefaultOutputFormat(): string {
+  return `# Product Manager Analysis & Recommendations
+
+## Executive Summary
+Brief overview of product-market fit status and brand positioning strategy (2-3 sentences)
+
+## Product-Market Fit Validation
+- Current market fit assessment with specific evidence
+- Customer validation insights and metrics
+- Problem-solution alignment analysis
+- Market demand indicators
+- Recommended validation framework and next steps
+
+## Brand Positioning Strategy  
+- Core brand positioning statement
+- Unique value proposition and differentiation
+- Brand personality and values framework
+- Competitive positioning analysis
+- Brand storytelling and messaging pillars
+
+## Competitive Analysis & Differentiation
+- Direct and indirect competitor analysis
+- Competitive advantages and unique differentiators  
+- Market gaps and positioning opportunities
+- Defensive strategies and competitive moats
+- Positioning defense recommendations
+
+## Messaging Framework
+- Master message architecture with key value propositions
+- Audience-specific messaging by customer segment
+- Message hierarchy for different customer journey stages
+- Proof points and supporting evidence
+- Content strategy guidelines
+
+## Implementation Roadmap
+- Phase 1: Immediate positioning and messaging priorities (Week 1-2)
+- Phase 2: Brand development and market validation (Week 3-6) 
+- Phase 3: Competitive positioning and optimization (Week 7-12)
+- Success metrics and measurement framework
+- Resource requirements and timeline estimates`;
 }
 
 function extractBusinessContext(userInputs: Record<string, any>): any {
@@ -288,13 +433,19 @@ function extractBusinessContext(userInputs: Record<string, any>): any {
     industry: userInputs.industry || userInputs.market || 'technology',
     stage: userInputs.businessStage || userInputs.stage || 'early-stage',
     teamSize: userInputs.teamSize || 'small',
-    productFeatures: userInputs.productFeatures || userInputs.product_features || '',
-    brandPreferences: userInputs.brandPreferences || userInputs.brand_preferences || '',
-    competitiveIntelligence: userInputs.competitiveIntelligence || userInputs.competitive_intelligence || '',
+    devResources:
+      userInputs.developmentResources || userInputs.techResources || 'limited',
+    budget: userInputs.budget || userInputs.marketingBudget || 'limited',
+    customerFeedback:
+      userInputs.customerFeedback || userInputs.customer_feedback || '',
+    marketFeedback:
+      userInputs.marketFeedback || userInputs.market_feedback || '',
+    competitiveInsights:
+      userInputs.competitiveInsights || userInputs.competitive_insights || '',
   };
 }
 
-async function validateProductManagerOutput(
+async function validateProductOutput(
   content: string,
   validationRules: string[] = []
 ): Promise<{
@@ -308,28 +459,28 @@ async function validateProductManagerOutput(
   // Core Product Manager validation checks
   const checks = [
     {
-      name: 'product_market_fit_validation',
-      check: () => checkProductMarketFitValidation(content),
+      name: 'product_market_fit_analysis',
+      check: () => checkProductMarketFitAnalysis(content),
       weight: 0.3,
     },
     {
-      name: 'brand_positioning_differentiation',
-      check: () => checkBrandPositioningDifferentiation(content),
+      name: 'brand_positioning_clarity',
+      check: () => checkBrandPositioningClarity(content),
       weight: 0.25,
     },
     {
-      name: 'messaging_framework_consistency',
-      check: () => checkMessagingFrameworkConsistency(content),
+      name: 'competitive_differentiation',
+      check: () => checkCompetitiveDifferentiation(content),
       weight: 0.2,
     },
     {
-      name: 'competitive_analysis_depth',
-      check: () => checkCompetitiveAnalysisDepth(content),
+      name: 'messaging_framework_completeness',
+      check: () => checkMessagingFrameworkCompleteness(content),
       weight: 0.15,
     },
     {
-      name: 'implementation_feasibility',
-      check: () => checkImplementationFeasibility(content),
+      name: 'implementation_roadmap',
+      check: () => checkImplementationRoadmap(content),
       weight: 0.1,
     },
   ];
@@ -358,18 +509,17 @@ async function validateProductManagerOutput(
   };
 }
 
-function checkProductMarketFitValidation(content: string): {
+function checkProductMarketFitAnalysis(content: string): {
   score: number;
   issues: string[];
 } {
   const issues: string[] = [];
   let score = 0.5;
 
-  // Check for product-market fit validation keywords
+  // Check for product-market fit keywords
   const pmfKeywords = [
     'product-market fit',
     'market fit',
-    'validation',
     'customer validation',
     'market demand',
     'problem-solution fit',
@@ -378,56 +528,54 @@ function checkProductMarketFitValidation(content: string): {
     content.toLowerCase().includes(keyword.toLowerCase())
   );
 
-  if (hasPMFKeywords) score += 0.15;
+  if (hasPMFKeywords) score += 0.2;
 
   // Check for validation evidence
   const evidenceKeywords = [
-    'data shows',
-    'evidence indicates',
-    'metrics demonstrate',
-    'research confirms',
-    'validated by',
-    'proven through',
+    'evidence',
+    'metrics',
+    'data',
+    'validation',
+    'testing',
+    'feedback',
+    'survey',
+    'interview',
   ];
-  const hasEvidence = evidenceKeywords.some((evidence) =>
-    content.toLowerCase().includes(evidence.toLowerCase())
-  );
-
-  if (hasEvidence) score += 0.2;
-
-  // Check for customer problem validation
-  const problemKeywords = [
-    'customer problem',
-    'pain point',
-    'problem statement',
-    'customer need',
-    'market need',
-    'unmet need',
-  ];
-  const problemCount = problemKeywords.filter((keyword) =>
+  const evidenceCount = evidenceKeywords.filter((keyword) =>
     content.toLowerCase().includes(keyword.toLowerCase())
   ).length;
 
-  if (problemCount >= 2) score += 0.15;
-  else if (problemCount >= 1) score += 0.1;
+  if (evidenceCount >= 3) score += 0.2;
+  else if (evidenceCount >= 1) score += 0.1;
+
+  // Check for specific validation methods
+  const validationMethods = [
+    'a/b test',
+    'mvp',
+    'prototype',
+    'landing page',
+    'cohort analysis',
+    'retention rate',
+  ];
+  const hasValidationMethods = validationMethods.some((method) =>
+    content.toLowerCase().includes(method.toLowerCase())
+  );
+
+  if (hasValidationMethods) score += 0.1;
 
   // Issues
   if (!hasPMFKeywords) {
-    issues.push('Product-market fit validation not clearly addressed');
+    issues.push('Product-market fit analysis not clearly addressed');
   }
 
-  if (!hasEvidence) {
-    issues.push('Validation claims lack supporting evidence or data');
-  }
-
-  if (problemCount === 0) {
-    issues.push('Customer problem validation not demonstrated');
+  if (evidenceCount === 0) {
+    issues.push('No validation evidence or metrics provided');
   }
 
   return { score: Math.min(score, 1.0), issues };
 }
 
-function checkBrandPositioningDifferentiation(content: string): {
+function checkBrandPositioningClarity(content: string): {
   score: number;
   issues: string[];
 } {
@@ -435,141 +583,62 @@ function checkBrandPositioningDifferentiation(content: string): {
   let score = 0.5;
 
   // Check for brand positioning keywords
-  const positioningKeywords = [
+  const brandKeywords = [
     'brand positioning',
-    'positioning statement',
-    'brand identity',
-    'brand strategy',
-    'market position',
-    'differentiation',
-  ];
-  const positioningCount = positioningKeywords.filter((keyword) =>
-    content.toLowerCase().includes(keyword.toLowerCase())
-  ).length;
-
-  if (positioningCount >= 3) score += 0.2;
-  else if (positioningCount >= 2) score += 0.1;
-
-  // Check for differentiation elements
-  const differentiationKeywords = [
-    'unique',
-    'distinctive',
-    'different',
-    'stands out',
-    'competitive advantage',
-    'differentiator',
-    'unlike competitors',
-  ];
-  const differentiationCount = differentiationKeywords.filter((keyword) =>
-    content.toLowerCase().includes(keyword.toLowerCase())
-  ).length;
-
-  if (differentiationCount >= 3) score += 0.2;
-  else if (differentiationCount >= 2) score += 0.1;
-
-  // Check for specific positioning attributes
-  const attributeKeywords = [
-    'brand personality',
-    'brand values',
-    'brand promise',
-    'brand essence',
-    'brand archetype',
-    'brand voice',
-  ];
-  const attributeCount = attributeKeywords.filter((keyword) =>
-    content.toLowerCase().includes(keyword.toLowerCase())
-  ).length;
-
-  if (attributeCount >= 2) score += 0.1;
-
-  // Issues
-  if (positioningCount === 0) {
-    issues.push('Brand positioning strategy not clearly defined');
-  }
-
-  if (differentiationCount < 2) {
-    issues.push('Competitive differentiation not sufficiently articulated');
-  }
-
-  if (content.length < 500) {
-    issues.push('Brand positioning lacks depth and detail');
-  }
-
-  return { score: Math.min(score, 1.0), issues };
-}
-
-function checkMessagingFrameworkConsistency(content: string): {
-  score: number;
-  issues: string[];
-} {
-  const issues: string[] = [];
-  let score = 0.5;
-
-  // Check for messaging framework keywords
-  const messagingKeywords = [
-    'messaging',
-    'message',
-    'communication',
     'value proposition',
-    'key messages',
-    'messaging framework',
+    'brand identity',
+    'brand personality',
+    'positioning statement',
   ];
-  const messagingCount = messagingKeywords.filter((keyword) =>
-    content.toLowerCase().includes(keyword.toLowerCase())
-  ).length;
-
-  if (messagingCount >= 3) score += 0.2;
-  else if (messagingCount >= 2) score += 0.1;
-
-  // Check for consistency elements
-  const consistencyKeywords = [
-    'consistent',
-    'cohesive',
-    'aligned',
-    'unified',
-    'integrated',
-    'coherent',
-  ];
-  const hasConsistency = consistencyKeywords.some((keyword) =>
+  const hasBrandKeywords = brandKeywords.some((keyword) =>
     content.toLowerCase().includes(keyword.toLowerCase())
   );
 
-  if (hasConsistency) score += 0.15;
+  if (hasBrandKeywords) score += 0.15;
 
-  // Check for message components
-  const componentKeywords = [
-    'headline',
-    'tagline',
-    'proof points',
-    'benefits',
-    'features',
-    'call to action',
-    'elevator pitch',
+  // Check for differentiation elements
+  const diffKeywords = [
+    'unique',
+    'different',
+    'advantage',
+    'superior',
+    'distinctive',
+    'differentiation',
   ];
-  const componentCount = componentKeywords.filter((keyword) =>
+  const diffCount = diffKeywords.filter((keyword) =>
     content.toLowerCase().includes(keyword.toLowerCase())
   ).length;
 
-  if (componentCount >= 3) score += 0.15;
-  else if (componentCount >= 2) score += 0.1;
+  if (diffCount >= 2) score += 0.2;
+  else if (diffCount >= 1) score += 0.1;
+
+  // Check for brand values/personality
+  const personalityKeywords = [
+    'values',
+    'personality',
+    'brand traits',
+    'brand character',
+    'brand essence',
+  ];
+  const hasPersonality = personalityKeywords.some((keyword) =>
+    content.toLowerCase().includes(keyword.toLowerCase())
+  );
+
+  if (hasPersonality) score += 0.15;
 
   // Issues
-  if (messagingCount === 0) {
-    issues.push('Messaging framework not clearly defined');
+  if (!hasBrandKeywords) {
+    issues.push('Brand positioning not clearly defined');
   }
 
-  if (!hasConsistency) {
-    issues.push('Message consistency not addressed');
-  }
-
-  if (componentCount < 2) {
-    issues.push('Key messaging components not specified');
+  if (diffCount === 0) {
+    issues.push('Brand differentiation elements missing');
   }
 
   return { score: Math.min(score, 1.0), issues };
 }
 
-function checkCompetitiveAnalysisDepth(content: string): {
+function checkCompetitiveDifferentiation(content: string): {
   score: number;
   issues: string[];
 } {
@@ -577,129 +646,182 @@ function checkCompetitiveAnalysisDepth(content: string): {
   let score = 0.5;
 
   // Check for competitive analysis keywords
-  const competitiveKeywords = [
+  const compKeywords = [
     'competitor',
-    'competitive',
     'competition',
-    'competitive analysis',
-    'market landscape',
-    'competitive advantage',
+    'competitive',
+    'market player',
+    'rival',
   ];
-  const competitiveCount = competitiveKeywords.filter((keyword) =>
-    content.toLowerCase().includes(keyword.toLowerCase())
-  ).length;
-
-  if (competitiveCount >= 3) score += 0.2;
-  else if (competitiveCount >= 2) score += 0.1;
-
-  // Check for specific competitive elements
-  const analysisKeywords = [
-    'strengths',
-    'weaknesses',
-    'opportunities',
-    'threats',
-    'market share',
-    'positioning',
-    'pricing',
-  ];
-  const analysisCount = analysisKeywords.filter((keyword) =>
-    content.toLowerCase().includes(keyword.toLowerCase())
-  ).length;
-
-  if (analysisCount >= 4) score += 0.2;
-  else if (analysisCount >= 2) score += 0.1;
-
-  // Check for competitive insights
-  const insightKeywords = [
-    'gap in market',
-    'opportunity',
-    'white space',
-    'unserved market',
-    'competitive moat',
-    'barrier to entry',
-  ];
-  const hasInsights = insightKeywords.some((keyword) =>
+  const hasCompKeywords = compKeywords.some((keyword) =>
     content.toLowerCase().includes(keyword.toLowerCase())
   );
 
-  if (hasInsights) score += 0.1;
+  if (hasCompKeywords) score += 0.2;
+
+  // Check for competitive advantages
+  const advantageKeywords = [
+    'advantage',
+    'moat',
+    'barrier',
+    'defensible',
+    'protection',
+    'strength',
+  ];
+  const advantageCount = advantageKeywords.filter((keyword) =>
+    content.toLowerCase().includes(keyword.toLowerCase())
+  ).length;
+
+  if (advantageCount >= 2) score += 0.2;
+  else if (advantageCount >= 1) score += 0.1;
+
+  // Check for market gaps analysis
+  const gapKeywords = [
+    'gap',
+    'opportunity',
+    'white space',
+    'unmet need',
+    'underserved',
+  ];
+  const hasGaps = gapKeywords.some((keyword) =>
+    content.toLowerCase().includes(keyword.toLowerCase())
+  );
+
+  if (hasGaps) score += 0.1;
 
   // Issues
-  if (competitiveCount === 0) {
-    issues.push('Competitive analysis not provided');
+  if (!hasCompKeywords) {
+    issues.push('Competitive analysis not clearly provided');
   }
 
-  if (analysisCount < 2) {
-    issues.push('Competitive analysis lacks depth and structure');
+  if (advantageCount === 0) {
+    issues.push('Competitive advantages not identified');
   }
 
   return { score: Math.min(score, 1.0), issues };
 }
 
-function checkImplementationFeasibility(content: string): {
+function checkMessagingFrameworkCompleteness(content: string): {
   score: number;
   issues: string[];
 } {
   const issues: string[] = [];
   let score = 0.5;
 
-  // Check for implementation keywords
-  const implementationKeywords = [
-    'implementation',
-    'roadmap',
-    'timeline',
-    'execution',
-    'plan',
-    'strategy',
-    'tactics',
+  // Check for messaging keywords
+  const messagingKeywords = [
+    'messaging',
+    'message',
+    'communication',
+    'content strategy',
+    'key messages',
   ];
-  const implementationCount = implementationKeywords.filter((keyword) =>
-    content.toLowerCase().includes(keyword.toLowerCase())
-  ).length;
-
-  if (implementationCount >= 3) score += 0.2;
-  else if (implementationCount >= 2) score += 0.1;
-
-  // Check for feasibility considerations
-  const feasibilityKeywords = [
-    'feasible',
-    'achievable',
-    'realistic',
-    'practical',
-    'resource',
-    'budget',
-    'timeline',
-  ];
-  const feasibilityCount = feasibilityKeywords.filter((keyword) =>
-    content.toLowerCase().includes(keyword.toLowerCase())
-  ).length;
-
-  if (feasibilityCount >= 2) score += 0.2;
-  else if (feasibilityCount >= 1) score += 0.1;
-
-  // Check for prioritization
-  const priorityKeywords = [
-    'priority',
-    'prioritize',
-    'first',
-    'next',
-    'phase',
-    'stage',
-    'milestone',
-  ];
-  const hasPriority = priorityKeywords.some((keyword) =>
+  const hasMessaging = messagingKeywords.some((keyword) =>
     content.toLowerCase().includes(keyword.toLowerCase())
   );
 
-  if (hasPriority) score += 0.1;
+  if (hasMessaging) score += 0.2;
+
+  // Check for audience segmentation
+  const audienceKeywords = [
+    'audience',
+    'segment',
+    'persona',
+    'customer type',
+    'target group',
+  ];
+  const hasAudience = audienceKeywords.some((keyword) =>
+    content.toLowerCase().includes(keyword.toLowerCase())
+  );
+
+  if (hasAudience) score += 0.15;
+
+  // Check for proof points
+  const proofKeywords = [
+    'proof',
+    'evidence',
+    'case study',
+    'testimonial',
+    'example',
+    'success story',
+  ];
+  const hasProof = proofKeywords.some((keyword) =>
+    content.toLowerCase().includes(keyword.toLowerCase())
+  );
+
+  if (hasProof) score += 0.15;
 
   // Issues
-  if (implementationCount === 0) {
-    issues.push('Implementation guidance not provided');
+  if (!hasMessaging) {
+    issues.push('Messaging framework not clearly defined');
   }
 
-  if (feasibilityCount === 0) {
-    issues.push('Feasibility considerations not addressed');
+  if (!hasAudience) {
+    issues.push('Audience-specific messaging not addressed');
+  }
+
+  return { score: Math.min(score, 1.0), issues };
+}
+
+function checkImplementationRoadmap(content: string): {
+  score: number;
+  issues: string[];
+} {
+  const issues: string[] = [];
+  let score = 0.5;
+
+  // Check for roadmap keywords
+  const roadmapKeywords = [
+    'roadmap',
+    'implementation',
+    'timeline',
+    'phase',
+    'milestone',
+    'priority',
+  ];
+  const hasRoadmap = roadmapKeywords.some((keyword) =>
+    content.toLowerCase().includes(keyword.toLowerCase())
+  );
+
+  if (hasRoadmap) score += 0.2;
+
+  // Check for time-based planning
+  const timeKeywords = [
+    'week',
+    'month',
+    'quarter',
+    'deadline',
+    'schedule',
+    'duration',
+  ];
+  const hasTime = timeKeywords.some((keyword) =>
+    content.toLowerCase().includes(keyword.toLowerCase())
+  );
+
+  if (hasTime) score += 0.15;
+
+  // Check for success metrics
+  const metricsKeywords = [
+    'metric',
+    'kpi',
+    'measurement',
+    'success criteria',
+    'goal',
+    'target',
+  ];
+  const hasMetrics = metricsKeywords.some((keyword) =>
+    content.toLowerCase().includes(keyword.toLowerCase())
+  );
+
+  if (hasMetrics) score += 0.15;
+
+  // Issues
+  if (!hasRoadmap) {
+    issues.push('Implementation roadmap not provided');
+  }
+
+  if (!hasTime) {
+    issues.push('Timeline or phasing not specified');
   }
 
   return { score: Math.min(score, 1.0), issues };

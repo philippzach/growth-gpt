@@ -45,6 +45,56 @@ app.get('/health', (c) => {
   });
 });
 
+// API key test endpoint
+app.get('/api/test-anthropic', async (c) => {
+  try {
+    console.log('🧪 Testing Anthropic API key directly...');
+    console.log('🔐 API Key exists:', !!c.env.ANTHROPIC_API_KEY);
+    console.log('🔐 API Key length:', c.env.ANTHROPIC_API_KEY?.length || 0);
+    console.log('🔐 API Key format:', c.env.ANTHROPIC_API_KEY?.substring(0, 25) + '...' || 'MISSING');
+    
+    // Test direct fetch to Anthropic API
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': c.env.ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: 'claude-3-haiku-20240307',
+        max_tokens: 10,
+        messages: [{ role: 'user', content: 'Hello test' }],
+      }),
+    });
+    
+    const result = await response.json() as any;
+    
+    if (response.ok) {
+      console.log('✅ Direct API test successful');
+      return c.json({
+        status: 'success',
+        message: 'API key works with direct fetch',
+        response_id: result.id,
+      });
+    } else {
+      console.log('❌ Direct API test failed:', result);
+      return c.json({
+        status: 'error',
+        message: 'API key failed with direct fetch',
+        error: result,
+      }, 400);
+    }
+  } catch (error: any) {
+    console.log('❌ Direct API test error:', error);
+    return c.json({
+      status: 'error',
+      message: 'Exception during API test',
+      error: error?.message || 'Unknown error',
+    }, 500);
+  }
+});
+
 // Session Management API
 app.post('/api/sessions', async (c) => {
   try {

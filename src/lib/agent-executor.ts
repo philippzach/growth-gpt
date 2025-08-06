@@ -10,6 +10,8 @@ import {
   GeneratedPrompt,
   PromptGenerationContext,
 } from '../types';
+import { SimplePrompt } from './simple-prompt-builder';
+import { ConfigLoader } from './config-loader';
 
 export interface AgentExecutionResult {
   content: string;
@@ -46,15 +48,36 @@ export class AgentExecutor {
     private env: Env,
     websocketEmitter?: (sessionId: string, data: any) => void
   ) {
+    console.log('🔐 DEBUG: API Key exists:', !!env.ANTHROPIC_API_KEY);
+    console.log('🔐 DEBUG: API Key length:', env.ANTHROPIC_API_KEY?.length || 0);
+    console.log('🔐 DEBUG: API Key format:', env.ANTHROPIC_API_KEY?.substring(0, 25) + '...' || 'MISSING');
+    console.log('🔐 DEBUG: API Key starts with sk-ant:', env.ANTHROPIC_API_KEY?.startsWith('sk-ant-'));
+    console.log('🔐 DEBUG: Full env keys available:', Object.keys(env));
+    
+    // Test API key validity format
+    if (!env.ANTHROPIC_API_KEY) {
+      console.error('❌ CRITICAL: ANTHROPIC_API_KEY is missing from environment');
+    } else if (!env.ANTHROPIC_API_KEY.startsWith('sk-ant-')) {
+      console.error('❌ CRITICAL: ANTHROPIC_API_KEY does not start with sk-ant- (invalid format)');
+    } else if (env.ANTHROPIC_API_KEY.length < 50) {
+      console.error('❌ CRITICAL: ANTHROPIC_API_KEY seems too short (possibly truncated)');
+    } else {
+      console.log('✅ DEBUG: API Key format appears valid');
+    }
+    
     this.anthropic = new Anthropic({
       apiKey: env.ANTHROPIC_API_KEY,
+      // Explicitly set the API version and headers for Cloudflare Workers
+      defaultHeaders: {
+        'anthropic-version': '2023-06-01',
+      },
     });
     this.websocketEmitter = websocketEmitter;
   }
 
   async executeAgent(
     agentId: AgentType,
-    generatedPrompt: GeneratedPrompt,
+    generatedPrompt: GeneratedPrompt | SimplePrompt,
     context: PromptGenerationContext
   ): Promise<AgentExecutionResult> {
     const startTime = Date.now();
@@ -65,6 +88,9 @@ export class AgentExecutor {
 
       // Prepare API request
       const apiRequest = this.prepareAPIRequest(generatedPrompt, context);
+
+      // Log the complete API request body for debugging
+      this.logAPIRequest(agentId, apiRequest, context);
 
       // Execute Claude API call with streaming enabled
       const stream = await this.anthropic.messages.create({
@@ -79,6 +105,9 @@ export class AgentExecutor {
         context,
         startTime
       );
+
+      // Log the API response for debugging
+      this.logAPIResponse(agentId, result, context);
 
       // Update rate limit tracking
       this.updateRateLimitTracking(agentId);
@@ -100,17 +129,16 @@ export class AgentExecutor {
   }
 
   private prepareAPIRequest(
-    generatedPrompt: GeneratedPrompt,
+    generatedPrompt: GeneratedPrompt | SimplePrompt,
     context: PromptGenerationContext
   ): Anthropic.MessageCreateParams {
     const agentConfig = context.agentConfig;
-    const taskConfig = context.taskConfig;
 
     // Get model and parameters from configuration
-    const model = 'claude-3-haiku-20240307'; // claude-3-haiku-20240307 claude-sonnet-4-20250514 Using Haiku for development
-    const temperature = agentConfig.configuration.temperature || 0.7;
+    const model = 'claude-3-haiku-20240307'; // Using Haiku for development
+    const temperature = agentConfig?.configuration?.temperature || 0.7;
     const maxTokens = Math.min(
-      agentConfig.configuration.max_tokens || 4000,
+      agentConfig?.configuration?.max_tokens || 4000,
       4096 // Haiku's max output tokens
     );
 
@@ -131,7 +159,7 @@ export class AgentExecutor {
 
   private async processAPIResponse(
     response: Anthropic.Message,
-    generatedPrompt: GeneratedPrompt,
+    generatedPrompt: GeneratedPrompt | SimplePrompt,
     context: PromptGenerationContext,
     startTime: number
   ): Promise<AgentExecutionResult> {
@@ -183,7 +211,7 @@ export class AgentExecutor {
 
   private async processStreamingResponse(
     stream: any,
-    generatedPrompt: GeneratedPrompt,
+    generatedPrompt: GeneratedPrompt | SimplePrompt,
     context: PromptGenerationContext,
     startTime: number
   ): Promise<AgentExecutionResult> {
@@ -294,7 +322,7 @@ export class AgentExecutor {
   private async calculateQualityScore(
     content: string,
     taskConfig: any,
-    generatedPrompt: GeneratedPrompt
+    generatedPrompt: GeneratedPrompt | SimplePrompt
   ): Promise<number> {
     let score = 0.5; // Base score
 
@@ -306,34 +334,41 @@ export class AgentExecutor {
     if (content.includes('##') || content.includes('**')) score += 0.1;
     if (content.includes('•') || content.includes('-')) score += 0.05;
 
-    // Required elements check
-    const requiredElements =
-      taskConfig.workflow_integration.quality_gates.validation_rules || [];
-    let elementsFound = 0;
+    // Required elements check (only if taskConfig exists)
+    if (taskConfig?.workflow_integration?.quality_gates?.validation_rules) {
+      const requiredElements =
+        taskConfig.workflow_integration.quality_gates.validation_rules;
+      let elementsFound = 0;
 
-    for (const element of requiredElements) {
-      if (this.checkElementPresent(content, element)) {
-        elementsFound++;
+      for (const element of requiredElements) {
+        if (this.checkElementPresent(content, element)) {
+          elementsFound++;
+        }
+      }
+
+      if (requiredElements.length > 0) {
+        score += (elementsFound / requiredElements.length) * 0.2;
       }
     }
 
-    if (requiredElements.length > 0) {
-      score += (elementsFound / requiredElements.length) * 0.2;
-    }
+    // Deliverables alignment check (only if taskConfig exists)
+    if (taskConfig?.task_specification?.deliverables?.primary_deliverables) {
+      const deliverables =
+        taskConfig.task_specification.deliverables.primary_deliverables;
+      let deliverablesAddressed = 0;
 
-    // Deliverables alignment check
-    const deliverables =
-      taskConfig.task_specification.deliverables.primary_deliverables || [];
-    let deliverablesAddressed = 0;
-
-    for (const deliverable of deliverables) {
-      if (this.checkDeliverableAddressed(content, deliverable)) {
-        deliverablesAddressed++;
+      for (const deliverable of deliverables) {
+        if (this.checkDeliverableAddressed(content, deliverable)) {
+          deliverablesAddressed++;
+        }
       }
-    }
 
-    if (deliverables.length > 0) {
-      score += (deliverablesAddressed / deliverables.length) * 0.15;
+      if (deliverables.length > 0) {
+        score += (deliverablesAddressed / deliverables.length) * 0.15;
+      }
+    } else {
+      // For new simplified system without taskConfig, use basic scoring
+      score += 0.15; // Give benefit of doubt for simplified system
     }
 
     return Math.min(score, 1.0);
@@ -438,8 +473,19 @@ export class AgentExecutor {
     taskConfig: any
   ): Promise<string[]> {
     const passedGates: string[] = [];
+
+    if (!taskConfig?.workflow_integration?.quality_gates?.post_execution) {
+      // For simplified system without taskConfig, use basic quality gates
+      if (content.length > 500) passedGates.push('adequate_length');
+      if (content.includes('##') || content.includes('**'))
+        passedGates.push('structured_content');
+      if (content.includes('recommend') || content.includes('suggest'))
+        passedGates.push('actionable_content');
+      return passedGates;
+    }
+
     const qualityGates =
-      taskConfig.workflow_integration.quality_gates.post_execution || [];
+      taskConfig.workflow_integration.quality_gates.post_execution;
 
     for (const gate of qualityGates) {
       if (await this.evaluateQualityGate(content, gate)) {
@@ -538,7 +584,7 @@ export class AgentExecutor {
 
   private handleAPIError(
     error: any,
-    generatedPrompt: GeneratedPrompt,
+    generatedPrompt: GeneratedPrompt | SimplePrompt,
     startTime: number
   ): AgentExecutionResult {
     console.error('Anthropic API Error:', error);
@@ -581,17 +627,203 @@ export class AgentExecutor {
     );
   }
 
+  /**
+   * Log the complete API request body for debugging and troubleshooting
+   */
+  private logAPIRequest(
+    agentId: AgentType,
+    apiRequest: Anthropic.MessageCreateParams,
+    context: PromptGenerationContext
+  ): void {
+    // Calculate token estimates
+    const systemPromptString =
+      typeof apiRequest.system === 'string'
+        ? apiRequest.system
+        : JSON.stringify(apiRequest.system || '');
+    const systemPromptTokens = this.estimateTokens(systemPromptString);
+
+    // Extract user content for token estimation
+    let userContentString = '';
+    if (Array.isArray(apiRequest.messages) && apiRequest.messages.length > 0) {
+      const userMessage = apiRequest.messages[0];
+      if (typeof userMessage.content === 'string') {
+        userContentString = userMessage.content;
+      } else if (Array.isArray(userMessage.content)) {
+        userContentString = userMessage.content
+          .map((block) =>
+            typeof block === 'object' && 'text' in block
+              ? block.text
+              : JSON.stringify(block)
+          )
+          .join(' ');
+      } else {
+        userContentString = JSON.stringify(userMessage.content);
+      }
+    }
+    const userPromptTokens = this.estimateTokens(userContentString);
+    const totalInputTokens = systemPromptTokens + userPromptTokens;
+
+    console.log('\n' + '='.repeat(80));
+    console.log(`🤖 ANTHROPIC API REQUEST - Agent: ${agentId.toUpperCase()}`);
+    console.log('='.repeat(80));
+
+    console.log('\n📊 REQUEST METADATA:');
+    console.log(
+      JSON.stringify(
+        {
+          timestamp: new Date().toISOString(),
+          sessionId: context.session.id,
+          agentId,
+          model: apiRequest.model,
+          temperature: apiRequest.temperature,
+          maxTokens: apiRequest.max_tokens,
+          estimatedInputTokens: totalInputTokens,
+          systemPromptTokens,
+          userPromptTokens,
+          workflowStep: context.workflowStep,
+          currentAgent: context.session.currentAgent,
+        },
+        null,
+        2
+      )
+    );
+
+    console.log('\n🔧 SYSTEM PROMPT:');
+    console.log('-'.repeat(60));
+    console.log(apiRequest.system || 'No system prompt');
+
+    console.log('\n👤 USER PROMPT:');
+    console.log('-'.repeat(60));
+    if (Array.isArray(apiRequest.messages) && apiRequest.messages.length > 0) {
+      const userMessage = apiRequest.messages[0];
+      if (typeof userMessage.content === 'string') {
+        console.log(userMessage.content);
+      } else {
+        console.log(JSON.stringify(userMessage.content, null, 2));
+      }
+    } else {
+      console.log('No user messages');
+    }
+
+    console.log('\n📋 CONTEXT SUMMARY:');
+    console.log('-'.repeat(60));
+    console.log(
+      JSON.stringify(
+        {
+          businessIdea:
+            context.userInputs?.businessIdea?.substring(0, 100) + '...' ||
+            'Not provided',
+          previousOutputsCount: Object.keys(context.previousOutputs || {})
+            .length,
+          previousAgents: Object.keys(context.previousOutputs || {}),
+          userInputsKeys: Object.keys(context.userInputs || {}),
+          knowledgeBaseKeys: Object.keys(context.knowledgeBase || {}),
+        },
+        null,
+        2
+      )
+    );
+
+    console.log('\n💾 COMPLETE API REQUEST BODY:');
+    console.log('-'.repeat(60));
+    console.log(
+      JSON.stringify(
+        {
+          model: apiRequest.model,
+          max_tokens: apiRequest.max_tokens,
+          temperature: apiRequest.temperature,
+          system: apiRequest.system,
+          messages: apiRequest.messages,
+          // Note: Only showing structure, full content logged above for readability
+        },
+        null,
+        2
+      )
+    );
+
+    console.log('\n' + '='.repeat(80));
+    console.log(
+      `📤 SENDING TO ANTHROPIC API - Estimated ${totalInputTokens} input tokens`
+    );
+    console.log('='.repeat(80) + '\n');
+  }
+
+  /**
+   * Log the API response for debugging and troubleshooting
+   */
+  private logAPIResponse(
+    agentId: AgentType,
+    result: AgentExecutionResult,
+    context: PromptGenerationContext
+  ): void {
+    console.log('\n' + '='.repeat(80));
+    console.log(`📥 ANTHROPIC API RESPONSE - Agent: ${agentId.toUpperCase()}`);
+    console.log('='.repeat(80));
+
+    console.log('\n📊 RESPONSE METADATA:');
+    console.log(
+      JSON.stringify(
+        {
+          timestamp: new Date().toISOString(),
+          sessionId: context.session.id,
+          agentId,
+          tokensUsed: result.tokensUsed,
+          processingTime: result.processingTime,
+          qualityScore: result.qualityScore,
+          contentLength: result.content.length,
+          model: result.metadata.model,
+          apiCallId: result.metadata.apiCallId,
+          responseTime: result.metadata.responseTime,
+        },
+        null,
+        2
+      )
+    );
+
+    console.log('\n📝 GENERATED CONTENT:');
+    console.log('-'.repeat(60));
+    console.log(result.content);
+
+    console.log('\n🎯 QUALITY ANALYSIS:');
+    console.log('-'.repeat(60));
+    console.log(
+      JSON.stringify(
+        {
+          qualityScore: result.qualityScore,
+          knowledgeSourcesUsed: result.knowledgeSourcesUsed,
+          qualityGatesPassed: result.qualityGatesPassed,
+          contentWordCount: result.content.split(' ').length,
+          contentCharCount: result.content.length,
+        },
+        null,
+        2
+      )
+    );
+
+    console.log('\n' + '='.repeat(80));
+    console.log(
+      `✅ RESPONSE PROCESSED - ${result.tokensUsed} tokens used, ${result.processingTime}ms`
+    );
+    console.log('='.repeat(80) + '\n');
+  }
+
   // Health check for API connectivity
   async healthCheck(): Promise<{ healthy: boolean; error?: string }> {
     try {
+      console.log('🩺 DEBUG: Starting API health check...');
+      console.log('🩺 DEBUG: Using model: claude-3-haiku-20240307');
+      console.log('🩺 DEBUG: API Key length:', this.env.ANTHROPIC_API_KEY?.length);
+      
       const response = await this.anthropic.messages.create({
-        model: 'claude-3-5-sonnet-20241022',
+        model: 'claude-3-haiku-20240307', // Use Haiku for health check
         max_tokens: 10,
         messages: [{ role: 'user', content: 'Hello' }],
       });
 
+      console.log('✅ DEBUG: Health check successful, response:', response.id);
       return { healthy: true };
     } catch (error) {
+      console.log('❌ DEBUG: Health check failed with error:', error);
       return {
         healthy: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -614,4 +846,6 @@ export class AgentExecutor {
       }
     }
   }
+
+  // Configuration methods removed - using simple defaults for now
 }

@@ -1,6 +1,5 @@
 /**
  * Persona Strategist Agent Worker - Second agent in the growth strategy workflow
- * Enhanced with unified configuration system and full context sharing
  * Specializes in psychographic persona development, behavioral analysis, and customer journey mapping
  */
 
@@ -9,10 +8,7 @@ import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { Env } from '../../types';
 import { ConfigLoader } from '../../lib/config-loader';
-import {
-  SimplePromptBuilder,
-  SimplePromptContext,
-} from '../../lib/simple-prompt-builder';
+import { SimplePromptBuilder, SimplePromptContext } from '../../lib/simple-prompt-builder';
 import { AgentExecutor } from '../../lib/agent-executor';
 import { createAPIResponse, createAPIError } from '../../lib/api-utils';
 
@@ -24,359 +20,21 @@ app.use('*', cors());
 
 // Agent configuration
 const AGENT_ID = 'persona-strategist';
+const AGENT_CONFIG_PATH = 'agents/persona-strategist.yaml';
 
-// Health check
-app.get('/health', (c) => {
-  return c.json({
-    status: 'healthy',
-    agentId: AGENT_ID,
-    timestamp: new Date().toISOString(),
-  });
-});
+// Task definition (moved from external YAML to code)
+const TASK_DEFINITION = `Develop comprehensive psychographic personas based on the GTM brief and market analysis.
 
-// Main agent execution endpoint
-app.post('/execute', async (c) => {
-  const startTime = Date.now();
+Create detailed customer personas that include:
+1. Psychographic profiles with behavioral patterns and motivations
+2. Customer journey mapping with touchpoints and pain points
+3. Behavioral triggers and decision-making factors
+4. Communication preferences and channel habits
+5. Values, beliefs, and lifestyle characteristics
 
-  try {
-    // Parse request body
-    const body = await c.req.json();
-    const {
-      sessionId,
-      userId,
-      userInputs,
-      previousOutputs = {},
-      businessContext,
-    } = body;
+Focus on creating actionable personas that enable precise targeting and personalized messaging for all subsequent marketing strategies.`;
 
-    if (!sessionId || !userId) {
-      return c.json(
-        createAPIError('INVALID_REQUEST', 'sessionId and userId are required'),
-        400
-      );
-    }
-
-    // Validate GTM consultant dependency
-    if (!previousOutputs['gtm-consultant']) {
-      return c.json(
-        createAPIError(
-          'MISSING_DEPENDENCY',
-          'GTM Consultant output is required for persona development'
-        ),
-        400
-      );
-    }
-
-    // Initialize components
-    const configLoader = new ConfigLoader(c.env.CONFIG_STORE);
-    const promptBuilder = new SimplePromptBuilder();
-    const agentExecutor = new AgentExecutor(c.env);
-
-    // Load unified agent configuration
-    console.log('Loading unified agent configuration for:', AGENT_ID);
-    const unifiedConfig = await configLoader.loadUnifiedAgentConfig(AGENT_ID);
-
-    if (!unifiedConfig) {
-      console.error('Failed to load unified configuration, attempting fallback...');
-      const legacyConfig = await configLoader.loadAgentConfig(AGENT_ID);
-      
-      if (!legacyConfig) {
-        return c.json(
-          createAPIError(
-            'CONFIG_NOT_FOUND',
-            'Agent configuration not found'
-          ),
-          404
-        );
-      }
-
-      // Use legacy path (shouldn't happen in normal operation)
-      console.warn('Using legacy configuration path for', AGENT_ID);
-    }
-
-    // Convert unified config to legacy format for compatibility
-    const agentConfig = unifiedConfig 
-      ? await convertUnifiedToLegacy(unifiedConfig)
-      : await configLoader.loadAgentConfig(AGENT_ID);
-
-    if (!agentConfig) {
-      return c.json(
-        createAPIError(
-          'CONFIG_CONVERSION_FAILED',
-          'Failed to convert agent configuration'
-        ),
-        500
-      );
-    }
-
-    // Prepare execution context
-    const session = {
-      id: sessionId,
-      userId,
-      workflowId: 'master-workflow-v2',
-      status: 'active' as const,
-      currentAgent: AGENT_ID,
-      currentStep: 1,
-      createdAt: new Date().toISOString(),
-      lastActive: new Date().toISOString(),
-      userInputs,
-      agentOutputs: {},
-      conversationHistory: [],
-      progress: {
-        totalSteps: 8,
-        completedSteps: 1,
-        currentStepId: 'persona_development',
-        estimatedTimeRemaining: 210,
-        stageProgress: {
-          foundation: 0.25,
-          strategy: 0,
-          validation: 0,
-        },
-      },
-    };
-
-    // Extract business idea from user inputs or session
-    const businessIdea =
-      userInputs.businessIdea ||
-      userInputs.businessConcept ||
-      userInputs.businessDescription ||
-      (session.conversationHistory as any[]).find(
-        (msg: any) => msg.sender === 'user'
-      )?.content ||
-      'Business concept not provided';
-
-    // Create enhanced context for prompt builder
-    const enhancedContext = promptBuilder.createEnhancedContext(
-      {
-        businessIdea,
-        userInputs,
-        previousOutputs, // Full previous outputs, not summaries
-        agentConfig,
-        session,
-        configLoader,
-        workflowPosition: 2,
-        totalAgents: 8,
-      },
-      AGENT_ID
-    );
-
-    // Define relevant knowledge files for Persona Strategist
-    const knowledgeFiles = [
-      'knowledge-base/method/04psychograhpic-persona.md',
-      'knowledge-base/ressources/psychographic-segmentation.md',
-      'knowledge-base/ressources/ocean-personality.md',
-      'knowledge-base/ressources/psychographics-socialmedia.md',
-      'knowledge-base/ressources/market-segmentation.md',
-      'knowledge-base/ressources/hierachy-of-engagement.md',
-    ];
-
-    // Generate dynamic output format from unified config
-    const outputFormat = unifiedConfig 
-      ? generateOutputFormatFromConfig(unifiedConfig.output_specifications)
-      : getDefaultOutputFormat();
-
-    // Generate prompt with full GTM context and knowledge files
-    const prompt = await promptBuilder.buildPrompt(
-      unifiedConfig?.task_specification.primary_objective || 'Develop comprehensive psychographic personas and behavioral analysis',
-      enhancedContext,
-      outputFormat,
-      knowledgeFiles
-    );
-
-    // Validate prompt
-    const validation = promptBuilder.validatePrompt(prompt);
-    if (!validation.isValid) {
-      console.warn('Prompt validation issues:', validation.errors);
-    }
-
-    // Execute agent with enhanced prompt
-    const agentResult = await agentExecutor.executeAgent(AGENT_ID, prompt, {
-      session,
-      agentConfig,
-      taskConfig: null, // Not needed with new unified system
-      userInputs,
-      previousOutputs,
-      knowledgeBase: {},
-      businessContext: businessContext || extractBusinessContext(userInputs),
-      workflowStep: 1,
-    });
-
-    // Prepare response (direct output)
-    const response = {
-      agentId: AGENT_ID,
-      sessionId,
-      execution: {
-        success: true,
-        processingTime: Date.now() - startTime,
-        qualityScore: agentResult.qualityScore,
-      },
-      output: {
-        content: agentResult.content,
-        template: 'direct-output',
-        variables: {},
-        structure: {
-          type: 'direct-content',
-          sections: ['content'],
-        },
-      },
-      metadata: {
-        tokensUsed: agentResult.tokensUsed,
-        qualityScore: agentResult.qualityScore,
-        processingTime: agentResult.processingTime,
-        promptValidation: validation,
-        systemType: 'enhanced-prompt-builder',
-        unifiedConfig: !!unifiedConfig,
-        contextType: 'full-previous-outputs',
-      },
-    };
-
-    return c.json(createAPIResponse(response));
-  } catch (error) {
-    console.error('Persona Strategist execution error:', error);
-
-    const errorResponse = {
-      agentId: AGENT_ID,
-      execution: {
-        success: false,
-        processingTime: Date.now() - startTime,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      },
-    };
-
-    return c.json(
-      createAPIError(
-        'EXECUTION_FAILED',
-        'Agent execution failed',
-        errorResponse
-      ),
-      500
-    );
-  }
-});
-
-// Validation endpoint
-app.post('/validate', async (c) => {
-  try {
-    const body = await c.req.json();
-    const { content, validationRules } = body;
-
-    if (!content) {
-      return c.json(
-        createAPIError('INVALID_REQUEST', 'Content is required for validation'),
-        400
-      );
-    }
-
-    const validation = await validatePersonaOutput(content, validationRules);
-
-    return c.json(createAPIResponse(validation));
-  } catch (error) {
-    console.error('Persona Strategist validation error:', error);
-    return c.json(
-      createAPIError('VALIDATION_FAILED', 'Validation failed'),
-      500
-    );
-  }
-});
-
-// Configuration endpoint
-app.get('/config', async (c) => {
-  try {
-    const configLoader = new ConfigLoader(c.env.CONFIG_STORE);
-    const { unified, legacy, task } = await configLoader.loadCompleteAgentConfiguration(AGENT_ID);
-
-    return c.json(
-      createAPIResponse({
-        unifiedConfig: unified,
-        agentConfig: legacy,
-        taskConfig: task,
-        agentId: AGENT_ID,
-        systemType: 'enhanced-prompt-builder',
-      })
-    );
-  } catch (error) {
-    console.error('Persona Strategist config error:', error);
-    return c.json(
-      createAPIError('CONFIG_LOAD_FAILED', 'Failed to load configuration'),
-      500
-    );
-  }
-});
-
-// Helper functions
-
-/**
- * Convert unified configuration to legacy AgentConfig format
- */
-async function convertUnifiedToLegacy(unifiedConfig: any): Promise<any> {
-  const identity = unifiedConfig.agent_identity;
-  const capabilities = unifiedConfig.capabilities_constraints;
-
-  return {
-    id: identity.id,
-    name: identity.name,
-    version: identity.version,
-    description: identity.persona.identity,
-    persona: {
-      identity: identity.persona.identity,
-      expertise: identity.persona.expertise || [],
-      communication_style: identity.persona.communication_style,
-      decision_making_approach: 'Data-driven with strategic focus',
-    },
-    capabilities: {
-      core_competencies: capabilities.capabilities.core_competencies || [],
-      tools_available: [],
-      knowledge_domains: unifiedConfig.static_knowledge?.knowledge_files?.primary || [],
-      output_formats: ['markdown'],
-    },
-    configuration: {
-      model: unifiedConfig.claude_config?.model || 'claude-3-5-sonnet-20241022',
-      temperature: unifiedConfig.claude_config?.temperature || 0.7,
-      max_tokens: unifiedConfig.claude_config?.max_tokens || 4000,
-      timeout: 120000,
-      retry_attempts: 3,
-    },
-    workflow_integration: {
-      workflow_position: unifiedConfig.workflow_integration.sequence_order,
-      stage: unifiedConfig.workflow_integration.stage as 'foundation' | 'strategy' | 'validation',
-      dependencies: [],
-      handoff_requirements: [],
-    },
-  };
-}
-
-/**
- * Generate output format string from unified configuration
- */
-function generateOutputFormatFromConfig(outputSpecs: any): string {
-  let format = `# ${outputSpecs.required_sections.executive_summary?.description || 'Persona Strategist Analysis & Recommendations'}\n\n`;
-  
-  // Add each required section
-  for (const [sectionKey, sectionConfig] of Object.entries(outputSpecs.required_sections)) {
-    if (sectionKey === 'executive_summary') continue; // Already added
-    
-    const config = sectionConfig as any;
-    const sectionTitle = sectionKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-    
-    format += `## ${sectionTitle}\n`;
-    format += `${config.description}\n\n`;
-    
-    if (config.requirements && Array.isArray(config.requirements)) {
-      config.requirements.forEach((req: string) => {
-        format += `- ${req}\n`;
-      });
-      format += '\n';
-    }
-  }
-  
-  return format;
-}
-
-/**
- * Default output format when unified config is not available
- */
-function getDefaultOutputFormat(): string {
-  return `# Persona Strategist Analysis & Recommendations
+const OUTPUT_FORMAT = `# Persona Strategist Analysis & Recommendations
 
 ## Executive Summary
 Brief overview of the customer personas developed and key behavioral insights (2-3 sentences)
@@ -440,6 +98,278 @@ Brief overview of the customer personas developed and key behavioral insights (2
 - Data collection and refinement strategy
 - Marketing activation priorities
 - Measurement and optimization framework`;
+
+// Health check
+app.get('/health', (c) => {
+  return c.json({
+    status: 'healthy',
+    agentId: AGENT_ID,
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// Main agent execution endpoint
+app.post('/execute', async (c) => {
+  const startTime = Date.now();
+
+  try {
+    // Parse request body
+    const body = await c.req.json();
+    const {
+      sessionId,
+      userId,
+      userInputs,
+      previousOutputs = {},
+      businessContext,
+    } = body;
+
+    if (!sessionId || !userId) {
+      return c.json(
+        createAPIError('INVALID_REQUEST', 'sessionId and userId are required'),
+        400
+      );
+    }
+
+    // Validate GTM brief dependency
+    if (!previousOutputs['gtm-consultant'] && !previousOutputs['gtm-brief.md']) {
+      return c.json(
+        createAPIError(
+          'MISSING_DEPENDENCY',
+          'GTM brief from GTM Consultant is required for persona development'
+        ),
+        400
+      );
+    }
+
+    // Initialize components
+    const configLoader = new ConfigLoader(c.env.CONFIG_STORE);
+    const promptBuilder = new SimplePromptBuilder();
+    const agentExecutor = new AgentExecutor(c.env);
+
+    // Load agent configuration
+    const agentConfig = await configLoader.loadAgentConfig(AGENT_ID);
+
+    if (!agentConfig) {
+      return c.json(
+        createAPIError(
+          'CONFIG_NOT_FOUND',
+          'Agent configuration not found'
+        ),
+        404
+      );
+    }
+
+    // Prepare execution context
+    const session = {
+      id: sessionId,
+      userId,
+      workflowId: 'master-workflow-v2',
+      status: 'active' as const,
+      currentAgent: AGENT_ID,
+      currentStep: 1,
+      createdAt: new Date().toISOString(),
+      lastActive: new Date().toISOString(),
+      userInputs,
+      agentOutputs: previousOutputs,
+      conversationHistory: [],
+      progress: {
+        totalSteps: 8,
+        completedSteps: 1,
+        currentStepId: 'persona_development',
+        estimatedTimeRemaining: 200,
+        stageProgress: {
+          foundation: 0.25,
+          strategy: 0,
+          validation: 0,
+        },
+      },
+    };
+
+    // Extract business idea from user inputs or session
+    const businessIdea = userInputs.businessIdea || 
+                        userInputs.businessConcept || 
+                        userInputs.businessDescription ||
+                        (session.conversationHistory as any[]).find((msg: any) => msg.sender === 'user')?.content ||
+                        'Business concept not provided';
+
+    // Extract key insights from GTM Consultant
+    const previousInsights: Record<string, string> = {};
+    
+    if (previousOutputs['gtm-consultant']) {
+      previousInsights['gtm-consultant'] = promptBuilder.extractKeyInsights('gtm-consultant', previousOutputs['gtm-consultant']);
+    }
+
+    // Build simple context
+    const promptContext: SimplePromptContext = {
+      businessIdea,
+      userInputs,
+      previousOutputs: previousInsights,
+      agentConfig,
+      session
+    };
+
+    // Generate simple, effective prompt
+    const prompt = promptBuilder.buildPromptSync(TASK_DEFINITION, promptContext, OUTPUT_FORMAT);
+
+    // Validate prompt
+    const validation = promptBuilder.validatePrompt(prompt);
+    if (!validation.isValid) {
+      console.warn('Prompt validation issues:', validation.errors);
+    }
+
+    // Execute agent with simple prompt
+    const agentResult = await agentExecutor.executeAgent(
+      AGENT_ID,
+      prompt,
+      {
+        session,
+        agentConfig,
+        taskConfig: null, // Not needed with new system
+        userInputs,
+        previousOutputs: previousInsights,
+        knowledgeBase: {},
+        businessContext: businessContext || extractBusinessContext(userInputs),
+        workflowStep: 1
+      }
+    );
+
+    // Prepare response (no template processing)
+    const response = {
+      agentId: AGENT_ID,
+      sessionId,
+      execution: {
+        success: true,
+        processingTime: Date.now() - startTime,
+        qualityScore: agentResult.qualityScore,
+      },
+      output: {
+        content: agentResult.content,
+        template: 'direct-output',
+        variables: {},
+        structure: {
+          type: 'direct-content',
+          sections: ['content'],
+        },
+      },
+      metadata: {
+        tokensUsed: agentResult.tokensUsed,
+        qualityScore: agentResult.qualityScore,
+        processingTime: agentResult.processingTime,
+        promptValidation: validation,
+        systemType: 'simple-prompt-builder'
+      },
+    };
+
+    return c.json(createAPIResponse(response));
+  } catch (error) {
+    console.error('Persona Strategist execution error:', error);
+
+    const errorResponse = {
+      agentId: AGENT_ID,
+      execution: {
+        success: false,
+        processingTime: Date.now() - startTime,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      },
+    };
+
+    return c.json(
+      createAPIError(
+        'EXECUTION_FAILED',
+        'Agent execution failed',
+        errorResponse
+      ),
+      500
+    );
+  }
+});
+
+// Validation endpoint
+app.post('/validate', async (c) => {
+  try {
+    const body = await c.req.json();
+    const { content, validationRules } = body;
+
+    if (!content) {
+      return c.json(
+        createAPIError('INVALID_REQUEST', 'Content is required for validation'),
+        400
+      );
+    }
+
+    const validation = await validatePersonaOutput(content, validationRules);
+
+    return c.json(createAPIResponse(validation));
+  } catch (error) {
+    console.error('Persona Strategist validation error:', error);
+    return c.json(
+      createAPIError('VALIDATION_FAILED', 'Validation failed'),
+      500
+    );
+  }
+});
+
+// Configuration endpoint
+app.get('/config', async (c) => {
+  try {
+    const configLoader = new ConfigLoader(c.env.CONFIG_STORE);
+    const [agentConfig, taskConfig] = await Promise.all([
+      configLoader.loadAgentConfig(AGENT_ID),
+      configLoader.loadTaskConfig(`${AGENT_ID}-task`),
+    ]);
+
+    return c.json(
+      createAPIResponse({
+        agentConfig,
+        taskConfig,
+        agentId: AGENT_ID,
+      })
+    );
+  } catch (error) {
+    console.error('Persona Strategist config error:', error);
+    return c.json(
+      createAPIError('CONFIG_LOAD_FAILED', 'Failed to load configuration'),
+      500
+    );
+  }
+});
+
+// Helper functions
+
+async function loadRelevantKnowledge(
+  configLoader: ConfigLoader,
+  taskConfig: any
+): Promise<Record<string, string>> {
+  const knowledgeBase: Record<string, string> = {};
+
+  try {
+    const knowledgeFocus =
+      taskConfig.agent_integration.behavior_overrides.knowledge_focus || [];
+
+    // Load Persona-specific knowledge
+    const knowledgeMapping: Record<string, string> = {
+      'psychographic-persona': 'method/04psychograhpic-persona.md',
+      'customer-behavior': 'resources/psychographic-segmentation.md',
+      'journey-mapping': 'resources/psychographics-socialmedia.md',
+      'personality-analysis': 'resources/ocean-personality.md',
+      'market-segmentation': 'resources/market-segmentation.md',
+      'customer-psychology': 'resources/hierachy-of-engagement.md',
+    };
+
+    for (const focus of knowledgeFocus) {
+      const filePath = knowledgeMapping[focus];
+      if (filePath) {
+        const content = await configLoader.loadKnowledgeBase(filePath);
+        if (content) {
+          knowledgeBase[focus] = content;
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Knowledge loading error:', error);
+  }
+
+  return knowledgeBase;
 }
 
 function extractBusinessContext(userInputs: Record<string, any>): any {
@@ -449,14 +379,9 @@ function extractBusinessContext(userInputs: Record<string, any>): any {
     industry: userInputs.industry || userInputs.market || 'technology',
     stage: userInputs.businessStage || userInputs.stage || 'early-stage',
     teamSize: userInputs.teamSize || 'small',
-    customerInsights:
-      userInputs.customerInsights || userInputs.customer_insights || '',
-    behavioralObservations:
-      userInputs.behavioralObservations ||
-      userInputs.behavioral_observations ||
-      '',
-    targetAudience:
-      userInputs.targetAudience || userInputs.target_audience || '',
+    customerInsights: userInputs.customerInsights || userInputs.customer_insights || '',
+    behavioralObservations: userInputs.behavioralObservations || userInputs.behavioral_observations || '',
+    targetAudience: userInputs.targetAudience || userInputs.target_audience || '',
   };
 }
 
@@ -586,9 +511,7 @@ function checkPersonaDepthAndSpecificity(content: string): {
   }
 
   if (psychographicCount < 2) {
-    issues.push(
-      'Insufficient psychographic depth - missing values, attitudes, or lifestyle factors'
-    );
+    issues.push('Insufficient psychographic depth - missing values, attitudes, or lifestyle factors');
   }
 
   if (content.length < 800) {

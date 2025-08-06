@@ -7,12 +7,14 @@
 The session system uses a **hybrid storage approach** with two layers:
 
 #### **Primary Storage: Cloudflare KV (SESSION_STORE)**
+
 - **Purpose**: Long-term persistence of all session data
 - **Key Format**: `session:${sessionId}` for individual sessions
 - **Index Format**: `user:${userId}:sessions` for user session lists
 - **Persistence**: Data survives system restarts and deployments
 
 #### **Secondary Storage: Durable Objects**
+
 - **Purpose**: Real-time session state for active WebSocket connections
 - **Usage**: Temporary cache during active chat sessions
 - **Auto-cleanup**: Sessions inactive for 24+ hours are cleaned up
@@ -36,17 +38,17 @@ User Creates Session → Stored in KV → Added to User Index → Available in D
 ✅ **Session Loading**: Resume any session from dashboard  
 ✅ **Session Updates**: All changes saved to persistent storage  
 ✅ **Session Deletion**: Removes session + cleans up index  
-✅ **User Authorization**: Users can only access their own sessions  
+✅ **User Authorization**: Users can only access their own sessions
 
 ### 4. **API Endpoints**
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/sessions` | POST | Create new session |
-| `/api/users/:userId/sessions` | GET | List user's sessions |
-| `/api/sessions/:sessionId` | GET | Load specific session |
-| `/api/sessions/:sessionId` | DELETE | Delete session |
-| `/api/chat/:sessionId/approve` | PUT | Update session with approval |
+| Endpoint                       | Method | Description                  |
+| ------------------------------ | ------ | ---------------------------- |
+| `/api/sessions`                | POST   | Create new session           |
+| `/api/users/:userId/sessions`  | GET    | List user's sessions         |
+| `/api/sessions/:sessionId`     | GET    | Load specific session        |
+| `/api/sessions/:sessionId`     | DELETE | Delete session               |
+| `/api/chat/:sessionId/approve` | PUT    | Update session with approval |
 
 ### 5. **Dashboard Integration**
 
@@ -63,28 +65,30 @@ User Creates Session → Stored in KV → Added to User Index → Available in D
 ### 6. **Session Data Structure**
 
 Each session contains:
+
 ```typescript
 {
-  id: string;                    // Unique session identifier
-  userId: string;                // Owner of the session
-  workflowId: string;           // Which workflow (master-workflow-v2)
+  id: string; // Unique session identifier
+  userId: string; // Owner of the session
+  workflowId: string; // Which workflow (master-workflow-v2)
   status: 'active' | 'paused' | 'completed';
-  currentAgent: string;         // Current AI agent
-  currentStep: number;          // Progress through workflow
-  createdAt: string;           // Creation timestamp
-  lastActive: string;          // Last interaction time
-  userInputs: object;          // User's input data
-  agentOutputs: object;        // AI agent responses
-  conversationHistory: array;  // Complete chat history
-  progress: {                  // Workflow progress tracking
+  currentAgent: string; // Current AI agent
+  currentStep: number; // Progress through workflow
+  createdAt: string; // Creation timestamp
+  lastActive: string; // Last interaction time
+  userInputs: object; // User's input data
+  agentOutputs: object; // AI agent responses
+  conversationHistory: array; // Complete chat history
+  progress: {
+    // Workflow progress tracking
     totalSteps: number;
     completedSteps: number;
     currentStepId: string;
     estimatedTimeRemaining: number;
     stageProgress: {
-      foundation: number;    // 0-1 progress
-      strategy: number;      // 0-1 progress
-      validation: number;    // 0-1 progress
+      foundation: number; // 0-1 progress
+      strategy: number; // 0-1 progress
+      validation: number; // 0-1 progress
     }
   }
 }
@@ -96,6 +100,7 @@ Each session contains:
 **Index Value**: `["session-id-1", "session-id-2", "session-id-3"]`
 
 **Benefits:**
+
 - ✅ Fast session lookup by user
 - ✅ No need to scan all sessions
 - ✅ Efficient dashboard loading
@@ -115,6 +120,7 @@ When a user continues a session:
 ### 9. **Session Management Features**
 
 **Available Now:**
+
 - ✅ Create new sessions
 - ✅ List user sessions (sorted by activity)
 - ✅ Load and resume any session
@@ -122,6 +128,7 @@ When a user continues a session:
 - ✅ Real-time session updates
 
 **Future Enhancements:**
+
 - 🔄 Session titles/naming
 - 🔄 Session export (PDF, MD)
 - 🔄 Session sharing/collaboration
@@ -131,11 +138,13 @@ When a user continues a session:
 ### 10. **Technical Implementation**
 
 **Key Functions Added:**
+
 - `updateUserSessionIndex()` - Maintains user session lists
-- `removeFromUserSessionIndex()` - Cleans up deleted sessions  
+- `removeFromUserSessionIndex()` - Cleans up deleted sessions
 - `getUserSessions()` - Efficiently retrieves user sessions
 
 **Storage Pattern:**
+
 ```
 KV Store:
 ├── session:abc-123         → Full session data
@@ -145,3 +154,12 @@ KV Store:
 ```
 
 This system provides a robust foundation for session persistence and management, enabling users to seamlessly continue their growth strategy development across multiple sessions.
+
+Now we have to plan out a bit better the session management. We changed quite a bit from the beginning of the MVP already.
+The adapted features of the updated MVP should be:
+
+what we have sofar:
+User starts a strategy session -> First page with start button -> User Input with their idea and start analysing -> 1. Step GTM is generating the response -> User can Edit the business idea and regenerate this step -> User can edit the document and must approve it
+What we need to implement
+-> Once the user approved it, the aprove button turns into "Next Agent" button -> The Next agent will be called and should start generating the persona LLM response when this button is clicked.
+The user should also be able to navigate in between the agents he already approved.

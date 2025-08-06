@@ -128,7 +128,7 @@ task_specification:
     - 'Create actionable strategic insights for persona development'
     - 'Define market opportunity sizing and accessibility'
     - 'Identify key differentiators and competitive positioning'
-  
+
   # Specific deliverables
   deliverables:
     primary_deliverables:
@@ -149,7 +149,7 @@ task_specification:
       - 'Target market must be quantified with clear accessibility path'
       - 'Business model must have interconnected and validated components'
       - 'Strategic insights must enable subsequent agent execution'
-  
+
   # Success criteria and constraints
   success_criteria:
     mandatory_criteria:
@@ -166,7 +166,7 @@ task_specification:
       - 'Risk mitigation strategies are proactive and comprehensive'
     measurement_approach: 'Quality scoring based on strategic clarity, market specificity, value proposition strength, business model completeness, and actionability'
     validation_method: 'Template compliance check, strategic coherence validation, and handoff context preparation assessment'
-  
+
   constraints:
     scope_constraints:
       - 'Do not create detailed tactical execution plans (acquisition agent handles this)'
@@ -186,7 +186,7 @@ task_specification:
       - 'Recommendations must be specific and actionable'
       - 'Market assumptions must be clearly stated'
       - 'Business model must be internally consistent'
-  
+
   # Context and workflow awareness
   context_awareness:
     workflow_stage: 'foundation'
@@ -197,7 +197,7 @@ task_specification:
       - 'Value proposition framework for product positioning'
       - 'Strategic context for growth funnel design'
       - 'Business model foundation for strategy development'
-    
+
   handoff_requirements:
     context_to_provide:
       - 'Complete GTM brief content for all subsequent agents'
@@ -226,62 +226,62 @@ prompt_generation:
   templates:
     system_prompt_template: |
       {agent_identity}
-      
+
       task_objective_statement: {primary_objective}
-      
+
       deliverables_specification:
       {primary_deliverables}
-      
+
       success_criteria_definition:
       {mandatory_criteria}
-      
+
       CONSTRAINTS AND SCOPE:
       {scope_constraints}
-      
+
       WORKFLOW CONTEXT:
       - Stage: {workflow_stage} ({stage_purpose})
       - Next agents depend on: {next_stage_requirements}
-      
+
       knowledge_base_injection: {injected_knowledge}
-      
+
       output_format_instruction: Follow template structure exactly - {primary_template}
-      
+
       QUALITY STANDARDS: {quality_standards}
-    
+
     user_prompt_template: |
       Based on the user's business concept and requirements, develop a comprehensive GTM strategy following the specified deliverables and success criteria.
-      
+
       User Input: {user_message}
       Business Context: {business_context}
       Previous Outputs: {previous_outputs}
-    
+
     context_injection_template: |
       WORKFLOW CONTEXT:
       Current Stage: {workflow_stage}
       Stage Purpose: {stage_purpose}
       Previous Outputs: {previous_outputs}
       Next Stage Needs: {next_stage_requirements}
-      
+
       USER CONTEXT:
       Business Stage: {business_stage}
       Project Name: {project_name}
       Industry/Market: {industry_context}
-    
+
     knowledge_injection_template: |
       RELEVANT KNOWLEDGE BASE:
-      
+
       Value Proposition Development:
       {value_proposition_knowledge}
-      
+
       Business Model Design:
       {business_model_knowledge}
-      
+
       Problem-Solution Fit:
       {problem_solution_fit_knowledge}
-      
+
       Market Analysis:
       {market_analysis_knowledge}
-  
+
   # Dynamic prompt generation
   dynamic_generation:
     context_injection_points:
@@ -309,14 +309,14 @@ prompt_generation:
       industry_specific_examples: 'based_on_user_industry'
       business_stage_guidance: 'based_on_user_business_stage'
       complexity_adjustment: 'based_on_user_experience_level'
-  
+
   # Prompt optimization
   optimization:
     token_optimization: true
     clarity_enhancement: true
     context_compression: true
     quality_instructions: true
-  
+
   # Prompt validation
   validation:
     prompt_validation: true

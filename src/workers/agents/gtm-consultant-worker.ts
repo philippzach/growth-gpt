@@ -1,14 +1,18 @@
 /**
- * GTM Consultant Agent Worker - First agent in the growth strategy workflow
+ * GTM Consultant Agent Worker - Enhanced with Unified Configuration
+ * First agent in the growth strategy workflow using improved prompt structure
  * Specializes in market foundation, value proposition, and business model development
  */
 
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
-import { Env, GeneratedPrompt, PromptGenerationContext } from '../../types';
+import { Env } from '../../types';
 import { ConfigLoader } from '../../lib/config-loader';
-import { DynamicPromptGenerator } from '../../lib/dynamic-prompt-generator';
+import {
+  SimplePromptBuilder,
+  SimplePromptContext,
+} from '../../lib/simple-prompt-builder';
 import { AgentExecutor } from '../../lib/agent-executor';
 import { createAPIResponse, createAPIError } from '../../lib/api-utils';
 
@@ -20,15 +24,14 @@ app.use('*', cors());
 
 // Agent configuration
 const AGENT_ID = 'gtm-consultant';
-const AGENT_CONFIG_PATH = 'agents/gtm-consultant.yaml';
-const TASK_CONFIG_PATH = 'tasks/agent-tasks/gtm-consultant-task.yaml';
 
-// Health check
+// Health check endpoint
 app.get('/health', (c) => {
   return c.json({
     status: 'healthy',
     agentId: AGENT_ID,
     timestamp: new Date().toISOString(),
+    version: '3.0',
   });
 });
 
@@ -56,26 +59,39 @@ app.post('/execute', async (c) => {
 
     // Initialize components
     const configLoader = new ConfigLoader(c.env.CONFIG_STORE);
-    const promptGenerator = new DynamicPromptGenerator(c.env.CONFIG_STORE);
+    const promptBuilder = new SimplePromptBuilder();
     const agentExecutor = new AgentExecutor(c.env);
 
-    // Load configurations
-    const [agentConfig, taskConfig] = await Promise.all([
-      configLoader.loadAgentConfig(AGENT_ID),
-      configLoader.loadTaskConfig(`${AGENT_ID}-task`),
-    ]);
-
-    if (!agentConfig || !taskConfig) {
-      return c.json(
-        createAPIError(
-          'CONFIG_NOT_FOUND',
-          'Agent or task configuration not found'
-        ),
-        404
-      );
+    // Load unified agent configuration
+    console.log('Loading unified agent configuration for:', AGENT_ID);
+    const unifiedConfig = await configLoader.loadUnifiedAgentConfig(AGENT_ID);
+    
+    if (!unifiedConfig) {
+      throw new Error(`Failed to load unified configuration for ${AGENT_ID}`);
     }
 
-    // Prepare execution context
+    // Validate unified config structure
+    const validation = configLoader.validateUnifiedConfig(unifiedConfig);
+    if (!validation.valid) {
+      throw new Error(`Invalid unified config: ${validation.errors.join(', ')}`);
+    }
+
+    console.log('Successfully loaded unified config:', {
+      id: unifiedConfig.agent_identity.id,
+      name: unifiedConfig.agent_identity.name,
+      version: unifiedConfig.agent_identity.version,
+    });
+
+    // Convert to legacy format for AgentExecutor compatibility
+    const agentConfig = await configLoader.loadAgentConfig(AGENT_ID);
+    if (!agentConfig) {
+      throw new Error('Failed to convert unified config to legacy format');
+    }
+
+    // Extract business idea from user inputs
+    const businessIdea = extractBusinessIdea(userInputs, businessContext);
+
+    // Create session object for context
     const session = {
       id: sessionId,
       userId,
@@ -101,28 +117,69 @@ app.post('/execute', async (c) => {
       },
     };
 
-    const context: PromptGenerationContext = {
-      session,
-      agentConfig,
-      taskConfig,
+    // Create base prompt context
+    const basePromptContext: SimplePromptContext = {
+      businessIdea,
       userInputs,
-      previousOutputs,
-      knowledgeBase: await loadRelevantKnowledge(configLoader, taskConfig),
-      businessContext: businessContext || extractBusinessContext(userInputs),
-      workflowStep: 0,
+      previousOutputs: {}, // GTM Consultant is first agent, no previous outputs
+      agentConfig,
+      session,
+      configLoader, // Include for knowledge loading
     };
 
-    // Generate optimized prompt
-    const generatedPrompt = await promptGenerator.generatePrompt(context);
+    // Create enhanced context with workflow position
+    const enhancedContext = promptBuilder.createEnhancedContext(basePromptContext, AGENT_ID);
 
-    // Execute agent
-    const agentResult = await agentExecutor.executeAgent(
-      AGENT_ID,
-      generatedPrompt as any,
-      context
+    // Extract components from unified config
+    const taskDefinition = unifiedConfig.task_specification.primary_objective;
+    
+    // Debug output specifications
+    console.log('🔍 DEBUG - Output specifications:', {
+      hasOutputSpecs: !!unifiedConfig.output_specifications,
+      hasRequiredSections: !!unifiedConfig.output_specifications?.required_sections,
+      sectionCount: Object.keys(unifiedConfig.output_specifications?.required_sections || {}).length,
+      sectionKeys: Object.keys(unifiedConfig.output_specifications?.required_sections || {})
+    });
+    
+    const outputFormat = generateOutputFormatFromConfig(unifiedConfig.output_specifications);
+    console.log('🔍 DEBUG - Generated output format length:', outputFormat.length);
+    console.log('🔍 DEBUG - Output format preview:', outputFormat.substring(0, 200) + '...');
+    
+    const knowledgeFiles = unifiedConfig.static_knowledge?.knowledge_files?.primary || [];
+
+    console.log('Building enhanced prompt with:', {
+      taskDefinition: taskDefinition.substring(0, 100) + '...',
+      knowledgeFilesCount: knowledgeFiles.length,
+      workflowPosition: enhancedContext.workflowPosition,
+    });
+
+    // Generate enhanced prompt with new structure
+    const prompt = await promptBuilder.buildPrompt(
+      taskDefinition,
+      enhancedContext,
+      outputFormat,
+      knowledgeFiles
     );
 
-    // Prepare response (no template processing)
+    // Validate prompt
+    const promptValidation = promptBuilder.validatePrompt(prompt);
+    if (!promptValidation.isValid) {
+      console.warn('Prompt validation issues:', promptValidation.errors);
+    }
+
+    // Execute agent with enhanced prompt
+    const agentResult = await agentExecutor.executeAgent(AGENT_ID, prompt, {
+      session,
+      agentConfig,
+      taskConfig: null, // Not needed with unified system
+      userInputs,
+      previousOutputs: {},
+      knowledgeBase: {},
+      businessContext: businessIdea,
+      workflowStep: 0,
+    });
+
+    // Prepare response
     const response = {
       agentId: AGENT_ID,
       sessionId,
@@ -142,9 +199,12 @@ app.post('/execute', async (c) => {
       },
       metadata: {
         tokensUsed: agentResult.tokensUsed,
+        qualityScore: agentResult.qualityScore,
+        processingTime: agentResult.processingTime,
+        promptValidation: promptValidation,
+        systemType: 'unified-config-v3',
+        configVersion: unifiedConfig.agent_identity.version,
         knowledgeSourcesUsed: agentResult.knowledgeSourcesUsed,
-        qualityGatesPassed: agentResult.qualityGatesPassed,
-        promptMetadata: generatedPrompt.metadata,
       },
     };
 
@@ -178,45 +238,48 @@ app.post('/validate', async (c) => {
     const body = await c.req.json();
     const { content, validationRules } = body;
 
-    if (!content) {
-      return c.json(
-        createAPIError('INVALID_REQUEST', 'Content is required for validation'),
-        400
-      );
-    }
-
     const validation = await validateGTMOutput(content, validationRules);
 
-    return c.json(createAPIResponse(validation));
-  } catch (error) {
-    console.error('GTM Consultant validation error:', error);
     return c.json(
-      createAPIError('VALIDATION_FAILED', 'Validation failed'),
+      createAPIResponse({
+        agentId: AGENT_ID,
+        validation,
+      })
+    );
+  } catch (error) {
+    return c.json(
+      createAPIError('VALIDATION_FAILED', 'Validation failed', { error }),
       500
     );
   }
 });
 
-// Configuration endpoint
+// Configuration info endpoint
 app.get('/config', async (c) => {
   try {
     const configLoader = new ConfigLoader(c.env.CONFIG_STORE);
-    const [agentConfig, taskConfig] = await Promise.all([
-      configLoader.loadAgentConfig(AGENT_ID),
-      configLoader.loadTaskConfig(`${AGENT_ID}-task`),
-    ]);
+    const unifiedConfig = await configLoader.loadUnifiedAgentConfig(AGENT_ID);
+
+    if (!unifiedConfig) {
+      return c.json(
+        createAPIError('CONFIG_NOT_FOUND', 'Configuration not found'),
+        404
+      );
+    }
 
     return c.json(
       createAPIResponse({
-        agentConfig,
-        taskConfig,
         agentId: AGENT_ID,
+        version: unifiedConfig.agent_identity.version,
+        name: unifiedConfig.agent_identity.name,
+        capabilities: unifiedConfig.capabilities_constraints.capabilities,
+        knowledgeSources: unifiedConfig.static_knowledge.knowledge_files,
+        outputSections: Object.keys(unifiedConfig.output_specifications.required_sections),
       })
     );
   } catch (error) {
-    console.error('GTM Consultant config error:', error);
     return c.json(
-      createAPIError('CONFIG_LOAD_FAILED', 'Failed to load configuration'),
+      createAPIError('CONFIG_ERROR', 'Failed to load configuration', { error }),
       500
     );
   }
@@ -224,54 +287,98 @@ app.get('/config', async (c) => {
 
 // Helper functions
 
-async function loadRelevantKnowledge(
-  configLoader: ConfigLoader,
-  taskConfig: any
-): Promise<Record<string, string>> {
-  const knowledgeBase: Record<string, string> = {};
-
-  try {
-    const knowledgeFocus =
-      taskConfig.agent_integration.behavior_overrides.knowledge_focus || [];
-
-    // Load GTM-specific knowledge
-    const knowledgeMapping: Record<string, string> = {
-      'value-proposition': 'method/01value-proposition.md',
-      'problem-solution-fit': 'method/02problem-solution-fit.md',
-      'business-model': 'method/03business-model.md',
-      'target-market': 'resources/market-segmentation.md',
-      'competitive-positioning': 'resources/unique-value-proposition.md',
-    };
-
-    for (const focus of knowledgeFocus) {
-      const filePath = knowledgeMapping[focus];
-      if (filePath) {
-        const content = await configLoader.loadKnowledgeBase(filePath);
-        if (content) {
-          knowledgeBase[focus] = content;
+/**
+ * Generate output format string from unified configuration
+ */
+function generateOutputFormatFromConfig(outputSpecs: any): string {
+  let format = '';
+  
+  // Add each required section with proper formatting
+  for (const [sectionKey, sectionConfig] of Object.entries(outputSpecs.required_sections)) {
+    const config = sectionConfig as any;
+    
+    // Format section title
+    const sectionTitle = sectionKey === 'executive_summary' 
+      ? 'Executive Summary'
+      : sectionKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    
+    // Add section header
+    format += `## ${sectionTitle}\n`;
+    
+    // Add section description if available
+    if (config.description) {
+      format += `${config.description}\n\n`;
+    }
+    
+    // Add requirements as bullet points or structured content
+    if (config.requirements) {
+      if (Array.isArray(config.requirements)) {
+        config.requirements.forEach((req: string) => {
+          format += `- ${req}\n`;
+        });
+      } else if (typeof config.requirements === 'object') {
+        // Handle nested requirements structure
+        for (const [subKey, subReqs] of Object.entries(config.requirements)) {
+          if (Array.isArray(subReqs)) {
+            format += `\n### ${subKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}\n`;
+            (subReqs as string[]).forEach((req: string) => {
+              format += `- ${req}\n`;
+            });
+          }
         }
       }
     }
-  } catch (error) {
-    console.error('Knowledge loading error:', error);
+    
+    format += '\n';
+  }
+  
+  return format.trim();
+}
+
+/**
+ * Extract business idea from various input sources
+ */
+function extractBusinessIdea(userInputs: Record<string, any>, businessContext?: string): string {
+  // Priority order for business idea extraction
+  const businessKeys = [
+    'businessIdea',
+    'businessConcept', 
+    'businessDescription',
+    'concept',
+    'idea',
+    'business',
+    'startup',
+    'company',
+  ];
+
+  // Check user inputs first
+  for (const key of businessKeys) {
+    if (userInputs[key] && typeof userInputs[key] === 'string' && userInputs[key].trim()) {
+      return userInputs[key].trim();
+    }
   }
 
-  return knowledgeBase;
+  // Use provided business context if available
+  if (businessContext && typeof businessContext === 'string' && businessContext.trim()) {
+    return businessContext.trim();
+  }
+
+  // Check for nested business information
+  if (userInputs.business && typeof userInputs.business === 'object') {
+    const businessObj = userInputs.business;
+    for (const key of ['description', 'idea', 'concept', 'overview']) {
+      if (businessObj[key] && typeof businessObj[key] === 'string') {
+        return businessObj[key];
+      }
+    }
+  }
+
+  return 'Business concept not provided. Please describe your business idea, product, or service.';
 }
 
-function extractBusinessContext(userInputs: Record<string, any>): any {
-  return {
-    businessType:
-      userInputs.businessType || userInputs.businessModel || 'startup',
-    industry: userInputs.industry || userInputs.market || 'technology',
-    stage: userInputs.businessStage || userInputs.stage || 'early-stage',
-    teamSize: userInputs.teamSize || 'small',
-    devResources:
-      userInputs.developmentResources || userInputs.techResources || 'limited',
-    budget: userInputs.budget || userInputs.marketingBudget || 'limited',
-  };
-}
-
+/**
+ * Validate GTM output against quality criteria
+ */
 async function validateGTMOutput(
   content: string,
   validationRules: string[] = []
@@ -320,59 +427,57 @@ async function validateGTMOutput(
     scores[checkItem.name] = result.score;
     totalScore += result.score * checkItem.weight;
     totalWeight += checkItem.weight;
-
-    if (result.issues) {
-      issues.push(...result.issues);
-    }
+    issues.push(...result.issues);
   }
 
   const overallScore = totalWeight > 0 ? totalScore / totalWeight : 0;
-  scores.overall = overallScore;
+  const valid = overallScore >= 0.7 && issues.length === 0;
 
   return {
-    valid: overallScore >= 0.7 && issues.length === 0,
-    scores,
+    valid,
+    scores: {
+      ...scores,
+      overall: overallScore,
+    },
     issues,
   };
 }
 
+// Validation helper functions
 function checkValuePropositionClarity(content: string): {
   score: number;
   issues: string[];
 } {
   const issues: string[] = [];
-  let score = 0.5;
+  let score = 0;
 
-  // Check for value proposition keywords
-  const vpKeywords = [
-    'value proposition',
-    'unique value',
-    'benefit',
-    'advantage',
-    'solve',
-  ];
-  const hasVPKeywords = vpKeywords.some((keyword) =>
-    content.toLowerCase().includes(keyword.toLowerCase())
+  const vpKeywords = ['value proposition', 'value prop', 'core value', 'unique value'];
+  const hasVP = vpKeywords.some((keyword) =>
+    content.toLowerCase().includes(keyword)
   );
 
-  if (hasVPKeywords) score += 0.2;
-
-  // Check for specific benefits
-  const benefitPattern = /(save|increase|reduce|improve|provide|enable|help)/gi;
-  const benefits = content.match(benefitPattern);
-  if (benefits && benefits.length >= 2) score += 0.2;
-
-  // Check for clarity and specificity
-  if (content.includes('specifically') || content.includes('exactly'))
-    score += 0.1;
-
-  // Issues
-  if (!hasVPKeywords) {
-    issues.push('Value proposition not clearly articulated');
+  if (hasVP) {
+    score += 0.5;
+  } else {
+    issues.push('Value proposition not clearly stated');
   }
 
-  if (content.length < 200) {
-    issues.push('Value proposition section too brief');
+  // Check for specific benefits
+  const benefitKeywords = ['benefit', 'advantage', 'outcome', 'result', 'gain'];
+  const hasBenefits = benefitKeywords.some((keyword) =>
+    content.toLowerCase().includes(keyword)
+  );
+
+  if (hasBenefits) {
+    score += 0.3;
+  } else {
+    issues.push('Customer benefits not articulated');
+  }
+
+  // Check for quantification
+  const hasNumbers = /\d+/.test(content);
+  if (hasNumbers) {
+    score += 0.2;
   }
 
   return { score: Math.min(score, 1.0), issues };
@@ -383,58 +488,37 @@ function checkTargetMarketSpecificity(content: string): {
   issues: string[];
 } {
   const issues: string[] = [];
-  let score = 0.5;
+  let score = 0;
 
-  // Check for target market keywords
-  const targetKeywords = [
-    'target market',
-    'target audience',
-    'customer segment',
-    'ideal customer',
-  ];
-  const hasTargetKeywords = targetKeywords.some((keyword) =>
-    content.toLowerCase().includes(keyword.toLowerCase())
-  );
-
-  if (hasTargetKeywords) score += 0.2;
-
-  // Check for demographic specificity
-  const demographicKeywords = [
-    'age',
-    'income',
-    'location',
-    'company size',
-    'industry',
-    'role',
-  ];
-  const demographics = demographicKeywords.filter((keyword) =>
+  const marketKeywords = ['target market', 'target customer', 'target audience', 'customer segment'];
+  const hasMarket = marketKeywords.some((keyword) =>
     content.toLowerCase().includes(keyword)
   );
 
-  if (demographics.length >= 2) score += 0.2;
-  else if (demographics.length === 1) score += 0.1;
-
-  // Check for behavioral characteristics
-  const behaviorKeywords = [
-    'behavior',
-    'preference',
-    'habit',
-    'challenge',
-    'pain point',
-  ];
-  const hasBehavior = behaviorKeywords.some((keyword) =>
-    content.toLowerCase().includes(keyword)
-  );
-
-  if (hasBehavior) score += 0.1;
-
-  // Issues
-  if (!hasTargetKeywords) {
-    issues.push('Target market not clearly defined');
+  if (hasMarket) {
+    score += 0.4;
+  } else {
+    issues.push('Target market not defined');
   }
 
-  if (demographics.length === 0) {
-    issues.push('Target market lacks demographic specificity');
+  // Check for demographics
+  const demoKeywords = ['age', 'gender', 'income', 'location', 'industry'];
+  const hasDemo = demoKeywords.some((keyword) =>
+    content.toLowerCase().includes(keyword)
+  );
+
+  if (hasDemo) {
+    score += 0.3;
+  }
+
+  // Check for psychographics
+  const psychoKeywords = ['behavior', 'preference', 'lifestyle', 'values', 'needs'];
+  const hasPsycho = psychoKeywords.some((keyword) =>
+    content.toLowerCase().includes(keyword)
+  );
+
+  if (hasPsycho) {
+    score += 0.3;
   }
 
   return { score: Math.min(score, 1.0), issues };
@@ -445,58 +529,37 @@ function checkProblemValidation(content: string): {
   issues: string[];
 } {
   const issues: string[] = [];
-  let score = 0.5;
+  let score = 0;
 
-  // Check for problem identification
-  const problemKeywords = [
-    'problem',
-    'challenge',
-    'pain point',
-    'issue',
-    'difficulty',
-  ];
+  const problemKeywords = ['problem', 'pain point', 'challenge', 'issue', 'struggle'];
   const hasProblem = problemKeywords.some((keyword) =>
     content.toLowerCase().includes(keyword)
   );
 
-  if (hasProblem) score += 0.2;
-
-  // Check for evidence or validation
-  const evidenceKeywords = [
-    'research',
-    'survey',
-    'interview',
-    'data',
-    'evidence',
-    'validate',
-  ];
-  const hasEvidence = evidenceKeywords.some((keyword) =>
-    content.toLowerCase().includes(keyword)
-  );
-
-  if (hasEvidence) score += 0.2;
-
-  // Check for urgency/importance
-  const urgencyKeywords = [
-    'urgent',
-    'critical',
-    'important',
-    'significant',
-    'major',
-  ];
-  const hasUrgency = urgencyKeywords.some((keyword) =>
-    content.toLowerCase().includes(keyword)
-  );
-
-  if (hasUrgency) score += 0.1;
-
-  // Issues
-  if (!hasProblem) {
-    issues.push('Problem not clearly identified');
+  if (hasProblem) {
+    score += 0.4;
+  } else {
+    issues.push('Customer problem not clearly identified');
   }
 
-  if (!hasEvidence) {
-    issues.push('Problem validation or evidence missing');
+  // Check for solution alignment
+  const solutionKeywords = ['solution', 'solve', 'address', 'resolve', 'fix'];
+  const hasSolution = solutionKeywords.some((keyword) =>
+    content.toLowerCase().includes(keyword)
+  );
+
+  if (hasSolution) {
+    score += 0.3;
+  }
+
+  // Check for validation
+  const validationKeywords = ['validate', 'evidence', 'research', 'data', 'survey'];
+  const hasValidation = validationKeywords.some((keyword) =>
+    content.toLowerCase().includes(keyword)
+  );
+
+  if (hasValidation) {
+    score += 0.3;
   }
 
   return { score: Math.min(score, 1.0), issues };
@@ -507,46 +570,38 @@ function checkBusinessModelClarity(content: string): {
   issues: string[];
 } {
   const issues: string[] = [];
-  let score = 0.5;
+  let score = 0;
 
-  // Check for business model keywords
-  const modelKeywords = [
-    'business model',
-    'revenue model',
-    'monetization',
-    'pricing',
-  ];
-  const hasModel = modelKeywords.some((keyword) =>
-    content.toLowerCase().includes(keyword)
-  );
-
-  if (hasModel) score += 0.2;
-
-  // Check for revenue streams
-  const revenueKeywords = [
-    'subscription',
-    'one-time',
-    'recurring',
-    'commission',
-    'advertising',
-  ];
+  // Check for revenue model
+  const revenueKeywords = ['revenue', 'pricing', 'monetization', 'business model'];
   const hasRevenue = revenueKeywords.some((keyword) =>
     content.toLowerCase().includes(keyword)
   );
 
-  if (hasRevenue) score += 0.2;
+  if (hasRevenue) {
+    score += 0.4;
+  } else {
+    issues.push('Revenue model not specified');
+  }
 
   // Check for cost structure
-  const costKeywords = ['cost', 'expense', 'investment', 'resource'];
-  const hasCosts = costKeywords.some((keyword) =>
+  const costKeywords = ['cost', 'expense', 'investment', 'budget'];
+  const hasCost = costKeywords.some((keyword) =>
     content.toLowerCase().includes(keyword)
   );
 
-  if (hasCosts) score += 0.1;
+  if (hasCost) {
+    score += 0.3;
+  }
 
-  // Issues
-  if (!hasModel) {
-    issues.push('Business model not clearly described');
+  // Check for key metrics
+  const metricKeywords = ['metric', 'kpi', 'measure', 'track'];
+  const hasMetrics = metricKeywords.some((keyword) =>
+    content.toLowerCase().includes(keyword)
+  );
+
+  if (hasMetrics) {
+    score += 0.3;
   }
 
   return { score: Math.min(score, 1.0), issues };
@@ -557,56 +612,40 @@ function checkCompetitiveDifferentiation(content: string): {
   issues: string[];
 } {
   const issues: string[] = [];
-  let score = 0.5;
+  let score = 0;
 
   // Check for competitive analysis
-  const compKeywords = [
-    'competitor',
-    'competition',
-    'alternative',
-    'differentiation',
-  ];
+  const compKeywords = ['competitor', 'competition', 'competitive', 'alternative'];
   const hasComp = compKeywords.some((keyword) =>
     content.toLowerCase().includes(keyword)
   );
 
-  if (hasComp) score += 0.2;
+  if (hasComp) {
+    score += 0.4;
+  } else {
+    issues.push('Competitive landscape not addressed');
+  }
 
-  // Check for unique advantages
-  const advantageKeywords = [
-    'unique',
-    'advantage',
-    'different',
-    'better',
-    'superior',
-  ];
-  const hasAdvantage = advantageKeywords.some((keyword) =>
-    content.toLowerCase().includes(keyword)
-  );
-
-  if (hasAdvantage) score += 0.2;
-
-  // Check for specific differentiators
-  const diffKeywords = [
-    'feature',
-    'capability',
-    'approach',
-    'technology',
-    'method',
-  ];
+  // Check for differentiation
+  const diffKeywords = ['differentiate', 'unique', 'different', 'advantage', 'better'];
   const hasDiff = diffKeywords.some((keyword) =>
     content.toLowerCase().includes(keyword)
   );
 
-  if (hasDiff) score += 0.1;
-
-  // Issues
-  if (!hasComp) {
-    issues.push('Competitive landscape not addressed');
+  if (hasDiff) {
+    score += 0.4;
+  } else {
+    issues.push('Differentiation not clearly articulated');
   }
 
-  if (!hasAdvantage) {
-    issues.push('Competitive advantages not clearly articulated');
+  // Check for positioning
+  const posKeywords = ['position', 'positioning', 'place', 'niche'];
+  const hasPos = posKeywords.some((keyword) =>
+    content.toLowerCase().includes(keyword)
+  );
+
+  if (hasPos) {
+    score += 0.2;
   }
 
   return { score: Math.min(score, 1.0), issues };

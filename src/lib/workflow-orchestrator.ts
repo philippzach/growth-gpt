@@ -15,18 +15,18 @@ import {
   GeneratedPrompt,
 } from '../types';
 import { ConfigLoader } from './config-loader';
-import { DynamicPromptGenerator } from './dynamic-prompt-generator';
+import { SimplePromptBuilder } from './simple-prompt-builder';
 import { AgentExecutor } from './agent-executor';
 
 export class WorkflowOrchestrator {
   private configLoader: ConfigLoader;
-  private promptGenerator: DynamicPromptGenerator;
+  private promptBuilder: SimplePromptBuilder;
   private agentExecutor: AgentExecutor;
   private websocketEmitter?: (sessionId: string, data: any) => void;
 
   constructor(private env: Env, websocketEmitter?: (sessionId: string, data: any) => void) {
     this.configLoader = new ConfigLoader(env.CONFIG_STORE);
-    this.promptGenerator = new DynamicPromptGenerator(env.CONFIG_STORE);
+    this.promptBuilder = new SimplePromptBuilder();
     this.agentExecutor = new AgentExecutor(env, websocketEmitter);
     this.websocketEmitter = websocketEmitter;
   }
@@ -140,9 +140,27 @@ export class WorkflowOrchestrator {
         feedback,
       });
 
-      // Generate new prompt with feedback incorporated
-      const promptWithFeedback =
-        await this.promptGenerator.generatePrompt(context);
+      // Generate enhanced prompt with feedback using SimplePromptBuilder
+      const enhancedContext = this.promptBuilder.createEnhancedContext({
+        businessIdea: context.userInputs?.businessIdea || context.userInputs?.userMessage || 'No business idea provided',
+        userInputs: { ...context.userInputs, feedback },
+        previousOutputs: context.previousOutputs,
+        agentConfig: context.agentConfig,
+        session: context.session,
+        configLoader: this.configLoader,
+        workflowPosition: context.workflowStep + 1,
+        totalAgents: 8,
+      }, currentStep.agent_id);
+      
+      // Extract detailed output specifications from unified config
+      const outputSpecifications = await this.buildOutputSpecifications(enhancedContext);
+      
+      const promptWithFeedback = await this.promptBuilder.buildPrompt(
+        context.taskConfig?.task_specification?.primary_objective || 'Provide strategic analysis and recommendations',
+        enhancedContext,
+        outputSpecifications,
+        context.agentConfig?.capabilities?.knowledge_domains || []
+      );
 
       // Execute agent with new prompt
       const newOutput = await this.agentExecutor.executeAgent(
@@ -200,9 +218,38 @@ export class WorkflowOrchestrator {
         userMessage: userMessage.content,
       });
 
-      // Generate optimized prompt
-      const generatedPrompt =
-        await this.promptGenerator.generatePrompt(context);
+      // Generate enhanced prompt using SimplePromptBuilder
+      console.log(`🔍 DEBUG: Generating prompt for agent ${step.agent_id} using SimplePromptBuilder`);
+      
+      // Create enhanced context for SimplePromptBuilder
+      const enhancedContext = this.promptBuilder.createEnhancedContext({
+        businessIdea: context.userInputs?.businessIdea || context.userInputs?.userMessage || 'No business idea provided',
+        userInputs: context.userInputs,
+        previousOutputs: context.previousOutputs,
+        agentConfig: context.agentConfig,
+        session: context.session,
+        configLoader: this.configLoader,
+        workflowPosition: context.workflowStep + 1, // 1-based
+        totalAgents: 8,
+      }, step.agent_id);
+      
+      console.log(`📋 DEBUG: Enhanced context created:`, {
+        businessIdea: enhancedContext.businessIdea?.substring(0, 100) + '...',
+        hasAgentConfig: !!enhancedContext.agentConfig,
+        workflowPosition: enhancedContext.workflowPosition,
+        totalAgents: enhancedContext.totalAgents
+      });
+      
+      // Extract detailed output specifications from unified config
+      const outputSpecifications = await this.buildOutputSpecifications(enhancedContext);
+      
+      // Generate the enhanced prompt
+      const generatedPrompt = await this.promptBuilder.buildPrompt(
+        context.taskConfig?.task_specification?.primary_objective || 'Provide strategic analysis and recommendations',
+        enhancedContext,
+        outputSpecifications,
+        context.agentConfig?.capabilities?.knowledge_domains || []
+      );
 
       // Execute agent
       const agentResult = await this.agentExecutor.executeAgent(
@@ -262,13 +309,29 @@ export class WorkflowOrchestrator {
     step: WorkflowStep,
     additionalContext: Record<string, any> = {}
   ): Promise<PromptGenerationContext> {
+    console.log(`🔍 DEBUG: WorkflowOrchestrator.prepareExecutionContext() for agent: ${step.agent_id}`);
+    console.log(`📋 DEBUG: Session userInputs keys:`, Object.keys(session.userInputs));
+    console.log(`📋 DEBUG: Additional context:`, additionalContext);
+    
     // Load configurations
     const agentConfig = await this.configLoader.loadAgentConfig(step.agent_id);
     const taskConfig = await this.configLoader.loadTaskConfig(
       `${step.agent_id}-task`
     );
 
+    console.log(`🔧 DEBUG: Agent config loaded:`, {
+      agentId: step.agent_id,
+      hasAgentConfig: !!agentConfig,
+      hasTaskConfig: !!taskConfig,
+      agentConfigId: agentConfig?.id,
+      agentConfigName: agentConfig?.name
+    });
+
     if (!agentConfig || !taskConfig) {
+      console.error(`❌ DEBUG: Configuration missing for agent ${step.agent_id}:`, {
+        hasAgentConfig: !!agentConfig,
+        hasTaskConfig: !!taskConfig
+      });
       throw new Error(`Configuration not found for agent ${step.agent_id}`);
     }
 
@@ -280,8 +343,16 @@ export class WorkflowOrchestrator {
 
     // Prepare business context
     const businessContext = this.extractBusinessContext(session);
+    
+    console.log(`📊 DEBUG: Context preparation results:`, {
+      knowledgeBaseKeys: Object.keys(knowledgeBase),
+      previousOutputsKeys: Object.keys(previousOutputs),
+      businessContext,
+      userInputsKeys: Object.keys(session.userInputs),
+      workflowStep: session.currentStep
+    });
 
-    return {
+    const context = {
       session,
       agentConfig,
       taskConfig,
@@ -291,6 +362,9 @@ export class WorkflowOrchestrator {
       businessContext,
       workflowStep: session.currentStep,
     };
+    
+    console.log(`✅ DEBUG: Final context object created for ${step.agent_id}`);
+    return context;
   }
 
   private async loadRelevantKnowledge(
@@ -489,5 +563,129 @@ Please try again, or contact support if this issue persists.`,
     const avgTimePerStep = 30; // 30 minutes average per agent
 
     return remainingSteps * avgTimePerStep;
+  }
+
+  /**
+   * Build detailed output specifications from unified agent config
+   * Extracts the specific section requirements instead of using generic format
+   */
+  private async buildOutputSpecifications(context: any): Promise<string> {
+    console.log(`📝 DEBUG: Building output specifications for agent:`, context.agentConfig?.id);
+    
+    const agentConfig = context.agentConfig;
+    const agentId = agentConfig?.id;
+    
+    if (!agentId || !context.configLoader) {
+      console.log(`📝 DEBUG: Missing agent ID or config loader, using generic format`);
+      return 'Generate comprehensive analysis and recommendations in markdown format';
+    }
+    
+    try {
+      // Load the unified config to get detailed output specifications
+      console.log(`📝 DEBUG: Loading unified config for ${agentId}`);
+      const unifiedConfig = await context.configLoader.loadUnifiedAgentConfig(agentId);
+      
+      if (unifiedConfig && unifiedConfig.output_specifications) {
+        const outputSpecs = unifiedConfig.output_specifications;
+        
+        if (outputSpecs.required_sections) {
+          console.log(`📝 DEBUG: Found detailed output specifications for ${agentId}`);
+          console.log(`📝 DEBUG: Sections found:`, Object.keys(outputSpecs.required_sections));
+          
+          return this.buildOutputFromSpecs(outputSpecs.required_sections, agentId);
+        } else {
+          console.log(`📝 DEBUG: No required_sections found in unified config for ${agentId}`);
+        }
+      } else {
+        console.log(`📝 DEBUG: No unified config or output_specifications found for ${agentId}`);
+      }
+      
+    } catch (error) {
+      console.error(`📝 ERROR: Failed to load unified config for ${agentId}:`, error);
+    }
+    
+    // Fallback to generic format
+    console.log(`📝 DEBUG: Using fallback generic output format for ${agentId}`);
+    return 'Generate comprehensive analysis and recommendations in markdown format';
+  }
+  
+  
+  /**
+   * Build output format from agent specifications object
+   * Enhanced to handle complex nested requirements from unified configs
+   */
+  private buildOutputFromSpecs(specs: any, agentId: string): string {
+    console.log(`📝 DEBUG: Building output specs for ${agentId}, sections:`, Object.keys(specs || {}));
+    
+    let format = '## Required Sections & Structure\n\n';
+    
+    if (typeof specs === 'object' && specs !== null) {
+      let sectionNum = 1;
+      for (const [sectionKey, sectionData] of Object.entries(specs)) {
+        if (typeof sectionData === 'object' && sectionData !== null) {
+          const section = sectionData as any;
+          
+          // Build section header
+          format += `### ${sectionNum}. ${this.formatSectionTitle(sectionKey)}\n`;
+          
+          // Add description
+          if (section.description) {
+            format += `${section.description}`;
+            if (section.length) {
+              format += ` (${section.length})`;
+            }
+            format += '\n\n';
+          }
+          
+          // Handle requirements - can be array or object
+          if (section.requirements) {
+            format += 'Requirements:\n';
+            
+            if (Array.isArray(section.requirements)) {
+              // Simple array of requirements
+              section.requirements.forEach((req: string) => {
+                format += `- ${req}\n`;
+              });
+            } else if (typeof section.requirements === 'object') {
+              // Nested requirements object (like persona structure)
+              for (const [reqKey, reqValue] of Object.entries(section.requirements)) {
+                if (Array.isArray(reqValue)) {
+                  format += `\n**${this.formatSectionTitle(reqKey)}:**\n`;
+                  (reqValue as string[]).forEach((item: string) => {
+                    format += `- ${item}\n`;
+                  });
+                } else if (typeof reqValue === 'string') {
+                  format += `- ${this.formatSectionTitle(reqKey)}: ${reqValue}\n`;
+                }
+              }
+            }
+            format += '\n';
+          }
+          
+          sectionNum++;
+        }
+      }
+      
+      // Add formatting requirements
+      format += `## Formatting Requirements
+- Use clear section headers and subheaders
+- Include bullet points for key insights and recommendations  
+- Maintain consistent markdown formatting
+- Ensure all sections are fully populated with specific content
+- No placeholder variables or generic statements`;
+    }
+    
+    console.log(`📝 DEBUG: Generated output spec length for ${agentId}: ${format.length} characters`);
+    return format;
+  }
+  
+  /**
+   * Format section key into readable title
+   */
+  private formatSectionTitle(key: string): string {
+    return key
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
   }
 }

@@ -1,14 +1,15 @@
 /**
- * Growth Hacker Agent Worker - Final agent in the growth strategy workflow
- * Specializes in experimentation frameworks, hypothesis formation, and growth testing
+ * Enhanced Growth Hacker Agent Worker - Eighth agent in the growth strategy workflow
+ * Specializes in experimentation frameworks, hypothesis formation, and systematic testing
+ * Uses enhanced prompt engineering with full context sharing
  */
 
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
-import { Env, GeneratedPrompt, PromptGenerationContext } from '../../types';
+import { Env } from '../../types';
 import { ConfigLoader } from '../../lib/config-loader';
-import { DynamicPromptGenerator } from '../../lib/dynamic-prompt-generator';
+import { SimplePromptBuilder } from '../../lib/simple-prompt-builder';
 import { AgentExecutor } from '../../lib/agent-executor';
 import { createAPIResponse, createAPIError } from '../../lib/api-utils';
 
@@ -18,25 +19,26 @@ const app = new Hono<{ Bindings: Env }>();
 app.use('*', logger());
 app.use('*', cors());
 
-// Agent configuration
+// Enhanced agent configuration
 const AGENT_ID = 'growth-hacker';
-const AGENT_CONFIG_PATH = 'agents/growth-hacker.yaml';
-const TASK_CONFIG_PATH = 'tasks/agent-tasks/growth-hacker-task.yaml';
 
 // Health check
 app.get('/health', (c) => {
   return c.json({
     status: 'healthy',
     agentId: AGENT_ID,
+    version: '3.0-enhanced',
     timestamp: new Date().toISOString(),
   });
 });
 
-// Main agent execution endpoint
+// Enhanced agent execution endpoint
 app.post('/execute', async (c) => {
   const startTime = Date.now();
 
   try {
+    console.log(`🚀 Enhanced Growth Hacker Worker - Starting execution`);
+    
     // Parse request body
     const body = await c.req.json();
     const {
@@ -49,97 +51,145 @@ app.post('/execute', async (c) => {
 
     if (!sessionId || !userId) {
       return c.json(
-        createAPIError('INVALID_REQUEST', 'sessionId and userId are required'),
+        createAPIError('MISSING_PARAMS', 'sessionId and userId are required'),
         400
       );
     }
 
-    // Validate dependencies - Viral growth strategy
-    if (!previousOutputs['viral-growth-architect'] && !previousOutputs['viral-growth-strategy.md']) {
-      return c.json(
-        createAPIError(
-          'MISSING_DEPENDENCY',
-          'Viral growth strategy from Viral Growth Architect is required for experimentation framework'
-        ),
-        400
-      );
-    }
+    console.log(`📋 Enhanced Growth Hacker - Processing request:`, {
+      sessionId,
+      userId,
+      userInputsKeys: Object.keys(userInputs || {}),
+      previousOutputsCount: Object.keys(previousOutputs).length,
+      previousAgents: Object.keys(previousOutputs),
+    });
 
-    // Initialize components
+    // Initialize enhanced configuration loader
     const configLoader = new ConfigLoader(c.env.CONFIG_STORE);
-    const promptGenerator = new DynamicPromptGenerator(c.env.CONFIG_STORE);
-    const agentExecutor = new AgentExecutor(c.env);
+    
+    // Load unified configuration with fallback to legacy
+    console.log(`🔧 Loading unified configuration for ${AGENT_ID}...`);
+    const unifiedConfig = await configLoader.loadUnifiedAgentConfig(AGENT_ID);
+    const agentConfig = unifiedConfig 
+      ? configLoader.convertUnifiedToLegacyConfig(unifiedConfig)
+      : await configLoader.loadAgentConfig(AGENT_ID);
 
-    // Load configurations
-    const [agentConfig, taskConfig] = await Promise.all([
-      configLoader.loadAgentConfig(AGENT_ID),
-      configLoader.loadTaskConfig(`${AGENT_ID}-task`),
-    ]);
-
-    if (!agentConfig || !taskConfig) {
+    if (!agentConfig) {
+      console.error(`❌ Failed to load agent configuration for ${AGENT_ID}`);
       return c.json(
-        createAPIError(
-          'CONFIG_NOT_FOUND',
-          'Agent or task configuration not found'
-        ),
+        createAPIError('CONFIG_NOT_FOUND', `Agent configuration not found for ${AGENT_ID}`),
         404
       );
     }
 
-    // Prepare execution context
-    const session = {
-      id: sessionId,
-      userId,
-      workflowId: 'master-workflow-v2',
-      status: 'active' as const,
-      currentAgent: AGENT_ID,
-      currentStep: 7,
-      createdAt: new Date().toISOString(),
-      lastActive: new Date().toISOString(),
-      userInputs,
-      agentOutputs: previousOutputs,
-      conversationHistory: [],
-      progress: {
-        totalSteps: 8,
-        completedSteps: 7,
-        currentStepId: 'experimentation_framework',
-        estimatedTimeRemaining: 30,
-        stageProgress: {
-          foundation: 1.0,
-          strategy: 1.0,
-          validation: 0.5,
-        },
-      },
-    };
+    console.log(`✅ Configuration loaded successfully:`, {
+      configType: unifiedConfig ? 'unified' : 'legacy',
+      agentName: agentConfig.name,
+      hasCapabilities: !!agentConfig.capabilities,
+      knowledgeDomains: agentConfig.capabilities?.knowledge_domains?.length || 0
+    });
 
-    const context: PromptGenerationContext = {
-      session,
+    // Initialize enhanced prompt builder
+    const promptBuilder = new SimplePromptBuilder();
+    
+    // Create enhanced context with full previous outputs
+    const enhancedContext = promptBuilder.createEnhancedContext({
+      businessIdea: userInputs?.businessIdea || userInputs?.businessConcept || 'Business concept not provided',
+      userInputs,
+      previousOutputs, // Full context - All 7 previous agents' outputs
       agentConfig,
-      taskConfig,
-      userInputs,
-      previousOutputs,
-      knowledgeBase: await loadRelevantKnowledge(configLoader, taskConfig),
-      businessContext: businessContext || extractBusinessContext(userInputs),
-      workflowStep: 7,
-    };
+      session: {
+        id: sessionId,
+        userId,
+        currentStep: 7, // Growth Hacker is 8th agent (0-indexed)
+        conversationHistory: [],
+      } as any,
+      configLoader,
+      workflowPosition: 8, // 8th agent in workflow
+      totalAgents: 8,
+    }, AGENT_ID);
 
-    // Generate optimized prompt
-    const generatedPrompt = await promptGenerator.generatePrompt(context);
+    console.log(`📊 Enhanced context created:`, {
+      businessIdea: enhancedContext.businessIdea?.substring(0, 100) + '...',
+      workflowPosition: enhancedContext.workflowPosition,
+      totalAgents: enhancedContext.totalAgents,
+      previousOutputsReceived: Object.keys(previousOutputs).length,
+      expectedPreviousAgents: ['gtm-consultant', 'persona-strategist', 'product-manager', 'growth-manager', 'head-of-acquisition', 'head-of-retention', 'viral-growth-architect'],
+      actualPreviousAgents: Object.keys(previousOutputs)
+    });
 
-    // Execute agent
-    const agentResult = await agentExecutor.executeAgent(
-      AGENT_ID,
-      generatedPrompt as any,
-      context
+    // Define relevant knowledge files for Growth Hacker
+    const knowledgeFiles = [
+      'knowledge-base/experiments/experiment-process.md',
+      'knowledge-base/method/00growth-hacking-process.md',
+      'knowledge-base/resources/brainstorming-techniques.md',
+      'knowledge-base/resources/growthhacking-process-overview.md',
+      'knowledge-base/glossary/growth-hacking-dictionary.md',
+      'knowledge-base/method/07pirate-funnel.md',
+      'knowledge-base/resources/north-start-metric.md'
+    ];
+
+    // Generate dynamic output format from unified config
+    const outputFormat = unifiedConfig 
+      ? generateOutputFormatFromConfig(unifiedConfig.output_specifications)
+      : `Generate comprehensive experimentation framework with:
+- Hypothesis formation and systematic testing roadmap
+- Statistically valid experiment designs with proper controls
+- Prioritized testing backlog with resource allocation
+- Analytics and measurement systems implementation
+- Continuous optimization and learning processes
+- Implementation timeline with resource requirements`;
+
+    console.log(`🎯 Task definition:`, {
+      taskObjective: unifiedConfig?.task_specification.primary_objective?.substring(0, 150) + '...' || 'Default experimentation framework development',
+      outputFormatLength: outputFormat.length,
+      knowledgeFilesCount: knowledgeFiles.length
+    });
+
+    // Generate enhanced prompt with full context
+    const prompt = await promptBuilder.buildPrompt(
+      unifiedConfig?.task_specification.primary_objective || 
+      'Develop comprehensive experimentation framework with hypothesis formation, statistically valid experiment designs, prioritized testing roadmap, and systematic validation processes that enable continuous growth optimization',
+      enhancedContext,
+      outputFormat,
+      knowledgeFiles
     );
 
-    // Prepare response (no template processing)
-    const response = {
+    console.log(`✅ Enhanced prompt generated successfully`);
+
+    // Execute agent with enhanced prompt
+    const agentExecutor = new AgentExecutor(c.env);
+    const agentResult = await agentExecutor.executeAgent(
+      AGENT_ID as any,
+      prompt,
+      {
+        session: enhancedContext.session,
+        agentConfig,
+        taskConfig: {} as any, // Simplified for enhanced system
+        userInputs: enhancedContext.userInputs,
+        previousOutputs: enhancedContext.previousOutputs,
+        knowledgeBase: {},
+        businessContext,
+        workflowStep: 7,
+      }
+    );
+
+    const processingTime = Date.now() - startTime;
+    
+    console.log(`🎉 Growth Hacker execution completed:`, {
+      processingTime,
+      contentLength: agentResult.content.length,
+      qualityScore: agentResult.qualityScore,
+      tokensUsed: agentResult.tokensUsed
+    });
+
+    // Return enhanced response
+    return c.json(createAPIResponse({
       agentId: AGENT_ID,
       sessionId,
       execution: {
         success: true,
-        processingTime: Date.now() - startTime,
+        processingTime,
         qualityScore: agentResult.qualityScore,
       },
       output: {
@@ -148,114 +198,81 @@ app.post('/execute', async (c) => {
         variables: {},
         structure: {
           type: 'direct-content',
-          sections: ['content'],
+          sections: extractOutputSections(agentResult.content),
         },
       },
       metadata: {
         tokensUsed: agentResult.tokensUsed,
+        qualityScore: agentResult.qualityScore,
+        processingTime,
+        promptValidation: { valid: true, errors: [] },
+        systemType: 'enhanced-prompt-builder',
+        unifiedConfig: !!unifiedConfig,
+        contextType: 'full-previous-outputs',
+        workflowPosition: 8,
+        totalAgents: 8,
         knowledgeSourcesUsed: agentResult.knowledgeSourcesUsed,
         qualityGatesPassed: agentResult.qualityGatesPassed,
-        promptMetadata: generatedPrompt.metadata,
       },
-    };
+    }));
 
-    return c.json(createAPIResponse(response));
   } catch (error) {
-    console.error('Growth Hacker execution error:', error);
-
-    const errorResponse = {
-      agentId: AGENT_ID,
-      execution: {
-        success: false,
-        processingTime: Date.now() - startTime,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      },
-    };
-
+    const processingTime = Date.now() - startTime;
+    console.error('Enhanced Growth Hacker execution error:', error);
+    
     return c.json(
       createAPIError(
         'EXECUTION_FAILED',
-        'Agent execution failed',
-        errorResponse
+        `Growth Hacker execution failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        {
+          agentId: AGENT_ID,
+          processingTime,
+          error: error instanceof Error ? error.message : String(error),
+        }
       ),
       500
     );
   }
 });
 
-// Configuration endpoint
-app.get('/config', async (c) => {
-  try {
-    const configLoader = new ConfigLoader(c.env.CONFIG_STORE);
-    const [agentConfig, taskConfig] = await Promise.all([
-      configLoader.loadAgentConfig(AGENT_ID),
-      configLoader.loadTaskConfig(`${AGENT_ID}-task`),
-    ]);
-
-    return c.json(
-      createAPIResponse({
-        agentConfig,
-        taskConfig,
-        agentId: AGENT_ID,
-      })
-    );
-  } catch (error) {
-    console.error('Growth Hacker config error:', error);
-    return c.json(
-      createAPIError('CONFIG_LOAD_FAILED', 'Failed to load configuration'),
-      500
-    );
-  }
-});
-
-// Helper functions
-
-async function loadRelevantKnowledge(
-  configLoader: ConfigLoader,
-  taskConfig: any
-): Promise<Record<string, string>> {
-  const knowledgeBase: Record<string, string> = {};
-
-  try {
-    const knowledgeFocus =
-      taskConfig.agent_integration.behavior_overrides.knowledge_focus || [];
-
-    // Load Growth Hacker-specific knowledge
-    const knowledgeMapping: Record<string, string> = {
-      'experimentation': 'knowledge-base/method/00growth-hacking-process.md',
-      'hypothesis-formation': 'knowledge-base/method/00growth-hacking-process.md',
-      'ab-testing': 'knowledge-base/ressources/cro.md',
-      'statistical-analysis': 'knowledge-base/ressources/lift-model.md',
-      'growth-process': 'knowledge-base/method/00growth-hacking-process.md',
-      'rapid-prototyping': 'knowledge-base/ressources/brainstorming-techniques.md',
-    };
-
-    for (const focus of knowledgeFocus) {
-      const filePath = knowledgeMapping[focus];
-      if (filePath) {
-        const content = await configLoader.loadKnowledgeBase(filePath);
-        if (content) {
-          knowledgeBase[focus] = content;
-        }
-      }
-    }
-  } catch (error) {
-    console.error('Knowledge loading error:', error);
+/**
+ * Generate output format from unified configuration
+ */
+function generateOutputFormatFromConfig(outputSpecs: any): string {
+  if (!outputSpecs?.required_sections) {
+    return 'Generate comprehensive experimentation framework and recommendations in markdown format';
   }
 
-  return knowledgeBase;
+  const sections = Object.entries(outputSpecs.required_sections).map(([key, spec]: [string, any]) => {
+    return `## ${key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+${spec.description}
+${spec.requirements ? spec.requirements.map((req: string) => `- ${req}`).join('\n') : ''}`;
+  }).join('\n\n');
+
+  return `Generate comprehensive experimentation framework with the following sections:
+
+${sections}
+
+Ensure all recommendations are specific, actionable, and aligned with statistical best practices.`;
 }
 
-function extractBusinessContext(userInputs: Record<string, any>): any {
-  return {
-    businessType:
-      userInputs.businessType || userInputs.businessModel || 'startup',
-    industry: userInputs.industry || userInputs.market || 'technology',
-    currentExperiments: userInputs.currentExperiments || userInputs.current_experiments || [],
-    testingCapability: userInputs.testingCapability || userInputs.testing_capability || '',
-    dataInfrastructure: userInputs.dataInfrastructure || userInputs.data_infrastructure || '',
-    statisticalSignificance: userInputs.statisticalSignificance || userInputs.statistical_significance || '',
-  };
+/**
+ * Extract sections from generated content for structure metadata
+ */
+function extractOutputSections(content: string): string[] {
+  const sections: string[] = [];
+  const lines = content.split('\n');
+  
+  for (const line of lines) {
+    if (line.startsWith('## ') || line.startsWith('# ')) {
+      const section = line.replace(/^#+\s*/, '').trim();
+      if (section && !sections.includes(section)) {
+        sections.push(section);
+      }
+    }
+  }
+  
+  return sections.length > 0 ? sections : ['comprehensive-experimentation-framework'];
 }
 
 // Export for Cloudflare Workers

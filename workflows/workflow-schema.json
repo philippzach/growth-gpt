@@ -1,0 +1,326 @@
+{
+  "schema_version": "2.0",
+  "description": "Standardized workflow configuration for orchestrating Growth & Marketing Strategy AI Agent sequences",
+  "workflow": {
+    "id": "string",
+    "name": "string",
+    "version": "string",
+    "description": "string",
+    "type": "string",
+    "category": "string",
+    "project_types": "array",
+    "complexity_level": "string",
+    "estimated_duration": "string",
+    "user_involvement": "string"
+  },
+  "execution": {
+    "mode": "string",
+    "parallelization": {
+      "max_concurrent_agents": "integer",
+      "parallel_groups": "array",
+      "synchronization_points": "array"
+    },
+    "error_handling": {
+      "strategy": "string",
+      "max_retries": "integer",
+      "rollback_on_failure": "boolean"
+    },
+    "state_management": {
+      "persist_state": "boolean",
+      "checkpoint_frequency": "string",
+      "resume_capability": "boolean"
+    }
+  },
+  "sequence": [
+    {
+      "step_id": "string",
+      "step_name": "string",
+      "agent_id": "string",
+      "stage": "string",
+      "condition": "string",
+      "inputs": {
+        "required": "array",
+        "optional": "array",
+        "user_inputs": "array",
+        "context_injection": "boolean"
+      },
+      "outputs": {
+        "primary": "string",
+        "secondary": "array",
+        "format": "string",
+        "storage_location": "string"
+      },
+      "agent_overrides": {
+        "temperature": "float",
+        "max_tokens": "integer",
+        "custom_prompt_additions": "string"
+      },
+      "validation": {
+        "required_elements": "array",
+        "quality_gates": "array",
+        "human_review_required": "boolean"
+      },
+      "dependencies": {
+        "hard_dependencies": "array",
+        "soft_dependencies": "array",
+        "timeout": "string"
+      },
+      "optional_steps": "array",
+      "tools_available": "array",
+      "knowledge_focus": "array",
+      "user_interaction": {
+        "required": "boolean",
+        "interaction_type": "string",
+        "prompt_template": "string",
+        "timeout_behavior": "string"
+      },
+      "notes": "string",
+      "success_criteria": "array",
+      "common_issues": "array",
+      "next_steps": {
+        "default": "string",
+        "conditional_routing": "array"
+      }
+    }
+  ],
+  "control_flow": {
+    "entry_point": "string",
+    "exit_conditions": "array",
+    "loops": [
+      {
+        "loop_id": "string",
+        "steps": "array",
+        "condition": "string",
+        "max_iterations": "integer"
+      }
+    ],
+    "decision_points": [
+      {
+        "decision_id": "string",
+        "step_id": "string",
+        "criteria": "object",
+        "outcomes": "array"
+      }
+    ],
+    "sub_workflows": [
+      {
+        "sub_workflow_id": "string",
+        "trigger_condition": "string",
+        "workflow_file": "string",
+        "integration_mode": "string"
+      }
+    ]
+  },
+  "context": {
+    "global_context": "object",
+    "context_passing": {
+      "strategy": "string",
+      "include_previous_outputs": "boolean",
+      "include_user_preferences": "boolean",
+      "include_workflow_history": "boolean",
+      "max_context_tokens": "integer"
+    },
+    "state_persistence": {
+      "storage_backend": "string",
+      "encryption": "boolean",
+      "retention_period": "string"
+    },
+    "memory": {
+      "working_memory_limit": "integer",
+      "long_term_storage": "boolean",
+      "memory_compression": "boolean"
+    }
+  },
+  "integrations": {
+    "external_apis": "array",
+    "tools": {
+      "required": "array",
+      "optional": "array"
+    },
+    "file_system": {
+      "input_directories": "array",
+      "output_directories": "array",
+      "temp_directories": "array"
+    },
+    "webhooks": {
+      "workflow_start": "string",
+      "workflow_complete": "string",
+      "step_complete": "string",
+      "error_occurred": "string"
+    },
+    "database": {
+      "connection_string": "string",
+      "tables_used": "array",
+      "read_only": "boolean"
+    }
+  },
+  "performance": {
+    "resource_limits": {
+      "max_memory_usage": "string",
+      "max_cpu_usage": "string",
+      "max_concurrent_api_calls": "integer"
+    },
+    "caching": {
+      "cache_agent_responses": "boolean",
+      "cache_intermediate_results": "boolean",
+      "cache_knowledge_lookups": "boolean",
+      "cache_duration": "string"
+    },
+    "optimization": {
+      "token_usage_optimization": "boolean",
+      "response_time_optimization": "boolean",
+      "cost_optimization": "boolean",
+      "quality_optimization": "boolean"
+    }
+  },
+  "monitoring": {
+    "metrics": {
+      "track_execution_time": "boolean",
+      "track_token_usage": "boolean",
+      "track_error_rates": "boolean",
+      "track_user_satisfaction": "boolean",
+      "track_output_quality": "boolean"
+    },
+    "logging": {
+      "log_level": "string",
+      "log_agent_interactions": "boolean",
+      "log_user_interactions": "boolean",
+      "log_system_events": "boolean",
+      "log_performance_metrics": "boolean"
+    },
+    "alerts": {
+      "execution_time_threshold": "integer",
+      "error_rate_threshold": "float",
+      "quality_score_threshold": "float"
+    },
+    "analytics": {
+      "generate_execution_reports": "boolean",
+      "track_workflow_effectiveness": "boolean",
+      "collect_user_feedback": "boolean",
+      "performance_benchmarking": "boolean"
+    }
+  },
+  "user_experience": {
+    "progress_tracking": {
+      "show_progress_bar": "boolean",
+      "show_step_details": "boolean",
+      "show_estimated_time": "boolean"
+    },
+    "interface": {
+      "interaction_style": "string",
+      "confirmation_level": "string",
+      "error_reporting_style": "string"
+    },
+    "customization": {
+      "user_configurable_steps": "array",
+      "workflow_variants": "array",
+      "personalization_options": "array"
+    }
+  },
+  "quality_assurance": {
+    "output_validation": {
+      "schema_validation": "boolean",
+      "content_validation": "boolean",
+      "consistency_checks": "boolean",
+      "completeness_checks": "boolean"
+    },
+    "quality_gates": [
+      {
+        "gate_id": "string",
+        "step_id": "string",
+        "validation_rules": "array",
+        "failure_action": "string"
+      }
+    ],
+    "review_processes": {
+      "peer_review": "boolean",
+      "expert_review": "boolean",
+      "automated_review": "boolean"
+    },
+    "testing": {
+      "unit_tests": "array",
+      "integration_tests": "array",
+      "end_to_end_tests": "array",
+      "performance_tests": "array"
+    }
+  },
+  "security": {
+    "data_protection": {
+      "encryption_at_rest": "boolean",
+      "encryption_in_transit": "boolean",
+      "data_anonymization": "boolean"
+    },
+    "access_control": {
+      "authentication_required": "boolean",
+      "authorization_levels": "array",
+      "audit_logging": "boolean"
+    },
+    "compliance": {
+      "gdpr_compliant": "boolean",
+      "hipaa_compliant": "boolean",
+      "sox_compliant": "boolean",
+      "custom_compliance_rules": "array"
+    }
+  },
+  "deployment": {
+    "environments": {
+      "development": "object",
+      "staging": "object",
+      "production": "object"
+    },
+    "deployment_settings": {
+      "auto_deployment": "boolean",
+      "rollback_capability": "boolean",
+      "blue_green_deployment": "boolean",
+      "canary_deployment": "boolean"
+    },
+    "configuration": {
+      "environment_variables": "array",
+      "config_files": "array",
+      "secrets_management": "string"
+    }
+  },
+  "documentation": {
+    "user_guide": "string",
+    "step_by_step_instructions": "string",
+    "troubleshooting_guide": "string",
+    "faq": "string",
+    "technical_docs": {
+      "architecture_overview": "string",
+      "api_documentation": "string",
+      "integration_guide": "string",
+      "developer_guide": "string"
+    },
+    "examples": {
+      "sample_workflows": "array",
+      "use_case_examples": "array",
+      "best_practices": "string"
+    }
+  },
+  "metadata": {
+    "version_info": {
+      "major_version": "integer",
+      "minor_version": "integer",
+      "patch_version": "integer",
+      "release_date": "string"
+    },
+    "governance": {
+      "owner": "string",
+      "maintainers": "array",
+      "reviewers": "array",
+      "approval_required": "boolean"
+    },
+    "lifecycle": {
+      "status": "string",
+      "deprecation_date": "string",
+      "replacement_workflow": "string",
+      "migration_guide": "string"
+    },
+    "classification": {
+      "tags": "array",
+      "categories": "array",
+      "complexity_rating": "integer",
+      "maturity_level": "string"
+    }
+  }
+}
