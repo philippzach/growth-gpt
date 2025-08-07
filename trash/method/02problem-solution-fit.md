@@ -1,7 +1,8 @@
 # Problem Solution Fit Canvas
 
-The Problem-Solution Fit canvas is based on the principles of Lean Startup, LUM (Lazy User Model) and User Experience design. It helps entrepreneurs, marketers and corporate innovators identify behavioral patterns and recognize what would work and why.
-My goal was to create a tool that translates a problem into a solution, taking into account customer behavior and the context around it. With this template you will be able to take important information into consideration at an earlier stage and look at problem solving in depth. It increases your chances of finding problem-solution and product-market fit.
+The Problem-Solution Fit canvas is based on the principles of Lean Startup, LUM (Lazy User Model) and User Experience design. It helps entrepreneurs, marketers and corporate innovators identify behavioral patterns and recognize what would work and why. It is a template to help identify solutions with higher chances of solution adoption, reduce time spent on testing and get a better overview of the current situation.
+
+My goal was to create a tool that translates a problem into a solution, taking into account customer behavior and the context around it. None of the existing canvases or frameworks were giving me an overview and insight into the real customer situation during his/her decision-making process. With this template you will be able to take important information into consideration at an earlier stage and look at problem solving in depth. It increases your chances of finding problem-solution and product-market fit.
 
 It helps you to:
 Solve complex problems in a way that fits the state of your customers.
@@ -30,7 +31,7 @@ Understand the existing situation in order to improve it for your target group.
 - Communication Hypothesis: to help you sharpen your communication with strong triggers, emotional messaging and reaching customers via the right channels.
 - Solution guess: translate all the validated data you have gathered into a solution that fits the customer state and his/her limitations, solves a real problem and taps into the common behavior of your target group.
 
-### Solution Validation
+### Salution Validation
 
 1. Customer Segements
 2. Customer State Limitations

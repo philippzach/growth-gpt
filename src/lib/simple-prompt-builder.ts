@@ -23,7 +23,6 @@ export interface SimplePrompt {
 }
 
 export class SimplePromptBuilder {
-  
   async buildPrompt(
     taskDefinition: string,
     context: SimplePromptContext,
@@ -31,45 +30,57 @@ export class SimplePromptBuilder {
     knowledgeFiles?: string[]
   ): Promise<SimplePrompt> {
     console.log(`🔍 DEBUG: SimplePromptBuilder.buildPrompt() called:`, {
-      taskDefinition: taskDefinition?.substring(0, 100) + '...' || 'No task definition',
+      taskDefinition:
+        taskDefinition?.substring(0, 100) + '...' || 'No task definition',
       hasContext: !!context,
       hasAgentConfig: !!context?.agentConfig,
       agentConfigId: context?.agentConfig?.id,
-      businessIdea: context?.businessIdea?.substring(0, 50) + '...' || 'No business idea',
+      businessIdea:
+        context?.businessIdea?.substring(0, 50) + '...' || 'No business idea',
       knowledgeFilesCount: knowledgeFiles?.length || 0,
       workflowPosition: context?.workflowPosition,
-      totalAgents: context?.totalAgents
+      totalAgents: context?.totalAgents,
     });
-    
+
     // Load relevant knowledge if specified and configLoader is available
     let knowledgeContent = '';
     if (knowledgeFiles && knowledgeFiles.length > 0 && context.configLoader) {
       console.log(`📚 DEBUG: Loading knowledge files:`, knowledgeFiles);
-      knowledgeContent = await this.loadRelevantKnowledge(context.configLoader, knowledgeFiles);
+      knowledgeContent = await this.loadRelevantKnowledge(
+        context.configLoader,
+        knowledgeFiles
+      );
       console.log(`📚 DEBUG: Knowledge content loaded:`, {
         knowledgeLength: knowledgeContent.length,
-        hasContent: !!knowledgeContent
+        hasContent: !!knowledgeContent,
       });
     }
-    
+
     console.log(`🔧 DEBUG: Building system prompt...`);
-    const systemPrompt = this.buildEnhancedSystemPrompt(context.agentConfig, knowledgeContent);
+    const systemPrompt = this.buildEnhancedSystemPrompt(
+      context.agentConfig,
+      knowledgeContent
+    );
     console.log(`🔧 DEBUG: System prompt built:`, {
       systemPromptLength: systemPrompt.length,
-      firstLine: systemPrompt.split('\n')[0]
+      firstLine: systemPrompt.split('\n')[0],
     });
-    
+
     console.log(`👤 DEBUG: Building instruction prompt...`);
-    const instructionPrompt = this.buildEnhancedInstructionPrompt(taskDefinition, context, outputFormat);
+    const instructionPrompt = this.buildEnhancedInstructionPrompt(
+      taskDefinition,
+      context,
+      outputFormat
+    );
     console.log(`👤 DEBUG: Instruction prompt built:`, {
       instructionPromptLength: instructionPrompt.length,
-      firstLine: instructionPrompt.split('\n')[0]
+      firstLine: instructionPrompt.split('\n')[0],
     });
-    
+
     console.log(`✅ DEBUG: SimplePrompt created successfully`);
     return {
       systemPrompt,
-      userPrompt: instructionPrompt
+      userPrompt: instructionPrompt,
     };
   }
 
@@ -80,18 +91,22 @@ export class SimplePromptBuilder {
     outputFormat: string
   ): SimplePrompt {
     const systemPrompt = this.buildEnhancedSystemPrompt(context.agentConfig);
-    const instructionPrompt = this.buildEnhancedInstructionPrompt(taskDefinition, context, outputFormat);
-    
+    const instructionPrompt = this.buildEnhancedInstructionPrompt(
+      taskDefinition,
+      context,
+      outputFormat
+    );
+
     return {
       systemPrompt,
-      userPrompt: instructionPrompt
+      userPrompt: instructionPrompt,
     };
   }
 
   /**
    * Build Enhanced System Prompt following prompts/gtm.md structure:
    * 1. Agent Identity & Role
-   * 2. Capabilities & Constraints 
+   * 2. Capabilities & Constraints
    * 3. Static Knowledge Base
    */
   private buildEnhancedSystemPrompt(
@@ -104,93 +119,101 @@ export class SimplePromptBuilder {
       agentName: agentConfig?.name,
       hasPersona: !!agentConfig?.persona,
       hasCapabilities: !!agentConfig?.capabilities,
-      knowledgeContentLength: knowledgeContent?.length || 0
+      knowledgeContentLength: knowledgeContent?.length || 0,
     });
-    
+
     if (!agentConfig) {
-      console.error(`❌ DEBUG: No agentConfig provided to buildEnhancedSystemPrompt`);
+      console.error(
+        `❌ DEBUG: No agentConfig provided to buildEnhancedSystemPrompt`
+      );
       return 'Error: No agent configuration available';
     }
-    
+
     let prompt = '';
-    
-    // 1. AGENT IDENTITY & ROLE
-    prompt += `# AGENT IDENTITY & ROLE
 
+    // . AGENT IDENTITY & ROLE
+    prompt += `<system_role>
+ ${agentConfig.persona?.identity}.
+You are part of an 8 Step Growth Strategy Development System. Go-to-Market, Persona, Product, Growth, Acquisition, Retention, Growth Loops, Hacking.
+And are a specialist in your domain, creating collaborative outputs so other agents can work with the information I provided.        
+</system_role>
 `;
-    prompt += `You are ${agentConfig.persona?.identity || agentConfig.name}, ${agentConfig.description || 'a specialized AI agent'}.
 
-`;
-    
-    if (agentConfig.persona?.expertise && agentConfig.persona.expertise.length > 0) {
-      prompt += `## Core Expertise & Domain Knowledge
-${agentConfig.persona.expertise.map(exp => `- ${exp}`).join('\n')}
-
+    if (
+      agentConfig.persona?.expertise &&
+      agentConfig.persona.expertise.length > 0
+    ) {
+      prompt += `<expertise>
+${agentConfig.persona.expertise.map((exp) => `- ${exp}`).join('\n')}
+</expertise>
 `;
     }
-    
+
     if (agentConfig.persona?.communication_style) {
-      prompt += `## Communication Style & Tone
+      prompt += `<communication_style>
 ${agentConfig.persona.communication_style}
-
+</communication_style>
 `;
     }
-    
-    // 2. CAPABILITIES & CONSTRAINTS
-    prompt += `# CAPABILITIES & CONSTRAINTS
 
+    // . STATIC KNOWLEDGE BASE
+    if (knowledgeContent && knowledgeContent.trim()) {
+      prompt += `<Analytical_framework>
+${knowledgeContent}
+</Analytical_framework>
 `;
-    prompt += `## What you can do:
+    }
+
+    // . CAPABILITIES & CONSTRAINTS
+
+    prompt += `
+    <capabilities>
 - Generate comprehensive, actionable analysis based on provided context
 - Apply relevant frameworks and methodologies to business problems
 - Provide specific, measurable recommendations
 - Create structured outputs following specified formats
-
+</capabilities>
 `;
-    
-    prompt += `## Quality Standards & Output Requirements:
-- All content must be specific to the provided business context
-- No placeholder variables (e.g., [Product], [Company Name]) - use actual context
-- Support all recommendations with clear reasoning
-- Focus on actionable insights that can be immediately implemented
-- Maintain professional, strategic tone throughout
 
+    prompt += `
+<output_standards>
+    <quality_requirements>
+    - Support every strategic recommendation with reasoning
+    - Provide specific numbers, percentages, and timelines
+    - Create immediately actionable recommendations
+    - Use actual context (never placeholders like [Company Name])
+    </quality_requirements>
+
+    <analytical_approach>
+    - Maintain internal consistency across all sections
+    - Start with market reality and customer evidence
+    - Build strategy from customer needs outward
+    - Validate assumptions with market data
+    - Focus on differentiation and competitive advantage
+    - Ensure scalability and sustainability
+    </analytical_approach>
+</output_standards>
 `;
-    
-    prompt += `## Constraints & Limitations:
+
+    prompt += `<constraints>
 - Work only with provided context and knowledge - do not make unsupported assumptions
 - Stay within your defined role and expertise area
 - Do not provide financial, legal, or medical advice
+- Do not provide generic advice applicable to any business
+- Do not provide placeholder text or variables
+- Do not make unsupported assumptions
+- Do not provide technical implementation details beyond strategic scope
 - Focus on strategic insights, not tactical implementation details
-
+</constraints>
 `;
-    
-    // 3. STATIC KNOWLEDGE BASE
-    if (knowledgeContent && knowledgeContent.trim()) {
-      prompt += `# STATIC KNOWLEDGE BASE
 
-`;
-      prompt += `## Domain-Specific Frameworks & Methodologies
-
-${knowledgeContent}
-
-`;
-      prompt += `**Application Instructions:**
-- Apply these frameworks where relevant to the business context
-- Reference specific methodologies when making recommendations
-- Use this knowledge to provide expert-level insights
-- Combine multiple frameworks when appropriate for comprehensive analysis
-
-`;
-    }
-    
     return prompt;
   }
 
   /**
    * Build Enhanced Instruction Prompt following prompts/gtm.md structure:
    * 1. Context Primer
-   * 2. Specific Task Instructions  
+   * 2. Specific Task Instructions
    * 3. Dynamic Context (Full Previous Outputs)
    * 4. Output Specifications
    */
@@ -200,111 +223,99 @@ ${knowledgeContent}
     outputFormat: string
   ): string {
     let prompt = '';
-    
+
     // 1. CONTEXT PRIMER
-    prompt += `# CONTEXT PRIMER
+    prompt += `<context>
 
 `;
     const position = context.workflowPosition || 1;
     const total = context.totalAgents || 8;
-    prompt += `You are Agent ${position} of ${total} in the Growth Strategy Development System. `;
-    
-    if (position === 1) {
-      prompt += `As the first agent, you establish the foundational strategy that all subsequent agents will build upon. Your output must be comprehensive and provide clear direction for the entire workflow.`;
-    } else if (position <= 3) {
-      prompt += `You build upon the foundational work of previous agents to develop the strategic framework. Your analysis must integrate seamlessly with prior outputs while adding your specialized expertise.`;
-    } else {
-      prompt += `You develop tactical implementation strategies based on the strategic foundation established by previous agents. Focus on actionable plans that execute the overall strategy.`;
-    }
-    
-    prompt += `\n\nYour output will directly influence the work of subsequent agents, so ensure all content is specific, actionable, and strategically aligned.\n\n`;
-    
+    prompt += `
+    <position>
+    You are Agent ${position} of ${total} in the Growth Strategy Development System.  
+    Your output will directly influence the work of subsequent agents, so ensure all content is specific, actionable, and strategically aligned.
+    </position>`;
+
+    prompt += `<task_instructions>
+${taskDefinition}
+</task_instructions>
+`;
+
+    prompt += `<business_concept  >
+      ${context.businessIdea}
+      </business_concept>
+      `;
+    prompt += `</context>
+`;
+
     // 2. SPECIFIC TASK INSTRUCTIONS
-    prompt += `# TASK INSTRUCTIONS
 
-`;
-    prompt += `## Primary Objective
-${taskDefinition}\n\n`;
-    
-    // 3. DYNAMIC CONTEXT
-    prompt += `# DYNAMIC CONTEXT
-
-`;
-    
-    // Business Information
-    prompt += `## Business Concept
-${context.businessIdea}\n\n`;
-    
     // Full Previous Agent Outputs (not summaries!)
     if (Object.keys(context.previousOutputs).length > 0) {
-      prompt += `## Previous Agent Outputs
-\n`;
-      prompt += `The following are the COMPLETE outputs from previous agents in this workflow. Use this comprehensive context to inform your analysis and ensure strategic alignment:\n\n`;
-      
-      for (const [agentId, fullOutput] of Object.entries(context.previousOutputs)) {
+      prompt += `
+      <previous_agent_outputs>
+      The following are the COMPLETE outputs from previous agents in this workflow. Use this comprehensive context to inform your analysis and ensure strategic alignment:
+        `;
+
+      for (const [agentId, fullOutput] of Object.entries(
+        context.previousOutputs
+      )) {
         const agentName = this.formatAgentName(agentId);
         prompt += `### ${agentName} Complete Output:\n\n${fullOutput}\n\n---\n\n`;
       }
+      prompt += `</previous_agent_outputs>
+      `;
     }
-    
+
     // User-provided inputs and preferences
     const relevantInputs = this.extractRelevantInputs(context.userInputs);
     if (relevantInputs) {
       prompt += `## Additional User Context
 ${relevantInputs}\n\n`;
     }
-    
+
     // 4. OUTPUT SPECIFICATIONS
-    prompt += `# OUTPUT SPECIFICATIONS
-
+    prompt += `<output_format>
+${outputFormat}
+</output_format>
 `;
-    prompt += `## Required Format & Structure
-${outputFormat}\n\n`;
-    
-    prompt += `## Quality Requirements
-- Generate specific, actionable content (no placeholders or generic statements)
-- Ensure all sections are fully populated with detailed analysis
-- Support recommendations with clear reasoning and evidence
-- Maintain consistency with previous agent outputs where applicable
-- Focus on practical insights that enable immediate implementation
 
-`;
-    
-    prompt += `## Final Instructions
-Analyze the complete context above and generate your comprehensive output following the specified format. Ensure your response integrates seamlessly with previous agent work while adding significant value through your specialized expertise.`;
-    
     return prompt;
   }
 
   private formatAgentName(agentId: string): string {
     const nameMap: Record<string, string> = {
       'gtm-consultant': 'GTM Consultant',
-      'persona-strategist': 'Persona Strategist', 
+      'persona-strategist': 'Persona Strategist',
       'product-manager': 'Product Manager',
       'growth-manager': 'Growth Manager',
       'head-of-acquisition': 'Head of Acquisition',
       'head-of-retention': 'Head of Retention',
       'viral-growth-architect': 'Viral Growth Architect',
-      'growth-hacker': 'Growth Hacker'
+      'growth-hacker': 'Growth Hacker',
     };
-    
+
     return nameMap[agentId] || agentId;
   }
 
   private extractRelevantInputs(userInputs: Record<string, any>): string {
     const relevantKeys = [
-      'targetMarket', 
-      'problemStatement', 
+      'targetMarket',
+      'problemStatement',
       'solutionConcept',
       'businessModel',
       'competitiveAdvantage',
-      'additionalContext'
+      'additionalContext',
     ];
 
     const relevantInputs: string[] = [];
 
     for (const key of relevantKeys) {
-      if (userInputs[key] && typeof userInputs[key] === 'string' && userInputs[key].trim()) {
+      if (
+        userInputs[key] &&
+        typeof userInputs[key] === 'string' &&
+        userInputs[key].trim()
+      ) {
         const formattedKey = key.replace(/([A-Z])/g, ' $1').toLowerCase();
         relevantInputs.push(`${formattedKey}: ${userInputs[key]}`);
       }
@@ -315,46 +326,55 @@ Analyze the complete context above and generate your comprehensive output follow
 
   /**
    * DEPRECATED: Extract key insights from an agent's output
-   * 
+   *
    * NOTE: This method is deprecated in favor of using full agent outputs.
    * The new enhanced prompt structure uses complete previous outputs for better context.
    * This method is kept for backward compatibility during transition.
    */
   extractKeyInsights(agentId: string, fullOutput: string): string {
-    console.warn('extractKeyInsights is deprecated. Use full outputs for better agent context.');
-    
+    console.warn(
+      'extractKeyInsights is deprecated. Use full outputs for better agent context.'
+    );
+
     // Simple extraction - look for key sections and bullet points
     const lines = fullOutput.split('\n');
     const insights: string[] = [];
-    
+
     let inImportantSection = false;
     const importantSectionHeaders = [
       'executive summary',
-      'key recommendations', 
+      'key recommendations',
       'primary recommendations',
       'main findings',
       'strategic priorities',
       'core insights',
-      'key takeaways'
+      'key takeaways',
     ];
 
     for (const line of lines) {
       const lowerLine = line.toLowerCase().trim();
-      
+
       // Check if we're entering an important section
-      if (importantSectionHeaders.some(header => 
-        lowerLine.includes(header) && (lowerLine.startsWith('#') || lowerLine.startsWith('**'))
-      )) {
+      if (
+        importantSectionHeaders.some(
+          (header) =>
+            lowerLine.includes(header) &&
+            (lowerLine.startsWith('#') || lowerLine.startsWith('**'))
+        )
+      ) {
         inImportantSection = true;
         continue;
       }
 
       // Exit important section when we hit another header
-      if (inImportantSection && (line.startsWith('#') || line.startsWith('**')) 
-          && !importantSectionHeaders.some(header => lowerLine.includes(header))) {
+      if (
+        inImportantSection &&
+        (line.startsWith('#') || line.startsWith('**')) &&
+        !importantSectionHeaders.some((header) => lowerLine.includes(header))
+      ) {
         inImportantSection = false;
       }
-      
+
       // Collect content from important sections
       if (inImportantSection && line.trim()) {
         // Clean up formatting and add to insights
@@ -365,10 +385,12 @@ Analyze the complete context above and generate your comprehensive output follow
       }
 
       // Also collect any bullet point recommendations throughout
-      if ((line.includes('•') || line.includes('-')) && 
-          (line.toLowerCase().includes('recommend') || 
-           line.toLowerCase().includes('suggest') ||
-           line.toLowerCase().includes('should'))) {
+      if (
+        (line.includes('•') || line.includes('-')) &&
+        (line.toLowerCase().includes('recommend') ||
+          line.toLowerCase().includes('suggest') ||
+          line.toLowerCase().includes('should'))
+      ) {
         const cleanLine = line.replace(/^[#*\-•\s]+/, '').trim();
         if (cleanLine && cleanLine.length > 10) {
           insights.push(cleanLine);
@@ -378,14 +400,19 @@ Analyze the complete context above and generate your comprehensive output follow
 
     // Limit to most important insights (top 5-8 points)
     const topInsights = insights.slice(0, 8);
-    
+
     if (topInsights.length === 0) {
       // Fallback: take first few sentences if no structured content found
-      const sentences = fullOutput.split(/[.!?]+/).filter(s => s.trim().length > 20);
+      const sentences = fullOutput
+        .split(/[.!?]+/)
+        .filter((s) => s.trim().length > 20);
       return sentences.slice(0, 3).join('. ').substring(0, 300) + '...';
     }
 
-    return topInsights.join('; ').substring(0, 300) + (topInsights.join('; ').length > 300 ? '...' : '');
+    return (
+      topInsights.join('; ').substring(0, 300) +
+      (topInsights.join('; ').length > 300 ? '...' : '')
+    );
   }
 
   /**
@@ -396,41 +423,45 @@ Analyze the complete context above and generate your comprehensive output follow
     knowledgeFiles: string[]
   ): Promise<string> {
     const knowledgeContents: string[] = [];
-    
+
     for (const filePath of knowledgeFiles) {
       try {
         const content = await configLoader.loadKnowledgeBase(filePath);
         if (content && content.trim()) {
           // Add a header and clean up the content
-          const fileName = filePath.split('/').pop()?.replace('.md', '') || 'Knowledge';
+          const fileName =
+            filePath.split('/').pop()?.replace('.md', '') || 'Knowledge';
           knowledgeContents.push(`## ${fileName.toUpperCase()}\n${content}`);
         }
       } catch (error) {
         console.warn(`Failed to load knowledge file: ${filePath}`, error);
       }
     }
-    
+
     return knowledgeContents.join('\n\n---\n\n');
   }
 
   /**
    * Determine workflow position based on agent ID
    */
-  public getWorkflowPosition(agentId: string): { position: number; total: number } {
+  public getWorkflowPosition(agentId: string): {
+    position: number;
+    total: number;
+  } {
     const agentOrder: Record<string, number> = {
       'gtm-consultant': 1,
-      'persona-strategist': 2, 
+      'persona-strategist': 2,
       'product-manager': 3,
       'growth-manager': 4,
       'head-of-acquisition': 5,
       'head-of-retention': 6,
       'viral-growth-architect': 7,
-      'growth-hacker': 8
+      'growth-hacker': 8,
     };
-    
+
     return {
       position: agentOrder[agentId] || 1,
-      total: 8
+      total: 8,
     };
   }
 
@@ -442,11 +473,11 @@ Analyze the complete context above and generate your comprehensive output follow
     agentId: string
   ): SimplePromptContext {
     const workflowInfo = this.getWorkflowPosition(agentId);
-    
+
     return {
       ...baseContext,
       workflowPosition: workflowInfo.position,
-      totalAgents: workflowInfo.total
+      totalAgents: workflowInfo.total,
     };
   }
 
@@ -456,7 +487,7 @@ Analyze the complete context above and generate your comprehensive output follow
   validatePrompt(prompt: SimplePrompt): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
     const combinedPrompt = prompt.systemPrompt + ' ' + prompt.userPrompt;
-    
+
     // Check for common template variables
     const templateVariables = combinedPrompt.match(/\[([^\]]+)\]/g);
     if (templateVariables) {
@@ -466,7 +497,9 @@ Analyze the complete context above and generate your comprehensive output follow
     // Check for unsubstituted placeholders
     const placeholders = combinedPrompt.match(/\{([^}]+)\}/g);
     if (placeholders) {
-      errors.push(`Unsubstituted placeholders found: ${placeholders.join(', ')}`);
+      errors.push(
+        `Unsubstituted placeholders found: ${placeholders.join(', ')}`
+      );
     }
 
     // Check minimum length
@@ -480,7 +513,7 @@ Analyze the complete context above and generate your comprehensive output follow
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 }
