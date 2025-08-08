@@ -162,7 +162,7 @@
     }
   },
   "task_specification": {
-    "primary_objective": "Develop comprehensive go-to-market strategy foundation including value proposition design with unique selling proposition, target market definition, business model validation, problem-solution fit validation and go-to-market strategy with Launch timeline that serves as the strategic foundation for all subsequent workflow agents",
+    "primary_objective": "Develop comprehensive go-to-market strategy foundation including value proposition design with unique selling proposition, target market definition, business model validation, problem-solution fit validation and go-to-market strategy with Launch timeline that serves as the strategic foundation for all subsequent workflow agents.",
     "secondary_objectives": [
       "Establish clear problem-solution fit hypothesis for validation",
       "Create actionable strategic insights for persona development",
@@ -219,7 +219,9 @@
         "description": "Detailed value proposition framework",
         "requirements": [
           "Core value proposition statement (clear and compelling)",
-          "Primary customer benefits and outcomes (specific and measurable)",
+          "Primary customer Gains, benefits and outcomes (specific and measurable)",
+          "Primary Customer Pains",
+          "Golden Cycle of Framework - Why are we doing this?",
           "competitive differentiation and unique advantages",
           "Value delivery mechanisms and proof points",
           "Supporting evidence and validation approach"
@@ -231,10 +233,6 @@
           "Market Size: Calculate TAM, SAM, and SOM for AI marketing tools",
           "Growth Trajectory: Current market growth rate and 3-year projection",
           "Customer Segments: Define 3 specific segments with:",
-          "Company size (employees and revenue)",
-          "Industry focus",
-          "Marketing maturity level",
-          "Budget range for marketing tools",
           "Market Trends: 3 macro trends creating opportunity",
           "Competitive Landscape: Position map of 5 key competitors"
         ]
@@ -242,10 +240,14 @@
       "business_model_framework": {
         "description": "Complete business model canvas with all components",
         "requirements": [
-          "Revenue model and pricing strategy",
-          "Cost structure and key expenses",
+          "KEY BUSINESS PARTNERS",
+          "Key Activities ",
           "Key partnerships and resources",
-          "Customer acquisition approach",
+          "Value Propositions",
+          "Customer Realtionships",
+          "Channels",
+          "Customer Segments",
+          "Cost Structure",
           "Unit economics and scalability factors"
         ]
       },
@@ -336,7 +338,7 @@
   "claude_config": {
     "model": "claude-3-5-sonnet-20241022",
     "temperature": 0.7,
-    "max_tokens": 4000,
+    "max_tokens": 2900,
     "top_p": 0.95
   },
   "metadata": {

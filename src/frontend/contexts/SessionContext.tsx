@@ -16,6 +16,7 @@ interface SessionContextType {
   sendMessage: (content: string) => Promise<void>;
   approveOutput: (outputId: string, feedback?: string) => Promise<void>;
   editOutput: (outputId: string, editedContent: string) => Promise<void>;
+  regenerateOutput: (agentId: string) => Promise<void>;
   isAgentTyping: boolean;
   connectionStatus: 'connected' | 'connecting' | 'disconnected';
   streamingMessages: Record<string, string>;
@@ -372,6 +373,64 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     [session, user, supabase]
   );
 
+  const regenerateOutput = useCallback(
+    async (agentId: string) => {
+      if (!session || !user) {
+        throw new Error('No active session');
+      }
+
+      try {
+        // Clear the error state immediately to show regenerating UI
+        setSession((prev) => {
+          if (!prev) return prev;
+          const updatedOutputs = { ...prev.agentOutputs };
+          if (updatedOutputs[agentId]) {
+            updatedOutputs[agentId] = {
+              ...updatedOutputs[agentId],
+              status: 'pending',
+              error: undefined,
+            };
+          }
+          return {
+            ...prev,
+            agentOutputs: updatedOutputs,
+          };
+        });
+
+        // Send regeneration request via existing message system
+        // This leverages the existing workflow to retry the agent
+        await sendMessage('Please regenerate the analysis based on the previous approved outputs.');
+      } catch (error) {
+        console.error('Error regenerating output:', error);
+        
+        // Restore error state if regeneration fails to start
+        setSession((prev) => {
+          if (!prev) return prev;
+          const updatedOutputs = { ...prev.agentOutputs };
+          if (updatedOutputs[agentId]) {
+            updatedOutputs[agentId] = {
+              ...updatedOutputs[agentId],
+              status: 'error',
+              error: {
+                message: 'Failed to start regeneration. Please try again.',
+                type: 'unknown',
+                retryCount: (updatedOutputs[agentId].error?.retryCount || 0) + 1,
+                lastAttempt: new Date().toISOString(),
+              },
+            };
+          }
+          return {
+            ...prev,
+            agentOutputs: updatedOutputs,
+          };
+        });
+        
+        throw error;
+      }
+    },
+    [session, user, sendMessage]
+  );
+
 
   // Keep WebSocket alive with periodic pings
   useEffect(() => {
@@ -391,6 +450,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     sendMessage,
     approveOutput,
     editOutput,
+    regenerateOutput,
     isAgentTyping,
     connectionStatus,
     streamingMessages,

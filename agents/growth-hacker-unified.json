@@ -94,7 +94,7 @@
     }
   },
   "task_specification": {
-    "primary_objective": "Develop comprehensive experimentation framework with hypothesis formation, statistically valid experiment designs, prioritized testing roadmap, and systematic validation processes that enable continuous growth optimization",
+    "primary_objective": "Analyze 649 growth experiments against business context from all 7 previous agents, then develop comprehensive experimentation framework by selecting and ranking the 25 most probable successful experiments with detailed business fit analysis, implementation guidance, and systematic validation processes",
     "deliverables": {
       "experimentation_framework": {
         "description": "Complete system for continuous growth experimentation",
@@ -148,6 +148,16 @@
           "Clear connection to overall growth objectives"
         ]
       },
+      "top_25_experiments_table": {
+        "description": "Structured table of the 20 most relevant experiments selected from 649 available experiments",
+        "requirements": [
+          "Table format with columns: Rank, Experiment Name, Funnel Stage, Probability, Effort, Dev Needed, Business Fit Score, Implementation Timeline",
+          "Business fit scores (X.X/10) based on alignment with business context",
+          "Clear ranking from 1-25 based on expected success probability",
+          "Organized into 2 tiers: Quick Wins (1-14), Strategic Tests (15-25)",
+          "Below the table provided a summarized Step by step approach to implement the experiments"
+        ]
+      },
       "experimentation_framework": {
         "description": "Systematic approach to continuous growth experimentation",
         "requirements": [
@@ -156,36 +166,6 @@
           "Testing infrastructure: Tools, tracking, and measurement requirements",
           "Analysis framework: Statistical methods and decision criteria",
           "Learning system: Knowledge capture and iteration processes"
-        ]
-      },
-      "prioritized_hypothesis_backlog": {
-        "description": "Ranked list of experiments with clear value propositions",
-        "requirements": [
-          "Top 10 experiments: Detailed designs with expected outcomes",
-          "ICE scores: Impact, Confidence, and Ease ratings for each",
-          "Resource requirements: Time, budget, and skill needs",
-          "Success metrics: Clear KPIs and measurement approaches",
-          "Risk assessment: Potential downsides and mitigation strategies"
-        ]
-      },
-      "testing_roadmap": {
-        "description": "Phased plan for systematic experimentation",
-        "requirements": [
-          "Phase 1 - Quick Wins: 5-7 high-confidence tests (Week 1-2)",
-          "Phase 2 - Core Validation: Major hypothesis testing (Week 3-6)",
-          "Phase 3 - Optimization: Refinement and scaling (Week 7-10)",
-          "Phase 4 - Infrastructure: Testing capability enhancement (Week 11-12)",
-          "Ongoing: Continuous experimentation process and culture"
-        ]
-      },
-      "statistical_analysis_plan": {
-        "description": "Rigorous approach to experiment validation",
-        "requirements": [
-          "Sample size calculations: Required participants for statistical power",
-          "Significance testing: Methods and thresholds for each experiment type",
-          "Control strategies: Randomization and bias prevention approaches",
-          "Analysis templates: Standardized reporting and interpretation",
-          "Decision framework: Clear criteria for scaling or stopping experiments"
         ]
       },
       "growth_validation_system": {
@@ -197,16 +177,6 @@
           "Tool stack: Recommended platforms and integration approach",
           "Governance model: Decision rights and escalation processes"
         ]
-      },
-      "implementation_checklist": {
-        "description": "Actionable next steps for launching experimentation",
-        "requirements": [
-          "Week 1: Set up tracking and establish baselines",
-          "Week 2: Launch first 3 quick-win experiments",
-          "Week 3: Analyze results and iterate on winners",
-          "Week 4: Scale successful experiments and plan next batch",
-          "Ongoing: Weekly experiment reviews and quarterly strategy updates"
-        ]
       }
     }
   },
@@ -216,8 +186,8 @@
   },
   "claude_config": {
     "model": "claude-3-5-sonnet-20241022",
-    "temperature": 0.6,
-    "max_tokens": 4500,
+    "temperature": 0.7,
+    "max_tokens": 3500,
     "top_p": 0.95
   },
   "metadata": {
@@ -233,8 +203,6 @@
       "retention-strategy.md",
       "viral-growth-strategy.md"
     ],
-    "outputs_to": [
-      "workflow-complete"
-    ]
+    "outputs_to": ["workflow-complete"]
   }
 }

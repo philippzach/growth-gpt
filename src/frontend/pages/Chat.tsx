@@ -17,6 +17,7 @@ export default function Chat() {
     sendMessage,
     approveOutput,
     editOutput,
+    regenerateOutput,
     isAgentTyping,
     connectionStatus,
     streamingMessages,
@@ -102,6 +103,16 @@ export default function Chat() {
       await editOutput(session.currentAgent, content);
     } catch (error) {
       console.error('Failed to edit output:', error);
+    }
+  };
+
+  const handleRegenerate = async () => {
+    if (!session?.currentAgent) return;
+
+    try {
+      await regenerateOutput(session.currentAgent);
+    } catch (error) {
+      console.error('Failed to regenerate output:', error);
     }
   };
 
@@ -542,6 +553,11 @@ export default function Chat() {
               ? handleStartGenerating
               : undefined
           }
+          onRegenerate={
+            displayAgent === session.currentAgent
+              ? handleRegenerate
+              : undefined
+          }
           isGenerating={isSending}
         />
       )}
@@ -556,6 +572,7 @@ export default function Chat() {
           onApprove={handleApprove}
           onNextAgent={handleNextAgent}
           onNavigateToNextAgent={handleAgentNavigation}
+          onRegenerate={regenerateOutput}
           isProcessing={isAgentTyping}
           canProceed={
             session.agentOutputs[session.currentAgent]?.status === 'approved'

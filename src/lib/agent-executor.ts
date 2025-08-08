@@ -49,22 +49,37 @@ export class AgentExecutor {
     websocketEmitter?: (sessionId: string, data: any) => void
   ) {
     console.log('🔐 DEBUG: API Key exists:', !!env.ANTHROPIC_API_KEY);
-    console.log('🔐 DEBUG: API Key length:', env.ANTHROPIC_API_KEY?.length || 0);
-    console.log('🔐 DEBUG: API Key format:', env.ANTHROPIC_API_KEY?.substring(0, 25) + '...' || 'MISSING');
-    console.log('🔐 DEBUG: API Key starts with sk-ant:', env.ANTHROPIC_API_KEY?.startsWith('sk-ant-'));
+    console.log(
+      '🔐 DEBUG: API Key length:',
+      env.ANTHROPIC_API_KEY?.length || 0
+    );
+    console.log(
+      '🔐 DEBUG: API Key format:',
+      env.ANTHROPIC_API_KEY?.substring(0, 25) + '...' || 'MISSING'
+    );
+    console.log(
+      '🔐 DEBUG: API Key starts with sk-ant:',
+      env.ANTHROPIC_API_KEY?.startsWith('sk-ant-')
+    );
     console.log('🔐 DEBUG: Full env keys available:', Object.keys(env));
-    
+
     // Test API key validity format
     if (!env.ANTHROPIC_API_KEY) {
-      console.error('❌ CRITICAL: ANTHROPIC_API_KEY is missing from environment');
+      console.error(
+        '❌ CRITICAL: ANTHROPIC_API_KEY is missing from environment'
+      );
     } else if (!env.ANTHROPIC_API_KEY.startsWith('sk-ant-')) {
-      console.error('❌ CRITICAL: ANTHROPIC_API_KEY does not start with sk-ant- (invalid format)');
+      console.error(
+        '❌ CRITICAL: ANTHROPIC_API_KEY does not start with sk-ant- (invalid format)'
+      );
     } else if (env.ANTHROPIC_API_KEY.length < 50) {
-      console.error('❌ CRITICAL: ANTHROPIC_API_KEY seems too short (possibly truncated)');
+      console.error(
+        '❌ CRITICAL: ANTHROPIC_API_KEY seems too short (possibly truncated)'
+      );
     } else {
       console.log('✅ DEBUG: API Key format appears valid');
     }
-    
+
     this.anthropic = new Anthropic({
       apiKey: env.ANTHROPIC_API_KEY,
       // Explicitly set the API version and headers for Cloudflare Workers
@@ -137,11 +152,7 @@ export class AgentExecutor {
     // Get model and parameters from configuration
     const model = 'claude-3-haiku-20240307'; // Using Haiku for development
     const temperature = agentConfig?.configuration?.temperature || 0.7;
-    const maxTokens = Math.min(
-      agentConfig?.configuration?.max_tokens || 4000,
-      4096 // Haiku's max output tokens
-    );
-
+    const maxTokens = 3000; // Haiku's max output tokens
     return {
       model,
       max_tokens: maxTokens,
@@ -812,8 +823,11 @@ export class AgentExecutor {
     try {
       console.log('🩺 DEBUG: Starting API health check...');
       console.log('🩺 DEBUG: Using model: claude-3-haiku-20240307');
-      console.log('🩺 DEBUG: API Key length:', this.env.ANTHROPIC_API_KEY?.length);
-      
+      console.log(
+        '🩺 DEBUG: API Key length:',
+        this.env.ANTHROPIC_API_KEY?.length
+      );
+
       const response = await this.anthropic.messages.create({
         model: 'claude-3-haiku-20240307', // Use Haiku for health check
         max_tokens: 10,

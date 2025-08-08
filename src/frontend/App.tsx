@@ -6,6 +6,7 @@ import AuthGuard from './components/AuthGuard';
 import Dashboard from './pages/Dashboard';
 import Chat from './pages/Chat';
 import Login from './pages/Login';
+import StrategyRefine from './pages/StrategyRefine';
 
 function App() {
   return (
@@ -29,6 +30,14 @@ function App() {
                 <SessionProvider>
                   <Chat />
                 </SessionProvider>
+              </AuthGuard>
+            }
+          />
+          <Route
+            path='/refine/:sessionId'
+            element={
+              <AuthGuard>
+                <StrategyRefine />
               </AuthGuard>
             }
           />

@@ -10,6 +10,7 @@ interface ActionButtonsProps {
   onNextAgent: () => Promise<void>;
   onEditDocument?: (outputId: string) => void;
   onNavigateToNextAgent?: (agentId: string) => void;
+  onRegenerate?: (agentId: string) => Promise<void>;
   isProcessing?: boolean;
   canProceed?: boolean;
 }
@@ -23,6 +24,7 @@ export default function ActionButtons({
   onNextAgent,
   onEditDocument,
   onNavigateToNextAgent,
+  onRegenerate,
   isProcessing = false,
   canProceed = false
 }: ActionButtonsProps) {
@@ -77,10 +79,24 @@ export default function ActionButtons({
     onEditDocument(agentOutput.agentId);
   };
 
+  const handleRegenerate = async () => {
+    if (!agentOutput || !onRegenerate) return;
+    
+    try {
+      setIsSubmitting(true);
+      await onRegenerate(agentOutput.agentId);
+    } catch (error) {
+      console.error('Failed to regenerate output:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const isWorkflowComplete = session.status === 'completed';
   const hasOutput = agentOutput && agentOutput.content;
   const isApproved = agentOutput?.status === 'approved';
   const isPending = agentOutput?.status === 'pending';
+  const hasError = agentOutput?.status === 'error';
   const isViewingCurrentAgent = !viewingAgent || viewingAgent === currentAgent;
 
   return (
@@ -111,12 +127,44 @@ export default function ActionButtons({
                   </span>
                 </div>
               )}
+              
+              {hasError && (
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                  <span className="text-sm text-red-600 dark:text-red-400 font-medium">
+                    Error - Action Required
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* Right side - Action buttons */}
             <div className="flex items-center space-x-3">
-              {/* Only show action buttons for current workflow agent */}
-              {hasOutput && isViewingCurrentAgent && (
+              {/* Error state - show regenerate button */}
+              {hasError && isViewingCurrentAgent && onRegenerate && (
+                <button
+                  onClick={handleRegenerate}
+                  disabled={isSubmitting || isProcessing}
+                  className="inline-flex items-center px-6 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                      Regenerating...
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                      Try Again
+                    </>
+                  )}
+                </button>
+              )}
+
+              {/* Only show normal action buttons for current workflow agent when not in error state */}
+              {hasOutput && isViewingCurrentAgent && !hasError && (
                 <>
                   {/* Show Edit Document button only when pending */}
                   {isPending && onEditDocument && (

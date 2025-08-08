@@ -78,25 +78,6 @@ Your unique factor directly relates to the type of clients you will land and who
 What makes you - you
 How would you act with no social pressure around you?
 
-## Finding Your Voice
-
-Your unique factor directly relates to the type of clients you will land and who your customers are
-What makes you - you
-How would you act with no social pressure around you?
-
-To fin your voice ask yourself:
-
-What angers you?
-What makes you cry?
-What have you mastered?
-What gives you hope?
-As a child, what did you want to be when you grew up?
-If you had all the time and money in the world, what would you do?
-What would blow your mind?
-What platform do you own?
-What change would you like to see in the world?
-If you had one day left, how would you spend it?
-
 ## Differentiate Yourself
 
 It’s your job to assist them by making your unique selling proposition obvious, different and memorable enough that they can see exactly what your business has to offer that possible competitors do not.

@@ -225,14 +225,12 @@
       "product_market_fit_analysis": {
         "description": "Comprehensive assessment of product-market alignment",
         "requirements": [
-          "PMF score calculation using persona pain points and solution mapping",
-          "Market demand quantification with TAM/SAM/SOM from GTM analysis",
-          "Value proposition-persona fit matrix with conversion potential",
-          "Competitive advantage sustainability and moat assessment",
-          "Product-channel fit analysis for each acquisition strategy",
-          "Network effects and viral growth mechanics potential",
-          "Unit economics modeling and pricing strategy validation",
-          "Risk factors and mitigation strategies for PMF achievement"
+          "Current product-market fit assessment based on GTM and persona insights",
+          "Market demand validation approach and evidence requirements",
+          "Product value proposition refinement and optimization",
+          "Customer segment alignment and persona-product matching",
+          "Competitive positioning and differentiation analysis",
+          "Scalability assessment and growth potential evaluation"
         ]
       },
       "brand_positioning_strategy": {
@@ -243,38 +241,34 @@
           "Brand Promise (core value proposition and benefits)",
           "Competitive Differentiation (unique advantages and positioning)",
           "Reasons to Believe (supporting evidence and proof points)",
-          "Social proof strategy and credibility markers by segment",
           "Brand Personality (tone, style, emotional attributes)",
-          "Visual identity principles and design system guidelines",
+          "Brand validation and perception measurement approach",
           "Guidelines for creatives and content strategy",
-          "Guidelines for Ad Campaign creative",
-          "Brand validation and perception measurement approach"
+          "Guidelines for Ad Campaign creative"
         ]
       },
       "product_development_roadmap": {
-        "description": "Customer-centric product development with growth integration",
+        "description": "Strategic product roadmap with persona-aligned prioritization",
         "requirements": [
-          "NOW (0-3 months): MVP features for primary persona validation",
-          "NEXT (3-6 months): Growth features for acquisition and activation",
-          "LATER (6-12 months): Retention and expansion capabilities",
-          "Feature scoring matrix: customer value × business impact × technical effort",
-          "Persona-specific feature customization and personalization",
-          "Growth loops integration (viral, content, referral mechanisms)",
-          "Technical architecture decisions for scalability",
-          "Analytics and experimentation infrastructure requirements"
+          "Core product features mapped to customer personas and journey stages for Product-Market Fit MVP",
+          "Feature prioritization framework based on customer value and business impact",
+          "Development phases with timeline and resource considerations",
+          "MVP definition and validation milestones",
+          "User interface and interaction design guidelines",
+          "Product iteration and improvement framework",
+          "User feedback collection and integration mechanisms",
+          "Experience personalization opportunities by persona",
+          "Success metrics and KPIs for each development phase"
         ]
       },
       "validation_measurement_strategy": {
         "description": "Product validation methodology and success metrics",
         "requirements": [
-          "Leading indicators: activation rate, time-to-value, feature adoption",
-          "Lagging indicators: retention curves, NPS by persona, revenue per user",
-          "PMF signals: 40% very disappointed test, organic growth rate, payback period",
-          "Experimentation velocity targets and learning cycles",
-          "Persona-specific success metrics and benchmarks",
-          "Iteration triggers and pivot criteria with thresholds",
-          "Competitive benchmarking framework and tracking",
-          "Integration with growth funnel metrics from Agent #4"
+          "Product-market fit measurement framework and metrics",
+          "Customer validation methodology and testing approach",
+          "Success criteria and KPI definition for product development",
+          "Feedback loop design for continuous product improvement",
+          "Market validation timeline and milestone tracking"
         ]
       }
     },
@@ -336,7 +330,7 @@
   "claude_config": {
     "model": "claude-3-5-sonnet-20241022",
     "temperature": 0.7,
-    "max_tokens": 2500,
+    "max_tokens": 4000,
     "top_p": 0.95
   },
   "metadata": {

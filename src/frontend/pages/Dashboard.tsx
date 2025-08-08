@@ -238,11 +238,61 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* Sessions list */}
+        {/* Projects section - Completed Strategies */}
+        {sessions.filter((s) => s.status === 'completed').length > 0 && (
+          <div className='mb-8 bg-white dark:bg-gray-800 shadow rounded-lg'>
+            <div className='px-6 py-4 border-b border-gray-200 dark:border-gray-700'>
+              <h3 className='text-lg font-medium text-gray-900 dark:text-white'>
+                Projects
+              </h3>
+            </div>
+            <div className='divide-y divide-gray-200 dark:divide-gray-700'>
+              {sessions
+                .filter((session) => session.status === 'completed')
+                .map((session) => (
+                  <div
+                    key={session.id}
+                    className='px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors'
+                  >
+                    <div className='flex items-center justify-between'>
+                      <div className='flex-1 min-w-0'>
+                        <div className='flex items-center space-x-3'>
+                          <h4 className='text-sm font-medium text-gray-900 dark:text-white truncate'>
+                            Growth Strategy Project
+                          </h4>
+                          <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'>
+                            Completed
+                          </span>
+                        </div>
+                        <div className='mt-2 flex items-center text-sm text-gray-500 dark:text-gray-400'>
+                          <span>
+                            Completed:{' '}
+                            {new Date(session.lastActive).toLocaleDateString()}
+                          </span>
+                          <span className='mx-2'>•</span>
+                          <span>All 8 agents completed</span>
+                        </div>
+                      </div>
+                      <div className='flex items-center space-x-3'>
+                        <Link
+                          to={`/refine/${session.id}`}
+                          className='inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors'
+                        >
+                          Refine Strategy
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+
+        {/* Sessions list - Active/Paused Strategies */}
         <div className='bg-white dark:bg-gray-800 shadow rounded-lg'>
           <div className='px-6 py-4 border-b border-gray-200 dark:border-gray-700'>
             <h3 className='text-lg font-medium text-gray-900 dark:text-white'>
-              Your Growth Strategies
+              Growth Strategies
             </h3>
           </div>
 
@@ -250,7 +300,7 @@ export default function Dashboard() {
             <div className='flex items-center justify-center py-12'>
               <LoadingSpinner size='lg' />
             </div>
-          ) : sessions.length === 0 ? (
+          ) : sessions.filter((s) => s.status !== 'completed').length === 0 ? (
             <div className='text-center py-12'>
               <svg
                 className='mx-auto h-12 w-12 text-gray-400'
@@ -300,71 +350,75 @@ export default function Dashboard() {
             </div>
           ) : (
             <div className='divide-y divide-gray-200 dark:divide-gray-700'>
-              {sessions.map((session) => (
-                <div
-                  key={session.id}
-                  className='px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors'
-                >
-                  <div className='flex items-center justify-between'>
-                    <div className='flex-1 min-w-0'>
+              {sessions
+                .filter((s) => s.status !== 'completed')
+                .map((session) => (
+                  <div
+                    key={session.id}
+                    className='px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors'
+                  >
+                    <div className='flex items-center justify-between'>
+                      <div className='flex-1 min-w-0'>
+                        <div className='flex items-center space-x-3'>
+                          <h4 className='text-sm font-medium text-gray-900 dark:text-white truncate'>
+                            Growth Strategy Session
+                          </h4>
+                          {getStatusBadge(session.status)}
+                        </div>
+
+                        <div className='mt-2 flex items-center text-sm text-gray-500 dark:text-gray-400'>
+                          <span>
+                            Progress: {getProgressPercentage(session)}% (
+                            {session.progress.completedSteps}/
+                            {session.progress.totalSteps} agents)
+                          </span>
+                          <span className='mx-2'>•</span>
+                          <span>
+                            Last active:{' '}
+                            {new Date(session.lastActive).toLocaleDateString()}
+                          </span>
+                        </div>
+
+                        {/* Progress bar */}
+                        <div className='mt-3'>
+                          <div className='bg-gray-200 dark:bg-gray-700 rounded-full h-2'>
+                            <div
+                              className='bg-indigo-600 h-2 rounded-full progress-bar'
+                              style={{
+                                width: `${getProgressPercentage(session)}%`,
+                              }}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Current agent */}
+                        {session.status === 'active' && (
+                          <div className='mt-2 text-sm'>
+                            <span className='text-gray-500 dark:text-gray-400'>
+                              Current agent:
+                            </span>
+                            <span className='ml-1 font-medium text-indigo-600 dark:text-indigo-400'>
+                              {session.currentAgent
+                                .replace(/-/g, ' ')
+                                .replace(/\b\w/g, (l) => l.toUpperCase())}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
                       <div className='flex items-center space-x-3'>
-                        <h4 className='text-sm font-medium text-gray-900 dark:text-white truncate'>
-                          Growth Strategy Session
-                        </h4>
-                        {getStatusBadge(session.status)}
+                        <Link
+                          to={`/chat/${session.id}`}
+                          className='inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors'
+                        >
+                          {session.status === 'completed'
+                            ? 'Review'
+                            : 'Continue'}
+                        </Link>
                       </div>
-
-                      <div className='mt-2 flex items-center text-sm text-gray-500 dark:text-gray-400'>
-                        <span>
-                          Progress: {getProgressPercentage(session)}% (
-                          {session.progress.completedSteps}/
-                          {session.progress.totalSteps} agents)
-                        </span>
-                        <span className='mx-2'>•</span>
-                        <span>
-                          Last active:{' '}
-                          {new Date(session.lastActive).toLocaleDateString()}
-                        </span>
-                      </div>
-
-                      {/* Progress bar */}
-                      <div className='mt-3'>
-                        <div className='bg-gray-200 dark:bg-gray-700 rounded-full h-2'>
-                          <div
-                            className='bg-indigo-600 h-2 rounded-full progress-bar'
-                            style={{
-                              width: `${getProgressPercentage(session)}%`,
-                            }}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Current agent */}
-                      {session.status === 'active' && (
-                        <div className='mt-2 text-sm'>
-                          <span className='text-gray-500 dark:text-gray-400'>
-                            Current agent:
-                          </span>
-                          <span className='ml-1 font-medium text-indigo-600 dark:text-indigo-400'>
-                            {session.currentAgent
-                              .replace(/-/g, ' ')
-                              .replace(/\b\w/g, (l) => l.toUpperCase())}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className='flex items-center space-x-3'>
-                      <Link
-                        to={`/chat/${session.id}`}
-                        className='inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors'
-                      >
-                        {session.status === 'completed' ? 'Review' : 'Continue'}
-                      </Link>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           )}
         </div>

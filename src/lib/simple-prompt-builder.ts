@@ -15,6 +15,7 @@ export interface SimplePromptContext {
   configLoader?: ConfigLoader; // Optional for knowledge loading
   workflowPosition?: number; // Position in workflow (1-8)
   totalAgents?: number; // Total number of agents in workflow
+  experiments?: any[]; // Optional experiments database for Growth Hacker
 }
 
 export interface SimplePrompt {
@@ -59,7 +60,8 @@ export class SimplePromptBuilder {
     console.log(`🔧 DEBUG: Building system prompt...`);
     const systemPrompt = this.buildEnhancedSystemPrompt(
       context.agentConfig,
-      knowledgeContent
+      knowledgeContent,
+      context.experiments
     );
     console.log(`🔧 DEBUG: System prompt built:`, {
       systemPromptLength: systemPrompt.length,
@@ -90,7 +92,7 @@ export class SimplePromptBuilder {
     context: SimplePromptContext,
     outputFormat: string
   ): SimplePrompt {
-    const systemPrompt = this.buildEnhancedSystemPrompt(context.agentConfig);
+    const systemPrompt = this.buildEnhancedSystemPrompt(context.agentConfig, '', context.experiments);
     const instructionPrompt = this.buildEnhancedInstructionPrompt(
       taskDefinition,
       context,
@@ -111,7 +113,8 @@ export class SimplePromptBuilder {
    */
   private buildEnhancedSystemPrompt(
     agentConfig: AgentConfig,
-    knowledgeContent?: string
+    knowledgeContent?: string,
+    experiments?: any[]
   ): string {
     console.log(`🔧 DEBUG: buildEnhancedSystemPrompt() called:`, {
       hasAgentConfig: !!agentConfig,
@@ -120,6 +123,8 @@ export class SimplePromptBuilder {
       hasPersona: !!agentConfig?.persona,
       hasCapabilities: !!agentConfig?.capabilities,
       knowledgeContentLength: knowledgeContent?.length || 0,
+      hasExperiments: !!experiments,
+      experimentsCount: experiments?.length || 0,
     });
 
     if (!agentConfig) {
@@ -161,6 +166,24 @@ ${agentConfig.persona.communication_style}
       prompt += `<Analytical_framework>
 ${knowledgeContent}
 </Analytical_framework>
+`;
+    }
+
+    // . EXPERIMENTS DATABASE (for Growth Hacker agent)
+    if (experiments && experiments.length > 0) {
+      prompt += `<experiments_database>
+You have access to ${experiments.length} growth experiments to analyze and select from.
+
+EXPERIMENTS DATA:
+${JSON.stringify(experiments, null, 2)}
+
+SELECTION CRITERIA:
+- Analyze each experiment's relevance to the business context from previous agents
+- Consider business type, customer personas, funnel priorities, and resource constraints
+- Score experiments based on probability of success for this specific business
+- Select the 20 most relevant experiments with highest success potential
+- Organize into 3 tiers: Quick Wins, Strategic Tests, Innovation Experiments
+</experiments_database>
 `;
     }
 
@@ -232,13 +255,21 @@ ${knowledgeContent}
     const total = context.totalAgents || 8;
     prompt += `
     <position>
-    You are Agent ${position} of ${total} in the Growth Strategy Development System.  
+    You are Agent ${position} of ${total} in the Growth Strategy Development System. You are creating a comprehensive Growth Strategy protocol that will be used by the business to focus their marketing efforts on.  
     Your output will directly influence the work of subsequent agents, so ensure all content is specific, actionable, and strategically aligned.
     </position>`;
 
     prompt += `<task_instructions>
 ${taskDefinition}
+Before answering, work through this step-by-step:
+1. REMEMBER: All the context from the previous agents and your specific knowledge base.
+2. UNDERSTAND: What is the core question being asked?
+3. ANALYZE: What are the key factors/components involved?
+4. REASON: What logical connections can I make?
+5. SYNTHESIZE: How do these elements combine?
+6. CONCLUDE: What is the most accurate/helpful response?
 </task_instructions>
+
 `;
 
     prompt += `<business_concept  >

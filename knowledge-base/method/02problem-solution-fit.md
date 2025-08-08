@@ -1,7 +1,6 @@
 # Problem Solution Fit Canvas
 
 The Problem-Solution Fit canvas is based on the principles of Lean Startup, LUM (Lazy User Model) and User Experience design. It helps entrepreneurs, marketers and corporate innovators identify behavioral patterns and recognize what would work and why.
-My goal was to create a tool that translates a problem into a solution, taking into account customer behavior and the context around it. With this template you will be able to take important information into consideration at an earlier stage and look at problem solving in depth. It increases your chances of finding problem-solution and product-market fit.
 
 It helps you to:
 Solve complex problems in a way that fits the state of your customers.
@@ -9,6 +8,17 @@ Succeed faster and increase your solution adoption by tapping into existing medi
 Sharpen your communication and marketing strategy with the right triggers and messaging.
 Increase touch-points with your company by finding the right problem-behavior fit and building trust by solving frequent annoyances, or urgent or costly problems.
 Understand the existing situation in order to improve it for your target group.
+
+## Working with the canvas.
+
+General approach.
+
+1. State your Vision.
+2. Define customer segment.
+3. Fit within customer limitations and differentiate / be better than available solutions.
+4. Solve a frequent*, urgent or costly problem by analyzing its root/cause, fit into frequent*/natural/familiar behavior which is directly or indirectly related to the underlying problem.
+5. Identify triggers that work in real life, and emotions (before/after) to strengthen your communication, so that you can activate your potential customers via online and offline channels, by designing a solution that fits customer limitations, problems and existing behavior.
+6. Your solution might become different over time, adjusting to an ever-changing market landscape, but your Vision should stay the same.
 
 ## The Detailed Structure
 
@@ -23,14 +33,9 @@ Understand the existing situation in order to improve it for your target group.
 9. **Root / Cause of every problem** Understand the cause of the Problem
 10. **Your Solution** Your Down to earth Solution guess
 
-## The overview of the Structure
-
-- Solution Validation: to make sure you understand your target group, their limitations and their currently available solutions, against which you are going to compete.
-- Problem Validation: to help you filter out the noise and identify the most urgent and frequent problems, understand the real reasons behind them and see which behavior supports it. Is this behavior weak or infrequent — is it a problem worth solving?
-- Communication Hypothesis: to help you sharpen your communication with strong triggers, emotional messaging and reaching customers via the right channels.
-- Solution guess: translate all the validated data you have gathered into a solution that fits the customer state and his/her limitations, solves a real problem and taps into the common behavior of your target group.
-
 ### Solution Validation
+
+to make sure you understand your target group, their limitations and their currently available solutions, against which you are going to compete.
 
 1. Customer Segements
 2. Customer State Limitations
@@ -49,6 +54,8 @@ What are the pros/cons of existing solutions?
 
 ### Problem Behavior Fit
 
+to help you filter out the noise and identify the most urgent and frequent problems, understand the real reasons behind them and see which behavior supports it. Is this behavior weak or infrequent — is it a problem worth solving?
+
 2. Problems / Pains + frequency
 3. Root / Cause of every problem
 4. Behavior + its intensity
@@ -66,6 +73,8 @@ How often does this related behavior happen?
 
 ### Communication Hypothesis
 
+to help you sharpen your communication with strong triggers, emotional messaging and reaching customers via the right channels.
+
 3. Triggers to Act
 4. Emotions before & after
 5. Channels of behavior online & offline
@@ -81,6 +90,8 @@ Extract online and offline channels from the Behavior block.
 
 ### Solution Guess / Problem Solution Fit
 
+translate all the validated data you have gathered into a solution that fits the customer state and his/her limitations, solves a real problem and taps into the common behavior of your target group.
+
 10. Your Solution
 
 The goal: to match gathered data to the best solution that fits into customer behavior and constraints.
@@ -95,14 +106,3 @@ For higher chances of solution adoption:
 Think of possible solutions that fit the user state limitations, tap into existing behavior, resemble what is already familiar to your target group.
 Take the best from alternative solutions — simulate natural triggers and tap into existing customer behavior, design a solution that is useful (solves a real problem), understandable (resembles what people already know) and accessible (available via the channels where these people are).
 After giving it a first try you will likely realize that you were focusing on a different (less urgent or infrequent) problem, or that the real cause of the situation is worthy of attention. Extract repeated keywords (mediums, devices, situations), frequent behavior and emotions. That’s your cheat sheet towards a solution with a higher chance of adoption.
-
-## Working with the canvas.
-
-General approach.
-
-1. State your Vision.
-2. Define customer segment.
-3. Fit within customer limitations and differentiate / be better than available solutions.
-4. Solve a frequent*, urgent or costly problem by analyzing its root/cause, fit into frequent*/natural/familiar behavior which is directly or indirectly related to the underlying problem.
-5. Identify triggers that work in real life, and emotions (before/after) to strengthen your communication, so that you can activate your potential customers via online and offline channels, by designing a solution that fits customer limitations, problems and existing behavior.
-6. Your solution might become different over time, adjusting to an ever-changing market landscape, but your Vision should stay the same.

@@ -18,7 +18,7 @@ export interface UserSession {
 
 export interface AgentOutput {
   agentId: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: 'pending' | 'approved' | 'rejected' | 'error';
   content: string;
   template: string;
   variables: Record<string, any>;
@@ -27,6 +27,12 @@ export interface AgentOutput {
   generatedAt: string;
   approvedAt?: string;
   metadata?: AgentOutputMetadata;
+  error?: {
+    message: string;
+    type: 'connection' | 'rate_limit' | 'api_error' | 'unknown';
+    retryCount: number;
+    lastAttempt: string;
+  };
 }
 
 export interface AgentOutputMetadata {
@@ -535,7 +541,7 @@ export type MessageType =
 
 export type SessionStatus = 'active' | 'paused' | 'completed';
 
-export type OutputStatus = 'pending' | 'approved' | 'rejected';
+export type OutputStatus = 'pending' | 'approved' | 'rejected' | 'error';
 
 // Additional Types for Agent Execution
 export interface GeneratedPrompt {

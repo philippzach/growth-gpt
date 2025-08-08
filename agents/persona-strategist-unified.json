@@ -159,12 +159,10 @@
       }
     },
     "knowledge_files": {
-      "primary": [
-        "knowledge-base/method/04psychograhpic-persona.md",
-        "knowledge-base/resources/psychographic-segmentation.md",
-        "knowledge-base/resources/psychographics-socialmedia.md"
-      ],
+      "primary": ["knowledge-base/method/04psychograhpic-persona.md"],
       "secondary": [
+        "knowledge-base/resources/psychographic-segmentation.md",
+        "knowledge-base/resources/psychographics-socialmedia.md",
         "knowledge-base/resources/ocean-personality.md",
         "knowledge-base/resources/hierachy-of-engagement.md",
         "knowledge-base/glossary/growth-hacking-dictionary.md"
@@ -172,16 +170,16 @@
     }
   },
   "task_specification": {
-    "primary_objective": "Develop comprehensive psychographic personas with deep behavioral insights and detailed customer journey mapping that enables precise targeting and messaging for all subsequent marketing and growth strategies",
+    "primary_objective": "Develop 4 comprehensive customer Segments with one psychographic personas each segment. The persona should have deep behavioral insights and follow the Persona Canvas. Detailed customer journey mapping enables precise targeting, design decisions and messaging for all subsequent marketing and growth strategies",
     "secondary_objectives": [
-      "Transform market segments from GTM brief into actionable customer personas",
+      "Transform market segments from GTM brief into actionable customer personas, create 4 in total",
       "Identify key behavioral triggers and motivational factors for each persona",
       "Map complete customer journey with emotional states and touchpoints",
       "Provide specific targeting recommendations for marketing channels and platforms"
     ],
     "deliverables": {
       "primary_deliverables": [
-        "Detailed psychographic persona profiles (2-4 primary personas)",
+        "Detailed psychographic persona profiles (4 primary personas)",
         "Behavioral analysis with triggers, motivations, and barriers for each persona",
         "Complete customer journey maps with touchpoints and emotional states",
         "Channel-specific targeting recommendations for each persona",
@@ -215,24 +213,24 @@
     "format": "structured_markdown",
     "required_sections": {
       "executive_summary": {
-        "description": "Brief overview of the customer personas developed and key behavioral insights",
+        "description": "Strategic overview of persona architecture and behavioral intelligence'",
         "length": "2-3 sentences",
         "requirements": [
-          "Highlight key persona characteristics",
-          "Identify primary behavioral patterns",
-          "State targeting implications"
+          "Synthesize primary persona archetypes and market potential",
+          "Highlight critical behavioral triggers and conversion drivers",
+          "State strategic implications for positioning and growth"
         ]
       },
       "primary_customer_personas": {
-        "description": "Detailed psychographic persona profiles (2-4 personas)",
+        "description": "Deep psychographic profiles with behavioral intelligence (4 personas)",
         "requirements": {
           "persona_structure": [
-            "Descriptive persona name and archetype",
-            "Demographics (age range, location, income, occupation)",
-            "Psychographics (values, beliefs, lifestyle, personality traits using OCEAN model)",
-            "Behavioral patterns (decision-making, information-seeking, purchase triggers)",
-            "Customer journey stages and emotional states",
-            "Marketing implications and targeting recommendations"
+            "Memorable and descriptive persona archetype name and market size",
+            "Demographics (age, income, education, location, occupation)",
+            "Psychographics (Personality type using OCEAN, personality traits and values, Offline and Online Places, Needs and Goals)",
+            "Behavioral patterns (Likes, Dislikes, decision triggers, purchase drivers, lifestyle patterns)",
+            "Journey stages with emotional states and friction points",
+            "Platform-specific targeting parameters and activation strategies"
           ],
           "content_requirements": [
             "Each persona must be specific and actionable for targeting",
@@ -249,7 +247,9 @@
           "Key psychological drivers across all personas",
           "Common pain points and motivational patterns",
           "Seasonal or situational behavior variations",
-          "Behavioral triggers for engagement and conversion"
+          "Behavioral triggers for engagement and conversion",
+          "Viral propensity and referral behavior indicators",
+          "Retention signatures and churn risk factors"
         ]
       },
       "customer_journey_mapping": {
@@ -265,11 +265,14 @@
       "messaging_communication_strategy": {
         "description": "Persona-aligned messaging and communication framework",
         "requirements": [
+          "Core value propositions by persona with proof points",
           "Core messaging themes that resonate across personas",
+          "Message hierarchy and emotional hooks by segment",
           "Persona-specific message customization and tone",
-          "Channel strategy recommendations for each persona",
+          "Creative direction guidelines and visual preferences",
           "Content strategy framework aligned with persona psychology",
-          "Communication timing and frequency preferences"
+          "Communication timing and frequency preferences",
+          "Testing hypotheses and performance benchmarks"
         ]
       },
       "implementation_recommendations": {
@@ -311,9 +314,7 @@
     "workflow_position": 2,
     "total_agents": 8,
     "inputs": {
-      "required_inputs": [
-        "gtm-strategy-foundation"
-      ],
+      "required_inputs": ["gtm-strategy-foundation"],
       "user_inputs": [
         "customer_insights",
         "behavioral_observations",
@@ -325,10 +326,7 @@
       "format": "markdown"
     },
     "handoff_requirements": {
-      "next_agents": [
-        "product-manager",
-        "growth-manager"
-      ],
+      "next_agents": ["product-manager", "growth-manager"],
       "context_to_provide": [
         "Complete persona profiles with psychographic and behavioral details",
         "Customer journey maps with touchpoints for channel strategy",
@@ -345,8 +343,8 @@
   },
   "claude_config": {
     "model": "claude-3-5-sonnet-20241022",
-    "temperature": 0.8,
-    "max_tokens": 4000,
+    "temperature": 0.9,
+    "max_tokens": 2500,
     "top_p": 0.95
   },
   "metadata": {

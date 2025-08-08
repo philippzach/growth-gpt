@@ -13,18 +13,6 @@ import { SimplePromptBuilder } from '../../lib/simple-prompt-builder';
 import { AgentExecutor } from '../../lib/agent-executor';
 import { createAPIResponse, createAPIError } from '../../lib/api-utils';
 
-// Experiment interface for type safety
-interface Experiment {
-  id: number;
-  tactic: string;
-  description: string;
-  funnel_step: string;
-  probability: string;
-  business_type: string;
-  effort: string;
-  dev_needed: boolean;
-}
-
 const app = new Hono<{ Bindings: Env }>();
 
 // Middleware
@@ -43,28 +31,6 @@ app.get('/health', (c) => {
     timestamp: new Date().toISOString(),
   });
 });
-
-/**
- * Load experiments from KV storage
- */
-async function loadExperiments(configStore: KVNamespace): Promise<Experiment[]> {
-  try {
-    console.log('🧪 Loading experiments database from KV...');
-    const experimentsJson = await configStore.get('experiments/master-experiments.json', 'text');
-    
-    if (!experimentsJson) {
-      throw new Error('Experiments data not found in KV store');
-    }
-
-    const experiments: Experiment[] = JSON.parse(experimentsJson);
-    console.log(`✅ Successfully loaded ${experiments.length} experiments`);
-    
-    return experiments;
-  } catch (error) {
-    console.error('❌ Failed to load experiments:', error);
-    throw new Error(`Failed to load experiments: ${error instanceof Error ? error.message : 'Unknown error'}`);
-  }
-}
 
 // Enhanced agent execution endpoint
 app.post('/execute', async (c) => {
@@ -123,19 +89,10 @@ app.post('/execute', async (c) => {
       knowledgeDomains: agentConfig.capabilities?.knowledge_domains?.length || 0
     });
 
-    // Load experiments database
-    console.log(`🧪 Loading experiments database...`);
-    const experiments = await loadExperiments(c.env.CONFIG_STORE);
-    console.log(`✅ Experiments database loaded:`, {
-      totalExperiments: experiments.length,
-      funnelStages: [...new Set(experiments.map(e => e.funnel_step))],
-      probabilityLevels: [...new Set(experiments.map(e => e.probability))]
-    });
-
     // Initialize enhanced prompt builder
     const promptBuilder = new SimplePromptBuilder();
     
-    // Create enhanced context with full previous outputs and experiments
+    // Create enhanced context with full previous outputs
     const enhancedContext = promptBuilder.createEnhancedContext({
       businessIdea: userInputs?.businessIdea || userInputs?.businessConcept || 'Business concept not provided',
       userInputs,
@@ -150,7 +107,6 @@ app.post('/execute', async (c) => {
       configLoader,
       workflowPosition: 8, // 8th agent in workflow
       totalAgents: 8,
-      experiments, // Include experiments in context
     }, AGENT_ID);
 
     console.log(`📊 Enhanced context created:`, {
@@ -159,9 +115,7 @@ app.post('/execute', async (c) => {
       totalAgents: enhancedContext.totalAgents,
       previousOutputsReceived: Object.keys(previousOutputs).length,
       expectedPreviousAgents: ['gtm-consultant', 'persona-strategist', 'product-manager', 'growth-manager', 'head-of-acquisition', 'head-of-retention', 'viral-growth-architect'],
-      actualPreviousAgents: Object.keys(previousOutputs),
-      experimentsLoaded: experiments.length,
-      experimentsAvailable: !!enhancedContext.experiments
+      actualPreviousAgents: Object.keys(previousOutputs)
     });
 
     // Define relevant knowledge files for Growth Hacker
@@ -175,57 +129,16 @@ app.post('/execute', async (c) => {
       'knowledge-base/resources/north-start-metric.md'
     ];
 
-    // Generate dynamic output format with experiments table
+    // Generate dynamic output format from unified config
     const outputFormat = unifiedConfig 
-      ? generateOutputFormatFromConfig(unifiedConfig.output_specifications, experiments.length)
-      : `Generate comprehensive experimentation framework with experiments analysis:
-
-# Growth Experimentation Strategy
-
-## Business Context Analysis
-Synthesize insights from all 7 previous agents to understand business characteristics:
-- Business type and model (from GTM Consultant)
-- Customer personas and behaviors (from Persona Strategist)
-- Product-market fit status (from Product Manager)
-- Growth framework priorities (from Growth Manager)
-- Acquisition channels and strategies (from Head of Acquisition)
-- Retention mechanisms (from Head of Retention)
-- Viral growth opportunities (from Viral Growth Architect)
-
-## Top 20 Recommended Experiments Table
-
-| Rank | Experiment Name | Funnel Stage | Probability | Effort | Dev Needed | Business Fit Score | Implementation Timeline |
-|------|----------------|-------------|-------------|--------|------------|-------------------|----------------------|
-| 1    | [Name]         | [Stage]     | [High/Med/Low] | [Level] | [Yes/No]  | [X.X/10]         | [Week/Month]        |
-
-## Detailed Implementation Guide
-
-### Phase 1: Quick Wins (Week 1-2)
-**Experiment 1: [Name]**
-- **Why This Works**: [Business fit analysis based on previous agents' outputs]
-- **Step-by-Step Implementation**:
-  1. [Specific action with timeline]
-  2. [Specific action with timeline]
-  3. [Measurement setup]
-- **Success Metrics**: [Specific KPIs to track]
-- **Resources Needed**: [Team, tools, budget requirements]
-- **Expected Impact**: [Quantified expectations]
-
-### Phase 2: Strategic Tests (Week 3-8)
-[Continue same format for strategic experiments]
-
-### Phase 3: Innovation Experiments (Week 9-12)
-[Continue same format for innovation experiments]
-
-## Implementation Checklist
-- [ ] Week 1: Set up tracking infrastructure for baseline metrics
-- [ ] Week 1: Launch first 3-5 quick-win experiments
-- [ ] Week 2: Analyze initial results and iterate
-- [ ] Week 3: Launch strategic experiment batch
-- [ ] Week 4: Review and optimize successful tests
-- [Continue with detailed weekly timeline]
-
-Analyze all ${experiments.length} available experiments and select the 20 most relevant for this specific business context.`;
+      ? generateOutputFormatFromConfig(unifiedConfig.output_specifications)
+      : `Generate comprehensive experimentation framework with:
+- Hypothesis formation and systematic testing roadmap
+- Statistically valid experiment designs with proper controls
+- Prioritized testing backlog with resource allocation
+- Analytics and measurement systems implementation
+- Continuous optimization and learning processes
+- Implementation timeline with resource requirements`;
 
     console.log(`🎯 Task definition:`, {
       taskObjective: unifiedConfig?.task_specification.primary_objective?.substring(0, 150) + '...' || 'Default experimentation framework development',
@@ -325,12 +238,9 @@ Analyze all ${experiments.length} available experiments and select the 20 most r
 /**
  * Generate output format from unified configuration
  */
-function generateOutputFormatFromConfig(outputSpecs: any, experimentsCount: number = 649): string {
+function generateOutputFormatFromConfig(outputSpecs: any): string {
   if (!outputSpecs?.required_sections) {
-    return `Generate comprehensive experimentation framework with experiments analysis.
-    
-Analyze all ${experimentsCount} available experiments and select the 20 most relevant for this specific business context.
-Include a detailed table and step-by-step implementation guide.`;
+    return 'Generate comprehensive experimentation framework and recommendations in markdown format';
   }
 
   const sections = Object.entries(outputSpecs.required_sections).map(([key, spec]: [string, any]) => {
@@ -342,13 +252,6 @@ ${spec.requirements ? spec.requirements.map((req: string) => `- ${req}`).join('\
   return `Generate comprehensive experimentation framework with the following sections:
 
 ${sections}
-
-## Additional Requirements for Experiments Analysis:
-- Analyze all ${experimentsCount} available experiments from the database
-- Select the 20 most relevant experiments based on business context from previous agents
-- Present results in a structured table format with business fit scores
-- Provide detailed step-by-step implementation guide for each selected experiment
-- Include specific timelines, resource requirements, and success metrics
 
 Ensure all recommendations are specific, actionable, and aligned with statistical best practices.`;
 }

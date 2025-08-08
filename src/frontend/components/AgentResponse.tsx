@@ -10,6 +10,7 @@ interface AgentResponseProps {
   isAgentTyping?: boolean;
   onEdit?: (content: string) => void;
   onStartGenerating?: () => void;
+  onRegenerate?: () => void;
   isGenerating?: boolean;
 }
 
@@ -20,6 +21,7 @@ export default function AgentResponse({
   isAgentTyping,
   onEdit,
   onStartGenerating,
+  onRegenerate,
   isGenerating = false
 }: AgentResponseProps) {
   const [isEditing, setIsEditing] = useState(false);
@@ -74,6 +76,7 @@ export default function AgentResponse({
 
   const agentOutput = session.agentOutputs[currentAgent];
   const agentInfo = getAgentInfo(currentAgent);
+  const hasError = agentOutput?.status === 'error';
 
   const handleStartEdit = () => {
     if (agentOutput) {
@@ -271,6 +274,53 @@ export default function AgentResponse({
                     <span className="text-gray-600 dark:text-gray-400">
                       {agentInfo.name} is analyzing your business idea...
                     </span>
+                  </div>
+                ) : hasError ? (
+                  /* Error State */
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-lg font-medium text-red-900 dark:text-red-100 mb-2">
+                      Agent Execution Failed
+                    </h3>
+                    <p className="text-red-700 dark:text-red-300 mb-2">
+                      {agentOutput?.error?.message || 'An unexpected error occurred while processing your request.'}
+                    </p>
+                    {agentOutput?.error?.retryCount && agentOutput.error.retryCount > 0 && (
+                      <p className="text-sm text-red-600 dark:text-red-400 mb-6">
+                        Retry attempts: {agentOutput.error.retryCount}
+                      </p>
+                    )}
+                    <div className="space-y-3">
+                      {/* Regenerate Button */}
+                      {onRegenerate && (
+                        <button
+                          onClick={onRegenerate}
+                          disabled={isGenerating}
+                          className="inline-flex items-center px-6 py-3 text-sm font-medium text-white bg-red-600 border border-transparent rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        >
+                          {isGenerating ? (
+                            <>
+                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                              Regenerating...
+                            </>
+                          ) : (
+                            <>
+                              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                              </svg>
+                              Try Again
+                            </>
+                          )}
+                        </button>
+                      )}
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        This usually resolves after a moment due to temporary API connectivity issues.
+                      </p>
+                    </div>
                   </div>
                 ) : (
                   /* Empty State */
