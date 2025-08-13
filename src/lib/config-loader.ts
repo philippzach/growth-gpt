@@ -407,10 +407,20 @@ export class ConfigLoader {
     try {
       const workflowPath = `workflows/${workflowId}.json`;
       console.log(`Loading workflow config from: ${workflowPath}`);
+      console.log(`KV Namespace available:`, !!this.kvNamespace);
       
       const jsonContent = await this.kvNamespace.get(workflowPath);
+      console.log(`KV get result:`, jsonContent ? `${jsonContent.length} characters` : 'null');
+      
       if (!jsonContent) {
         console.warn(`Workflow config not found: ${workflowPath}`);
+        // Try to list available keys for debugging
+        try {
+          const listResult = await this.kvNamespace.list({ prefix: 'workflows/' });
+          console.log(`Available workflow keys:`, listResult.keys.map(k => k.name));
+        } catch (listError) {
+          console.error(`Error listing KV keys:`, listError);
+        }
         return null;
       }
 

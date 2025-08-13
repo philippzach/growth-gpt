@@ -1,59 +1,158 @@
-# Growth Strategy Agent System 🚀
+# Growth Strategy Platform v3.0 🚀
 
-An AI-powered Growth Strategy Agent System that guides users through building comprehensive growth strategies using 8 specialized AI agents working collaboratively through structured workflows.
+**AI-Powered Strategic Planning & Execution System**
+
+A comprehensive platform that transforms fragmented growth efforts into a unified, data-driven system where strategic planning seamlessly flows into execution. Build your growth strategy through an 8-step foundation process with specialized AI agents, then activate powerful execution branches powered by Model Context Protocol (MCP) integrations.
+
+## 📋 Version Status
+
+- **Current Version**: v2.0 (Foundation Complete)
+- **Target Version**: v3.0 (MCP Integration)
+- **Phase 1-2**: ✅ Complete - 8-Agent Foundation + Refinement
+- **Phase 3-6**: 🚧 In Development - Execution Branches
+
+## 🆕 What's New in v2.0
+
+### Recent Features (January 2025)
+- **✨ Strategy Refinement Page**: AI-powered validation and optimization of completed strategies
+- **💬 Agent Q&A Chat**: Individual consultation sessions with any of the 9 specialized agents
+- **🤖 CEO Agent Added**: Alexandra Sterling for holistic strategy integration
+- **🔄 Improved Session Management**: Enhanced persistence with user indexing
+- **📊 Production Deployment**: Live on Cloudflare Workers with production KV namespaces
+- **🎨 UI Enhancements**: Agent tabs, visual progress indicators, streaming persistence
+
+### Coming in v3.0 (Q2-Q4 2025)
+- **📈 Analytics Branch**: Real-time KPI tracking with Google Analytics MCP
+- **🔍 Research Branch**: Market intelligence with Perplexity MCP
+- **🎨 Creative Branch**: AI-powered asset generation with DALL-E MCP
+- **🔄 Continuous Optimization**: Feedback loops from execution to strategy
+
+## 🎯 **Live Production Deployment**
+
+**🌐 Production URL:** [https://growth-gpt.waimeazach.workers.dev](https://growth-gpt.waimeazach.workers.dev)
+
+**Custom Domain:** Ready for `growth-gpt.com` configuration
+
+**Production Namespaces:**
+- CONFIG_STORE: `eaaec34e641d43388f00d8e02ead8296`
+- SESSION_STORE: `c1dfd85ed8f74a699a3a25dbb71170a4`
 
 ## 🌟 **Key Features**
 
-1. **User Authentication**: Email/Password via Supabase
-2. **Multi-Agent Workflow**: 8 specialized growth agents collaborate through structured workflows
-3. **Real-time Chat Interface**: Interactive WebSocket-powered conversations with AI agents
-4. **Session Management**: Persistent conversation history and session state
-5. **Template-Driven Outputs**: Structured, professional outputs using dynamic templates
-6. **Progress Tracking**: Visual workflow progress and milestone tracking
+### ✅ **Completed Features (v2.0)**
 
-## 🏗️ **System Architecture**
+1. **8-Step Strategy Foundation**: Complete growth strategy through sequential AI agents
+2. **Strategy Refinement**: AI-powered validation and optimization of your strategy
+3. **Agent Q&A Chat**: Individual consultations with any of the 9 specialized agents
+4. **User Authentication**: Secure email/password via Supabase
+5. **Real-time Chat Interface**: WebSocket-powered streaming conversations
+6. **Session Management**: Persistent progress with resume capability
+7. **Unified Worker Architecture**: Frontend and API from single Cloudflare Worker
+
+### 🚧 **Upcoming Features (v3.0)**
+
+8. **Analytics Branch**: Google Analytics MCP integration for KPI tracking
+9. **Research Branch**: Perplexity MCP for market intelligence
+10. **Creative Branch**: DALL-E MCP for asset generation
+11. **Continuous Optimization**: Feedback loops from execution to strategy
+
+## 🏗️ **System Architecture (v3.0 Vision)**
 
 ```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   React Frontend │────│  Cloudflare      │────│   AI Agents     │
-│   (Email Auth)   │    │  Workers         │    │   (8 Types)     │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-         │                       │                       │
-         ▼                       ▼                       ▼
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│ Supabase Auth   │    │ Session State   │    │ Configuration   │
-│ (Email/Password)│    │(Durable Object) │    │   (KV Store)    │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
+                    ┌─────────────────────────────────────┐
+                    │    🎯 GROWTH STRATEGY FOUNDATION    │
+                    │         (8-Step Process)            │
+                    │                                     │
+                    │  1. GTM Consultant                  │
+                    │  2. Persona Strategist              │
+                    │  3. Product Manager                 │
+                    │  4. Growth Manager                  │
+                    │  5. Head of Acquisition             │
+                    │  6. Head of Retention               │
+                    │  7. Viral Growth Architect          │
+                    │  8. Growth Hacker                   │
+                    │                                     │
+                    │  Output: Master Strategy Context    │
+                    └──────────────┬──────────────────────┘
+                                   │
+                        [Strategy Context Flows Down]
+                                   │
+                    ┌──────────────▼──────────────────────┐
+                    │   STRATEGY REFINEMENT AGENT         │
+                    │   (Validates & Optimizes Strategy)  │
+                    └──────────────┬──────────────────────┘
+                                   │
+                ┌──────────────────┼──────────────────────┐
+                │                  │                       │
+     ┌──────────▼──────────┐ ┌────▼──────────┐ ┌─────────▼──────────┐
+     │   📊 ANALYTICS &    │ │  🔍 RESEARCH  │ │  🎨 CREATIVE      │
+     │    PERFORMANCE      │ │   & MARKET    │ │    GENERATOR       │
+     │                     │ │  INTELLIGENCE │ │                    │
+     ├─────────────────────┤ ├────────────────┤ ├────────────────────┤
+     │ • Google Analytics  │ │ • Perplexity  │ │ • Brand Strategy   │
+     │   MCP               │ │   MCP         │ │   Agent            │
+     │ • DataForSEO        │ │ • Competitor  │ │ • Ad Copywriter    │
+     │ • Real-time KPIs    │ │   Analyzer    │ │ • Campaign Builder │
+     │ • Conversion        │ │ • Market      │ │ • DALL-E MCP       │
+     │   Tracking          │ │   Trends      │ │ • Creative Assets  │
+     └─────────────────────┘ └────────────────┘ └────────────────────┘
+                │                  │                       │
+                └──────────────────┼───────────────────────┘
+                                   │
+                        [Continuous Feedback Loop]
+                                   │
+                    ┌──────────────▼──────────────────────┐
+                    │      STRATEGY OPTIMIZATION          │
+                    │   (Iterative Improvement Cycle)     │
+                    └─────────────────────────────────────┘
 ```
 
-### KV Storage Architecture
+### Data Architecture
 
-The system uses **Cloudflare KV** for persistent storage with two main namespaces:
+#### KV Storage Namespaces
 
-**CONFIG_STORE** - Contains all system configurations:
-- **8 Agent Configurations** (`agents/*.yaml`) - Agent personalities, capabilities, and settings
-- **Workflow Definitions** (`workflows/*.yaml`) - Multi-agent workflow sequences  
-- **Task Configurations** (`tasks/*.yaml`) - Individual agent task specifications
-- **Knowledge Base** (`knowledge-base/*.md`) - 35 files of growth methodology content
-- **System Settings** (`config/*.yaml`) - Runtime and integration configurations
+The system uses **Cloudflare KV** for persistent storage:
 
-**SESSION_STORE** - Contains user session data:
-- User session persistence with conversation history
-- Workflow progress and agent outputs
-- User-specific data with secure indexing (`user:${userId}:sessions`)
+**CONFIG_STORE** - System Configurations:
+- **9 Agent Configurations** (`agents/*.json`) - Personalities, capabilities, prompts
+- **Workflow Definitions** (`workflows/*.json`) - Multi-agent sequences  
+- **Knowledge Base** (`knowledge-base/*.md`) - 20+ growth methodology files
+- **System Settings** (`config/*.json`) - Runtime configurations
 
-**Hybrid Storage Strategy:**
-- **KV Store**: Long-term persistence, global distribution, configuration caching
-- **Durable Objects**: Real-time session state, WebSocket connections, temporary cache
+**Production IDs:**
+- CONFIG_STORE: `eaaec34e641d43388f00d8e02ead8296`
+- SESSION_STORE: `c1dfd85ed8f74a699a3a25dbb71170a4`
+
+#### Master Strategy Context (Output Structure)
+
+```json
+{
+  "businessModel": { /* Value prop, revenue model, pricing */ },
+  "personas": [ /* Detailed psychographic profiles */ ],
+  "brandStrategy": { /* Positioning, identity, voice */ },
+  "growthMetrics": { /* North Star, KPIs, funnel */ },
+  "channels": { /* Acquisition, retention, referral */ },
+  "growthMechanisms": { /* Loops, network effects, viral */ },
+  "experiments": { /* Framework, backlog, priorities */ }
+}
+```
 
 ## 🛠️ **Tech Stack**
 
-- **Frontend**: React + TypeScript + Tailwind CSS
+### Current Stack (v2.0)
+- **Frontend**: React 18 + TypeScript + Tailwind CSS
 - **Backend**: Cloudflare Workers (Hono framework)
+- **Configuration**: `wrangler.jsonc` + `wrangler.toml`
 - **Auth**: Supabase Auth (Email/Password)
-- **AI**: Anthropic Claude API
-- **Storage**: Cloudflare KV (sessions, configs)
-- **Templates**: Nunjucks templating engine
+- **AI**: Anthropic Claude API (Opus 4.1)
+- **Storage**: Cloudflare KV + Durable Objects
+- **Deployment**: Unified Worker with Static Assets
+
+### Planned Integrations (v3.0)
+- **Analytics**: Google Analytics MCP, DataForSEO
+- **Research**: Perplexity MCP, Ahrefs MCP
+- **Creative**: DALL-E MCP, Stable Diffusion MCP
+- **CRM**: HubSpot MCP, Salesforce (Coupler.io)
 
 ## 🚀 **Quick Start**
 
@@ -132,129 +231,116 @@ npm install -g wrangler
 # Login to Cloudflare when not using API Token
 wrangler login
 
-# Create KV namespaces
+# Create development KV namespaces
 wrangler kv namespace create "CONFIG_STORE"
 wrangler kv namespace create "SESSION_STORE"
+
+# Create production KV namespaces (for custom domain)
+wrangler kv namespace create "CONFIG_STORE" --env production
+wrangler kv namespace create "SESSION_STORE" --env production
 ```
 
-Copy the namespace IDs to `wrangler.toml`.
+Copy the namespace IDs to `wrangler.jsonc` under the appropriate environment.
 
-**Quick Setup**: You can also use our helper script:
-
-```bash
-npm run kv:create
-```
-
-This will create both namespaces and display the IDs to add to your `wrangler.toml`.
+**Note**: The system now uses `wrangler.jsonc` instead of `wrangler.toml` for modern configuration with Static Assets support.
 
 #### Upload Configuration Files to KV Store
 
-The system requires uploading configuration files and knowledge base content to Cloudflare KV. Here are the commands to upload all required files:
+The system uses a **bulk upload script** for easy configuration deployment. All configuration files are now in JSON format for better performance and structure.
 
-**Upload Agent Configurations (8 files):**
+**For Development:**
 ```bash
-# Upload all agent configurations
-wrangler kv key put "agents/gtm-consultant.yaml" --path="agents/gtm-consultant.yaml" --binding="CONFIG_STORE"
-wrangler kv key put "agents/persona-strategist.yaml" --path="agents/persona-strategist.yaml" --binding="CONFIG_STORE"
-wrangler kv key put "agents/product-manager.yaml" --path="agents/product-manager.yaml" --binding="CONFIG_STORE"
-wrangler kv key put "agents/growth-manager.yaml" --path="agents/growth-manager.yaml" --binding="CONFIG_STORE"
-wrangler kv key put "agents/head-of-acquisition.yaml" --path="agents/head-of-acquisition.yaml" --binding="CONFIG_STORE"
-wrangler kv key put "agents/head-of-retention.yaml" --path="agents/head-of-retention.yaml" --binding="CONFIG_STORE"
-wrangler kv key put "agents/viral-growth-architect.yaml" --path="agents/viral-growth-architect.yaml" --binding="CONFIG_STORE"
-wrangler kv key put "agents/growth-hacker.yaml" --path="agents/growth-hacker.yaml" --binding="CONFIG_STORE"
+# Upload all configurations to development KV
+./upload-production-configs.sh
 ```
 
-**Upload Workflow & Task Configurations:**
+**For Production:**
 ```bash
-# Workflow configurations
-wrangler kv key put "workflows/master-workflow-v2.yaml" --path="workflows/master-workflow-v2.yaml" --binding="CONFIG_STORE"
-wrangler kv key put "workflows/workflow-schema.yaml" --path="workflows/workflow-schema.yaml" --binding="CONFIG_STORE"
-
-# Agent task configurations
-wrangler kv key put "tasks/agent-tasks/gtm-consultant-task.yaml" --path="tasks/agent-tasks/gtm-consultant-task.yaml" --binding="CONFIG_STORE"
-wrangler kv key put "tasks/agent-tasks/persona-strategist-task.yaml" --path="tasks/agent-tasks/persona-strategist-task.yaml" --binding="CONFIG_STORE"
-wrangler kv key put "tasks/agent-tasks/product-manger-task.yaml" --path="tasks/agent-tasks/product-manger-task.yaml" --binding="CONFIG_STORE"
-wrangler kv key put "tasks/agent-tasks/growth-manager-task.yaml" --path="tasks/agent-tasks/growth-manager-task.yaml" --binding="CONFIG_STORE"
-wrangler kv key put "tasks/agent-tasks/head-of-acquisition-task.yaml" --path="tasks/agent-tasks/head-of-acquisition-task.yaml" --binding="CONFIG_STORE"
-wrangler kv key put "tasks/agent-tasks/head-of-retention-task.yaml" --path="tasks/agent-tasks/head-of-retention-task.yaml" --binding="CONFIG_STORE"
-wrangler kv key put "tasks/agent-tasks/viral-growth-architect-task.yaml" --path="tasks/agent-tasks/viral-growth-architect-task.yaml" --binding="CONFIG_STORE"
-wrangler kv key put "tasks/agent-tasks/growth-hacker-task.yaml" --path="tasks/agent-tasks/growth-hacker-task.yaml" --binding="CONFIG_STORE"
-
-# System configurations
-wrangler kv key put "config/runtime-config.json" --path="config/runtime-config.json" --binding="CONFIG_STORE"
+# Upload all configurations to production KV (use the production namespace ID)
+PRODUCTION_CONFIG_STORE_ID="eaaec34e641d43388f00d8e02ead8296" ./upload-production-configs.sh
 ```
 
-**Upload Knowledge Base Content (35 files):**
+**What gets uploaded (32 files total):**
+
+**Agent Configurations (9 JSON files):**
+- `agents/gtm-consultant-unified.json`
+- `agents/persona-strategist-unified.json`
+- `agents/product-manager-unified.json`
+- `agents/growth-manager-unified.json`
+- `agents/head-of-acquisition-unified.json`
+- `agents/head-of-retention-unified.json`
+- `agents/viral-growth-architect-unified.json`
+- `agents/growth-hacker-unified.json`
+- `agents/ceo-unified.json` (for Q&A chat)
+
+**System Configurations:**
+- `workflows/master-workflow-v2.json`
+- `workflows/workflow-schema.json`
+- `config/runtime-config.json`
+
+**Knowledge Base (20 files):**
+- Growth methodology files (`knowledge-base/method/*.md`)
+- Experiments database (`knowledge-base/experiments/*.json`)
+- Growth hacking glossary (`knowledge-base/glossary/*.md`)
+
+**Make script executable:**
 ```bash
-# Growth methodology files
-wrangler kv key put "knowledge-base/method/00growth-hacking-process.md" --path="knowledge-base/method/00growth-hacking-process.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/method/01value-proposition.md" --path="knowledge-base/method/01value-proposition.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/method/02problem-solution-fit.md" --path="knowledge-base/method/02problem-solution-fit.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/method/03business-model.md" --path="knowledge-base/method/03business-model.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/method/04psychograhpic-persona.md" --path="knowledge-base/method/04psychograhpic-persona.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/method/05product-market-fit.md" --path="knowledge-base/method/05product-market-fit.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/method/06one-metric-that-matters.md" --path="knowledge-base/method/06one-metric-that-matters.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/method/07pirate-funnel.md" --path="knowledge-base/method/07pirate-funnel.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/method/08friction-to-value.md" --path="knowledge-base/method/08friction-to-value.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/method/09pirate-funnel-awareness.md" --path="knowledge-base/method/09pirate-funnel-awareness.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/method/10pirate-funnel-acquisition.md" --path="knowledge-base/method/10pirate-funnel-acquisition.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/method/11wow-moment.md" --path="knowledge-base/method/11wow-moment.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/method/12pirate-funnel-activation.md" --path="knowledge-base/method/12pirate-funnel-activation.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/method/13pirate-funnel-revenue.md" --path="knowledge-base/method/13pirate-funnel-revenue.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/method/14pirate-funnel-retention.md" --path="knowledge-base/method/14pirate-funnel-retention.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/method/15pirate-funnel-referrals.md" --path="knowledge-base/method/15pirate-funnel-referrals.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/method/16growth-loop.md" --path="knowledge-base/method/16growth-loop.md" --binding="CONFIG_STORE"
-
-# Resources and frameworks
-wrangler kv key put "knowledge-base/ressources/brainstorming-techniques.md" --path="knowledge-base/ressources/brainstorming-techniques.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/ressources/cialdini-persuasion.md" --path="knowledge-base/ressources/cialdini-persuasion.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/ressources/copywriting-cheat-sheet.md" --path="knowledge-base/ressources/copywriting-cheat-sheet.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/ressources/cro.md" --path="knowledge-base/ressources/cro.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/ressources/facebook-Ads.md" --path="knowledge-base/ressources/facebook-Ads.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/ressources/growthhacking-process-overview.md" --path="knowledge-base/ressources/growthhacking-process-overview.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/ressources/hierachy-of-engagement.md" --path="knowledge-base/ressources/hierachy-of-engagement.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/ressources/lift-model.md" --path="knowledge-base/ressources/lift-model.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/ressources/market-segmentation.md" --path="knowledge-base/ressources/market-segmentation.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/ressources/north-start-metric.md" --path="knowledge-base/ressources/north-start-metric.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/ressources/ocean-personality.md" --path="knowledge-base/ressources/ocean-personality.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/ressources/psychographic-segmentation.md" --path="knowledge-base/ressources/psychographic-segmentation.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/ressources/psychographics-socialmedia.md" --path="knowledge-base/ressources/psychographics-socialmedia.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/ressources/retention-lifecycle.md" --path="knowledge-base/ressources/retention-lifecycle.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/ressources/unique-value-proposition.md" --path="knowledge-base/ressources/unique-value-proposition.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/ressources/virality.md" --path="knowledge-base/ressources/virality.md" --binding="CONFIG_STORE"
-
-# Glossary and experiments
-wrangler kv key put "knowledge-base/glossary/growth-hacking-dictionary.md" --path="knowledge-base/glossary/growth-hacking-dictionary.md" --binding="CONFIG_STORE"
-wrangler kv key put "knowledge-base/experiments/experiment-process.md" --path="knowledge-base/experiments/experiment-process.md" --binding="CONFIG_STORE"
-```
-
-**Upload Summary:**
-- **8 Agent Configurations** (`agents/*.yaml`)
-- **10 Task Configurations** (`tasks/*.yaml`) 
-- **2 Workflow Configurations** (`workflows/*.yaml`)
-- **2 System Configurations** (`config/*.yaml`)
-- **35 Knowledge Base Files** (`knowledge-base/*.md`)
-- **Total: 57 files** to upload to CONFIG_STORE
-
-**Bulk Upload Helper Script:**
-Create a script file `upload-kv.sh` for easier uploading:
-```bash
-#!/bin/bash
-echo "Uploading all 57 configuration files to Cloudflare KV..."
-
-# Add all the commands above to this script for one-command upload
-chmod +x upload-kv.sh
-./upload-kv.sh
+chmod +x upload-production-configs.sh
 ```
 
 **Verify Upload:**
 ```bash
-# Check if files are uploaded correctly
-wrangler kv key list --binding="CONFIG_STORE"
-wrangler kv key get "agents/gtm-consultant.yaml" --binding="CONFIG_STORE"
+# Check uploaded files
+wrangler kv key list --namespace-id="eaaec34e641d43388f00d8e02ead8296"
+wrangler kv key get "agents/gtm-consultant-unified.json" --namespace-id="eaaec34e641d43388f00d8e02ead8296"
 ```
 
-### 5. Development
+### 5. Configuration Setup
+
+Update your `wrangler.jsonc` with the correct KV namespace IDs:
+
+```json
+{
+  "name": "growth-strategy-agent-system",
+  "main": "src/workers/chat-gateway.ts",
+  "compatibility_date": "2025-03-07",
+  "compatibility_flags": ["nodejs_compat"],
+  
+  "assets": {
+    "directory": "./dist/frontend/",
+    "not_found_handling": "single-page-application",
+    "binding": "ASSETS"
+  },
+  
+  "kv_namespaces": [
+    {
+      "binding": "CONFIG_STORE",
+      "id": "your_dev_config_store_id"
+    },
+    {
+      "binding": "SESSION_STORE", 
+      "id": "your_dev_session_store_id"
+    }
+  ],
+
+  "env": {
+    "production": {
+      "kv_namespaces": [
+        {
+          "binding": "CONFIG_STORE",
+          "id": "eaaec34e641d43388f00d8e02ead8296"
+        },
+        {
+          "binding": "SESSION_STORE", 
+          "id": "c1dfd85ed8f74a699a3a25dbb71170a4"
+        }
+      ]
+    }
+  }
+}
+```
+
+### 6. Development
 
 ```bash
 # Start frontend development server
@@ -274,14 +360,14 @@ npm run dev
 | `npm run frontend:dev`  | Start React frontend development server (port 3000)    |
 | `npm run worker:dev`    | Start Cloudflare Worker development server (port 8787) |
 | `npm run dev`           | Start Cloudflare Worker (shorthand for worker:dev)     |
-| `npm run build`         | Build both frontend and worker for production          |
-| `npm run deploy`        | Deploy worker to Cloudflare (shorthand)                |
-| `npm run worker:deploy` | Deploy worker to Cloudflare                            |
-| `npm run worker:tail`   | View worker logs in real-time                          |
+| `npm run build`         | Build React frontend for Static Assets deployment     |
+| `npm run deploy`        | Deploy to production with Static Assets                |
+| `wrangler deploy --env production` | Deploy to production environment |
+| `wrangler tail --env production`   | View production logs in real-time |
 | `npm run type-check`    | Run TypeScript type checking                           |
 | `npm run lint`          | Run ESLint on source code                              |
 | `npm run test`          | Run test suite                                         |
-| `npm run kv:create`     | Create KV namespaces (helper script)                   |
+| `./upload-production-configs.sh` | Upload all configs to KV store   |
 
 ## 📚 **Authentication Flow**
 
@@ -310,16 +396,22 @@ npm run dev
 - **Input Validation**: Comprehensive input sanitization
 - **Environment Variables**: Secure credential management
 
-## 🤖 **The 8 Growth Agents**
+## 🤖 **The 9 Strategic AI Agents**
 
-1. **GTM Consultant**: Market foundation and go-to-market strategy
-2. **Growth Manager**: Overall growth strategy orchestration
-3. **Head of Acquisition**: Customer acquisition strategies
-4. **Head of Retention**: Customer retention and loyalty
-5. **Persona Strategist**: Customer persona development
-6. **Product Manager**: Product-growth alignment
-7. **Growth Hacker**: Creative growth experiments
-8. **Viral Growth Architect**: Viral mechanics and referral systems
+### Foundation Agents (8-Step Strategy Process)
+
+1. **GTM Consultant (Angelina)** 📊: Market foundation & value proposition
+2. **Persona Strategist (Dr. Maya Chen)** 👥: Customer psychology & behavior analysis
+3. **Product Manager (Alex Rodriguez)** 🎯: Product-market fit & brand positioning
+4. **Growth Manager (Sarah Kim)** 📈: Growth funnel & North Star metrics
+5. **Head of Acquisition (Marcus Thompson)** 🚀: Customer acquisition strategy
+6. **Head of Retention (Emily Watson)** 💝: Lifecycle & engagement programs
+7. **Viral Growth Architect (Jordan Lee)** 🔄: Growth loops & viral mechanisms
+8. **Growth Hacker (Phoenix Ray)** ⚡: Experimentation & testing framework
+
+### Strategic Integration Agent
+
+9. **CEO (Alexandra Sterling)** 💼: Holistic strategy integration & Q&A consultations
 
 ## 📊 **Project Structure**
 
@@ -345,27 +437,98 @@ growth/
 └── knowledge-base/         # Domain knowledge
 ```
 
-## 🚢 **Deployment**
+## 🚢 **Production Deployment**
 
-### Frontend (Cloudflare Pages)
+The system uses a **single unified Cloudflare Worker** (`chat-gateway.ts`) that handles:
+- **React Frontend** served via Static Assets
+- **All API endpoints** (sessions, chat, agent execution)
+- **Agent AI Processing** via AgentExecutor + Claude API (no separate agent workers needed)
+- **Session State Management** via Durable Objects
+
+**Why Unified Worker Architecture?**
+✅ **Single Deployment** - One `wrangler deploy` command deploys everything  
+✅ **No Worker Limits** - Avoid Cloudflare's 1000 worker per account limit  
+✅ **Shared Memory** - AgentExecutor can share context between agents efficiently  
+✅ **Simplified Routing** - No complex inter-worker communication needed  
+✅ **Cost Effective** - One worker handles all requests instead of spawning multiple  
+
+**Note**: The individual files in `src/workers/agents/` are legacy/templates - all agents execute within the main worker via AgentExecutor.
+
+### Build & Deploy Process
 
 ```bash
-npm run frontend:build
-# Deploy build/ directory to Cloudflare Pages
+# 1. Build React frontend for production
+npm run build
+
+# 2. Deploy unified worker with Static Assets to production
+wrangler deploy --env production
+
+# 3. View production logs
+wrangler tail --env production
 ```
 
-### Workers
+### Custom Domain Setup
 
-```bash
-# Deploy to production
-npm run worker:deploy
+After deployment, configure your custom domain in Cloudflare Dashboard:
 
-# Alternative shorthand
-npm run deploy
+1. **Add Custom Domain:**
+   - Go to Cloudflare Dashboard → Workers & Pages
+   - Select your worker → Settings → Domains
+   - Click "Add Custom Domain"
+   - Enter your domain (e.g., `growth-gpt.com`)
 
-# View worker logs in real-time
-npm run worker:tail
-```
+2. **DNS Configuration:**
+   - Ensure your domain is managed by Cloudflare
+   - DNS records will be automatically configured
+
+3. **SSL/TLS:**
+   - SSL is automatically provisioned
+   - Full encryption enabled by default
+
+### Production Configuration
+
+The production environment uses:
+- **Worker Name:** `growth-gpt`
+- **KV Namespaces:** 
+  - CONFIG: `eaaec34e641d43388f00d8e02ead8296`
+  - SESSION: `c1dfd85ed8f74a699a3a25dbb71170a4`
+- **Environment Variables:** Production credentials in `wrangler.jsonc`
+- **Static Assets:** React frontend served via Cloudflare Pages
+- **Custom Domain:** Ready for `growth-gpt.com`
+- **32 Config Files:** Uploaded via `upload-production-configs.sh`
+
+## 📈 **Development Roadmap**
+
+### ✅ Phase 1-2: Foundation (Complete)
+- [x] 8-Step Strategy Creation System
+- [x] Strategy Refinement Agent
+- [x] Agent Q&A Chat Interface
+- [x] Session Persistence & Management
+- [x] User Authentication (Supabase)
+
+### 🚧 Phase 3: Analytics Branch (Q2 2025)
+- [ ] Google Analytics MCP Integration
+- [ ] Automated Dashboard Generation
+- [ ] KPI Tracking aligned to North Star
+- [ ] Weekly Performance Reports
+
+### 📅 Phase 4: Research Branch (Q3 2025)
+- [ ] Perplexity MCP Integration
+- [ ] Competitor Intelligence Tracking
+- [ ] Market Trend Analysis
+- [ ] Content Gap Identification
+
+### 🎨 Phase 5: Creative Branch (Q3 2025)
+- [ ] DALL-E MCP Integration
+- [ ] Brand Strategy Agent
+- [ ] Campaign Builder
+- [ ] Asset Generation Pipeline
+
+### 🔄 Phase 6: Optimization Loop (Q4 2025)
+- [ ] Feedback Collection System
+- [ ] Strategy Auto-Optimization
+- [ ] Multi-User Collaboration
+- [ ] Custom Agent Builder
 
 ## 🔧 **Environment Variables Reference**
 
@@ -382,23 +545,35 @@ npm run worker:tail
 
 All endpoints require `Authorization: Bearer <jwt_token>` header.
 
-### Sessions
-
-- `POST /api/sessions` - Create new session
+### Foundation Layer (Strategy Creation)
+- `POST /api/sessions` - Create new strategy session
 - `GET /api/sessions/:userId` - List user sessions
 - `GET /api/sessions/:sessionId` - Get session details
-
-### Chat
-
-- `POST /api/chat/:sessionId/message` - Send message
+- `POST /api/chat/:sessionId/message` - Send message to agent
 - `GET /api/chat/:sessionId/history` - Get conversation history
 - `PUT /api/chat/:sessionId/approve` - Approve agent output
+- `POST /api/sessions/:sessionId/next-agent` - Move to next agent
 
-### Session Control
+### Strategy Refinement
+- `POST /api/strategy/:sessionId/refine` - Trigger refinement
+- `GET /api/strategy/:sessionId/refinement` - Get refinement results
+- `PUT /api/strategy/:sessionId/refinement/accept` - Accept refinements
 
+### Agent Q&A Chat
+- `POST /api/agent-chat/:agentId/start` - Start Q&A session
+- `POST /api/agent-chat/:sessionId/message` - Send Q&A message
+- `GET /api/agent-chat/:sessionId/history` - Get Q&A history
+
+### Session Management
 - `PUT /api/sessions/:sessionId/pause` - Pause session
 - `PUT /api/sessions/:sessionId/resume` - Resume session
 - `DELETE /api/sessions/:sessionId` - Delete session
+- `GET /api/sessions/:sessionId/export` - Export strategy (coming soon)
+
+### Future MCP Gateway (v3.0)
+- `POST /api/mcp/:server/connect` - Connect MCP server
+- `POST /api/mcp/:server/tool/:tool` - Execute MCP tool
+- `GET /api/mcp/servers` - List available servers
 
 ## 🎯 **What's the Webhook Secret?**
 
@@ -428,6 +603,30 @@ Generate a secure random string (32+ characters) for production use.
 ## 📄 **License**
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 📚 **Version History**
+
+### v2.0 (January 2025) - Current
+- Added Strategy Refinement capability
+- Implemented Agent Q&A Chat for individual consultations
+- Added CEO agent for strategic integration
+- Enhanced session management with user indexing
+- Production deployment on Cloudflare Workers
+- UI/UX improvements with agent tabs and progress visualization
+
+### v1.0 (December 2024)
+- Initial 8-agent foundation system
+- Basic chat interface with streaming responses
+- Session persistence with KV storage
+- Supabase authentication integration
+- MVP deployment
+
+### v3.0 (Target: Q4 2025)
+- MCP integrations for Analytics, Research, and Creative branches
+- Continuous optimization feedback loops
+- Multi-user collaboration features
+- Custom agent builder
+- Enterprise features
 
 ---
 

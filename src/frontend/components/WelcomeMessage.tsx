@@ -13,10 +13,10 @@ export default function WelcomeMessage({ onGetStarted }: WelcomeMessageProps) {
           <span className='text-2xl'>🚀</span>
         </div>
         <h1 className='text-3xl font-bold text-gray-900 dark:text-white mb-2'>
-          Welcome to Your GrowthGPT Strategy Session
+          Let's build a growth strategy for your business
         </h1>
         <p className='text-lg text-gray-600 dark:text-gray-300'>
-          Let's build a comprehensive growth strategy for your business
+          This is the foundation to guide your Agents.
         </p>
       </div>
 
@@ -58,7 +58,7 @@ export default function WelcomeMessage({ onGetStarted }: WelcomeMessageProps) {
                 AI Analysis
               </h3>
               <p className='text-sm text-gray-600 dark:text-gray-300'>
-                Our GTM expert creates your strategy foundation
+                Our expert Agents create your strategy foundation
               </p>
             </div>
           </div>
@@ -73,10 +73,10 @@ export default function WelcomeMessage({ onGetStarted }: WelcomeMessageProps) {
             </div>
             <div>
               <h3 className='font-medium text-gray-900 dark:text-white mb-1'>
-                Review & Refine
+                Refine & Implement
               </h3>
               <p className='text-sm text-gray-600 dark:text-gray-300'>
-                Approve, edit, or ask for improvements
+                Expand, create and monitor your strategy
               </p>
             </div>
           </div>
@@ -99,7 +99,7 @@ export default function WelcomeMessage({ onGetStarted }: WelcomeMessageProps) {
           />
         </svg>
         <span className='text-sm'>
-          Estimated time: <strong>30-45 minutes</strong>
+          Estimated time: <strong>5-15 minutes</strong>
         </span>
       </div>
 

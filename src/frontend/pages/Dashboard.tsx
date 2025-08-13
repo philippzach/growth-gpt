@@ -239,13 +239,62 @@ export default function Dashboard() {
         </div>
 
         {/* Projects section - Completed Strategies */}
-        {sessions.filter((s) => s.status === 'completed').length > 0 && (
-          <div className='mb-8 bg-white dark:bg-gray-800 shadow rounded-lg'>
-            <div className='px-6 py-4 border-b border-gray-200 dark:border-gray-700'>
-              <h3 className='text-lg font-medium text-gray-900 dark:text-white'>
-                Projects
+        <div className='mb-8 bg-white dark:bg-gray-800 shadow rounded-lg'>
+          <div className='px-6 py-4 border-b border-gray-200 dark:border-gray-700'>
+            <h3 className='text-lg font-medium text-gray-900 dark:text-white'>
+              Projects
+            </h3>
+          </div>
+
+          {sessions.filter((s) => s.status === 'completed').length === 0 ? (
+            <div className='text-center py-12'>
+              <svg
+                className='mx-auto h-12 w-12 text-gray-400'
+                fill='none'
+                stroke='currentColor'
+                viewBox='0 0 24 24'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10'
+                />
+              </svg>
+              <h3 className='mt-2 text-sm font-medium text-gray-900 dark:text-white'>
+                No completed projects yet
               </h3>
+              <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+                Complete a growth strategy to see your projects here. Projects give you advanced tools to refine and implement your strategies.
+              </p>
+              <div className='mt-6'>
+                <button
+                  onClick={createNewSession}
+                  disabled={isCreatingSession}
+                  className='inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed'
+                >
+                  {isCreatingSession ? (
+                    <LoadingSpinner size='sm' className='mr-2' />
+                  ) : (
+                    <svg
+                      className='mr-2 h-4 w-4'
+                      fill='none'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth={2}
+                        d='M12 4v16m8-8H4'
+                      />
+                    </svg>
+                  )}
+                  Create Strategy
+                </button>
+              </div>
             </div>
+          ) : (
             <div className='divide-y divide-gray-200 dark:divide-gray-700'>
               {sessions
                 .filter((session) => session.status === 'completed')
@@ -258,13 +307,46 @@ export default function Dashboard() {
                       <div className='flex-1 min-w-0'>
                         <div className='flex items-center space-x-3'>
                           <h4 className='text-sm font-medium text-gray-900 dark:text-white truncate'>
-                            Growth Strategy Project
+                            {session.userInputs?.projectName || 'Growth Strategy Project'}
                           </h4>
                           <span className='inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'>
                             Completed
                           </span>
                         </div>
-                        <div className='mt-2 flex items-center text-sm text-gray-500 dark:text-gray-400'>
+                        
+                        {/* Action buttons */}
+                        <div className='mt-3 flex flex-wrap gap-2'>
+                          <button
+                            className='inline-flex items-center px-3 py-1 text-xs font-medium rounded-md bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 hover:from-green-100 hover:to-emerald-100 dark:hover:from-green-900/30 dark:hover:to-emerald-900/30 transition-colors cursor-not-allowed opacity-75'
+                            disabled
+                          >
+                            <span className='text-sm mr-1'>➕</span>
+                            Google Analytics MCP
+                          </button>
+                          <button
+                            className='inline-flex items-center px-3 py-1 text-xs font-medium rounded-md bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-400 hover:from-purple-100 hover:to-pink-100 dark:hover:from-purple-900/30 dark:hover:to-pink-900/30 transition-colors cursor-not-allowed opacity-75'
+                            disabled
+                          >
+                            <span className='text-sm mr-1'>🎨</span>
+                            Campaign Generator
+                          </button>
+                          <button
+                            className='inline-flex items-center px-3 py-1 text-xs font-medium rounded-md bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400 hover:from-blue-100 hover:to-cyan-100 dark:hover:from-blue-900/30 dark:hover:to-cyan-900/30 transition-colors cursor-not-allowed opacity-75'
+                            disabled
+                          >
+                            <span className='text-sm mr-1'>⚡</span>
+                            Product Builder
+                          </button>
+                          <button
+                            className='inline-flex items-center px-3 py-1 text-xs font-medium rounded-md bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 hover:from-amber-100 hover:to-orange-100 dark:hover:from-amber-900/30 dark:hover:to-orange-900/30 transition-colors cursor-not-allowed opacity-75'
+                            disabled
+                          >
+                            <span className='text-sm mr-1'>🔍</span>
+                            Research Agent
+                          </button>
+                        </div>
+                        
+                        <div className='mt-3 flex items-center text-sm text-gray-500 dark:text-gray-400'>
                           <span>
                             Completed:{' '}
                             {new Date(session.lastActive).toLocaleDateString()}
@@ -285,8 +367,8 @@ export default function Dashboard() {
                   </div>
                 ))}
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Sessions list - Active/Paused Strategies */}
         <div className='bg-white dark:bg-gray-800 shadow rounded-lg'>
@@ -361,7 +443,7 @@ export default function Dashboard() {
                       <div className='flex-1 min-w-0'>
                         <div className='flex items-center space-x-3'>
                           <h4 className='text-sm font-medium text-gray-900 dark:text-white truncate'>
-                            Growth Strategy Session
+                            {session.userInputs?.projectName || 'Growth Strategy Session'}
                           </h4>
                           {getStatusBadge(session.status)}
                         </div>

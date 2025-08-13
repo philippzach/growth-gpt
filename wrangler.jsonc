@@ -1,0 +1,101 @@
+{
+  "name": "growth-strategy-agent-system",
+  "main": "src/workers/chat-gateway.ts",
+  "compatibility_date": "2025-03-07",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+
+  // Static Assets configuration for React frontend
+  "assets": {
+    "directory": "./dist/frontend/",
+    "not_found_handling": "single-page-application",
+    "binding": "ASSETS"
+  },
+
+  // Environment Variables
+  "vars": {
+    "ENVIRONMENT": "development",
+    "SUPABASE_URL": "https://bnqjkqxfvotzbkvyhyvq.supabase.co",
+    "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJucWprcXhmdm90emJrdnloeXZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQwNjQ0NzUsImV4cCI6MjA2OTY0MDQ3NX0.-uUUHOXEQpQ_b3J37rSZNGHgXfXoxLx_Xk4SYcSIm9E",
+    "SUPABASE_SERVICE_ROLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJucWprcXhmdm90emJrdnloeXZxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NDA2NDQ3NSwiZXhwIjoyMDY5NjQwNDc1fQ.9Jsii-6f_eF8K2LXaQJCZSvNoQYal1d1wV50jwEYQrA",
+    "ANTHROPIC_API_KEY": "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",
+    "WEBHOOK_SECRET": "M8367IsjzZvy6SjB1v5uDGWNAp38UlEoYyzY4bWu7Yk*"
+  },
+
+  // KV Namespaces for configuration and session storage
+  "kv_namespaces": [
+    {
+      "binding": "CONFIG_STORE",
+      "id": "e741dd4d5e924b78a4b79698f4003317"
+    },
+    {
+      "binding": "SESSION_STORE", 
+      "id": "940ab5b9be764ec5b59c17bc62788b98"
+    }
+  ],
+
+  // Durable Objects for session state management
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "SESSION_STATE",
+        "class_name": "SessionStateManager"
+      }
+    ]
+  },
+
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["SessionStateManager"]
+    }
+  ],
+
+  // Environment-specific configurations
+  "env": {
+    "development": {
+      "name": "growth-strategy-system-dev",
+      "vars": {
+        "ENVIRONMENT": "development"
+      }
+    },
+    "staging": {
+      "name": "growth-strategy-system-staging", 
+      "vars": {
+        "ENVIRONMENT": "staging"
+      }
+    },
+    "production": {
+      "name": "growth-strategy-system",
+      "vars": {
+        "ENVIRONMENT": "production",
+        "SUPABASE_URL": "https://bnqjkqxfvotzbkvyhyvq.supabase.co",
+        "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJucWprcXhmdm90emJrdnloeXZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQwNjQ0NzUsImV4cCI6MjA2OTY0MDQ3NX0.-uUUHOXEQpQ_b3J37rSZNGHgXfXoxLx_Xk4SYcSIm9E",
+        "SUPABASE_SERVICE_ROLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJucWprcXhmdm90emJrdnloeXZxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NDA2NDQ3NSwiZXhwIjoyMDY5NjQwNDc1fQ.9Jsii-6f_eF8K2LXaQJCZSvNoQYal1d1wV50jwEYQrA",
+        "ANTHROPIC_API_KEY": "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",
+        "WEBHOOK_SECRET": "M8367IsjzZvy6SjB1v5uDGWNAp38UlEoYyzY4bWu7Yk*"
+      },
+      "kv_namespaces": [
+        {
+          "binding": "CONFIG_STORE",
+          "id": "eaaec34e641d43388f00d8e02ead8296"
+        },
+        {
+          "binding": "SESSION_STORE", 
+          "id": "c1dfd85ed8f74a699a3a25dbb71170a4"
+        }
+      ],
+      "durable_objects": {
+        "bindings": [
+          {
+            "name": "SESSION_STATE",
+            "class_name": "SessionStateManager"
+          }
+        ]
+      }
+    }
+  }
+}

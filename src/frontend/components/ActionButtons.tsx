@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { UserSession, AgentOutput } from '../../types';
 
 interface ActionButtonsProps {
@@ -211,12 +212,15 @@ export default function ActionButtons({
 
               {/* Workflow Complete */}
               {isWorkflowComplete && (
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span className="text-sm text-green-600 dark:text-green-400 font-medium">
-                    Strategy Complete!
-                  </span>
-                </div>
+                <Link
+                  to={`/refine/${session.id}`}
+                  className="inline-flex items-center px-6 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Go to Strategy Refine
+                </Link>
               )}
 
               {/* Show status for non-current agents */}

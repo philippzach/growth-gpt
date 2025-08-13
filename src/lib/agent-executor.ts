@@ -152,7 +152,11 @@ export class AgentExecutor {
     // Get model and parameters from configuration
     const model = 'claude-3-haiku-20240307'; // Using Haiku for development
     const temperature = agentConfig?.configuration?.temperature || 0.7;
-    const maxTokens = 3000; // Haiku's max output tokens
+    const maxTokens = Math.min(
+      agentConfig?.configuration?.max_tokens || 4000,
+      4096 // Haiku's max output tokens
+    );
+
     return {
       model,
       max_tokens: maxTokens,

@@ -1,5 +1,6 @@
 /**
- * Chat Gateway Worker - Main entry point for Growth Strategy Agent System
+ * Growth Strategy Agent System - Unified Worker
+ * Serves React frontend via Static Assets and handles API endpoints
  * Handles WebSocket connections, session management, and agent orchestration
  */
 
@@ -21,18 +22,42 @@ import { ConfigLoader } from '../lib/config-loader';
 import { WorkflowOrchestrator } from '../lib/workflow-orchestrator';
 import { validateJWT, extractUserFromJWT } from '../lib/auth-utils';
 import { createAPIResponse, createAPIError } from '../lib/api-utils';
+import { agentChatHandler } from './agent-chat-handler';
 
-const app = new Hono<{ Bindings: Env }>();
+// Enhanced environment interface for Static Assets
+interface EnhancedEnv extends Env {
+  ASSETS: Fetcher;
+}
 
-// Middleware setup
+const app = new Hono<{ Bindings: EnhancedEnv }>();
+
+// Middleware setup with detailed logging
 app.use('*', logger());
+
+// Add detailed request logging for all requests
+app.use('*', async (c, next) => {
+  const url = new URL(c.req.url);
+  if (url.pathname.startsWith('/api/')) {
+    console.log('🔍 API REQUEST:', {
+      method: c.req.method,
+      path: url.pathname,
+      search: url.search,
+      headers: Object.fromEntries(c.req.raw.headers),
+      timestamp: new Date().toISOString()
+    });
+  }
+  await next();
+});
+
+// CORS for API routes
 app.use(
   '/api/*',
   cors({
-    origin: ['http://localhost:3000', 'https://your-frontend-domain.com'],
+    origin: ['http://localhost:3000', 'https://growth-gpt.com', 'https://growth-strategy-system.waimeazach.workers.dev'],
     allowHeaders: ['Content-Type', 'Authorization'],
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
+    maxAge: 86400,
   })
 );
 
@@ -43,6 +68,41 @@ app.get('/health', (c) => {
     timestamp: new Date().toISOString(),
     environment: c.env.ENVIRONMENT,
   });
+});
+
+// KV debugging endpoint
+app.get('/api/debug-kv', async (c) => {
+  try {
+    console.log('Testing KV access...');
+    console.log('CONFIG_STORE available:', !!c.env.CONFIG_STORE);
+    
+    // Test basic KV access
+    const testKey = 'workflows/master-workflow-v2.json';
+    const result = await c.env.CONFIG_STORE.get(testKey);
+    console.log(`KV get result for ${testKey}:`, result ? `${result.length} characters` : 'null');
+    
+    // List ALL keys to see what's actually in the KV
+    const allKeysResult = await c.env.CONFIG_STORE.list();
+    console.log('All KV keys:', allKeysResult.keys.map(k => k.name));
+    
+    // List all workflow keys
+    const listResult = await c.env.CONFIG_STORE.list({ prefix: 'workflows/' });
+    console.log('Available workflow keys:', listResult.keys.map(k => k.name));
+    
+    return c.json({
+      kvAvailable: !!c.env.CONFIG_STORE,
+      environment: c.env.ENVIRONMENT,
+      testKeyExists: !!result,
+      testKeyLength: result?.length || 0,
+      allKeys: allKeysResult.keys.map(k => k.name).slice(0, 10), // First 10 keys
+      totalKeyCount: allKeysResult.keys.length,
+      availableWorkflowKeys: listResult.keys.map(k => k.name),
+      testKeyContent: result ? JSON.parse(result) : null
+    });
+  } catch (error) {
+    console.error('KV debug error:', error);
+    return c.json({ error: String(error) }, 500);
+  }
 });
 
 // API key test endpoint
@@ -95,8 +155,11 @@ app.get('/api/test-anthropic', async (c) => {
   }
 });
 
-// Session Management API
-app.post('/api/sessions', async (c) => {
+// Session Management API - handle both with and without trailing slash
+app.post('/api/sessions', sessionCreateHandler);
+app.post('/api/sessions/', sessionCreateHandler);
+
+async function sessionCreateHandler(c: any) {
   try {
     const authHeader = c.req.header('Authorization');
     if (!authHeader) {
@@ -178,7 +241,7 @@ app.post('/api/sessions', async (c) => {
       500
     );
   }
-});
+}
 
 app.get('/api/users/:userId/sessions', async (c) => {
   try {
@@ -236,6 +299,234 @@ app.get('/api/sessions/:sessionId', async (c) => {
     console.error('Session get error:', error);
     return c.json(
       createAPIError('SESSION_GET_FAILED', 'Failed to get session'),
+      500
+    );
+  }
+});
+
+// Enhance prompt endpoint
+app.post('/api/sessions/:sessionId/enhance-prompt', async (c) => {
+  try {
+    const sessionId = c.req.param('sessionId');
+    const authHeader = c.req.header('Authorization');
+    const user = await validateJWT(
+      authHeader,
+      c.env.SUPABASE_SERVICE_ROLE_KEY,
+      c.env.SUPABASE_URL
+    );
+
+    // Get session
+    const sessionData = await c.env.SESSION_STORE.get(`session:${sessionId}`);
+    if (!sessionData) {
+      return c.json(
+        createAPIError('SESSION_NOT_FOUND', 'Session not found'),
+        404
+      );
+    }
+
+    const session: UserSession = JSON.parse(sessionData);
+
+    if (!user || session.userId !== user.sub) {
+      return c.json(createAPIError('UNAUTHORIZED', 'Unauthorized access'), 403);
+    }
+
+    const body = await c.req.json();
+    const { businessIdea } = body;
+
+    if (!businessIdea || typeof businessIdea !== 'string' || businessIdea.length < 50) {
+      return c.json(
+        createAPIError('INVALID_INPUT', 'Business idea must be at least 50 characters long'),
+        400
+      );
+    }
+
+    // Import AgentExecutor
+    const { AgentExecutor } = await import('../lib/agent-executor');
+    const agentExecutor = new AgentExecutor(c.env);
+
+    // Create enhancement prompt
+    const enhancementSystemPrompt = `You are a business strategy expert who helps entrepreneurs create comprehensive business descriptions for AI analysis.
+
+CRITICAL: You MUST respond with valid JSON format only. No additional text, explanations, or formatting.
+
+TASK: Transform the provided business idea into a comprehensive business description.
+
+REQUIREMENTS:
+1. Generate a catchy 2-3 word project name
+2. Create a 250-350 word enhanced description including:
+   - Clear product/service definition
+   - Specific target market with demographics  
+   - Problem being solved
+   - Unique solution approach
+   - Business model/revenue streams
+   - Competitive advantages
+   - Specific goals with timelines
+
+CRITICAL: Response must be valid JSON format exactly like this:
+{"projectName":"YourProjectName","enhancedPrompt":"Your enhanced description here..."}
+
+IMPORTANT: Do NOT include line breaks, newlines, or special characters in the JSON string. Write the entire enhanced prompt as one continuous paragraph.
+
+EXAMPLE RESPONSE:
+{"projectName":"EcoFit","enhancedPrompt":"I'm launching EcoFit, a D2C sustainable activewear brand using recycled ocean plastic. Target: environmentally conscious millennials (25-40) who prioritize sustainability and home fitness. Problem: existing activewear isn't truly sustainable and lacks transparency. Solution: fully traceable, carbon-neutral workout gear with impact tracking app. Revenue: subscription model + one-time purchases. Advantage: only brand with complete supply chain transparency and measurable environmental impact. Goals: $1M ARR by year 2, expand to 10 product lines, capture 2% of sustainable activewear market."}`;
+
+    const enhancementUserPrompt = `Original business idea: "${businessIdea}"
+
+Please enhance this business idea following the requirements above. Make sure the enhanced description is comprehensive, specific, and provides all the context needed for strategic analysis.`;
+
+    console.log('🤖 Calling Claude for prompt enhancement...');
+    
+    // Load config loader and agent config for the enhancement task
+    const configLoader = new (await import('../lib/config-loader')).ConfigLoader(c.env.CONFIG_STORE);
+    const gtmAgentConfig = await configLoader.loadAgentConfig('gtm-consultant');
+    const taskConfig = await configLoader.loadTaskConfig('gtm-consultant-task');
+    
+    if (!gtmAgentConfig || !taskConfig) {
+      return c.json(
+        createAPIError('CONFIG_ERROR', 'Agent or task configuration not found'),
+        500
+      );
+    }
+    
+    // Load knowledge base based on task config
+    const knowledgeFocus = taskConfig.agent_integration?.behavior_overrides?.knowledge_focus || [];
+    const knowledgeBase: Record<string, string> = {};
+    
+    const focusMapping: Record<string, string> = {
+      'value-proposition': 'method/01value-proposition.md',
+      'problem-solution-fit': 'method/02problem-solution-fit.md',
+      'business-model': 'method/03business-model.md',
+      'psychographic-persona': 'method/04psychograhpic-persona.md',
+      'product-market-fit': 'method/05product-market-fit.md',
+      'pirate-funnel': 'method/07pirate-funnel.md',
+      'growth-hacking-process': 'method/00growth-hacking-process.md',
+    };
+    
+    // Load relevant knowledge sources
+    for (const focus of knowledgeFocus) {
+      const knowledgeFile = focusMapping[focus];
+      if (knowledgeFile) {
+        try {
+          const content = await configLoader.loadKnowledgeBase(knowledgeFile);
+          if (content) {
+            knowledgeBase[focus] = content;
+          }
+        } catch (error) {
+          console.warn(`Failed to load knowledge file: ${knowledgeFile}`, error);
+        }
+      }
+    }
+    
+    // Extract business context
+    const businessContext = {
+      businessType: session.userInputs?.businessType || 'startup',
+      industry: session.userInputs?.industry || 'technology', 
+      stage: session.userInputs?.businessStage || 'early-stage',
+      teamSize: session.userInputs?.teamSize || 'small',
+      devResources: session.userInputs?.developmentResources || 'limited',
+      budget: session.userInputs?.budget || 'limited',
+    };
+    
+    // Create complete PromptGenerationContext
+    const context = {
+      session,
+      agentConfig: gtmAgentConfig,
+      taskConfig,
+      knowledgeBase,
+      businessContext,
+      userInputs: { businessIdea },
+      previousOutputs: {},
+      workflowStep: 0, // Enhancement is step 0
+    };
+    
+    const result = await agentExecutor.executeAgent(
+      'gtm-consultant',
+      {
+        systemPrompt: enhancementSystemPrompt,
+        userPrompt: enhancementUserPrompt,
+      },
+      context
+    );
+
+    let enhancedResult;
+    try {
+      // Clean up the response - remove any markdown formatting or extra text
+      let cleanContent = result.content.trim();
+      
+      // Extract JSON from the response if it's wrapped in markdown or other text
+      const jsonMatch = cleanContent.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        cleanContent = jsonMatch[0];
+      }
+      
+      // Fix control characters and escape sequences in JSON strings
+      cleanContent = cleanContent
+        .replace(/\n/g, '\\n')        // Escape newlines
+        .replace(/\r/g, '\\r')        // Escape carriage returns
+        .replace(/\t/g, '\\t')        // Escape tabs
+        .replace(/[\b]/g, '\\b')      // Escape backspaces (literal backspace chars)
+        .replace(/\f/g, '\\f');       // Escape form feeds
+      
+      enhancedResult = JSON.parse(cleanContent);
+      
+      // Validate that required fields exist
+      if (!enhancedResult.projectName || !enhancedResult.enhancedPrompt) {
+        throw new Error('Missing required fields in JSON response');
+      }
+      
+      // Ensure enhanced prompt is not too long (max 500 words)
+      const wordCount = enhancedResult.enhancedPrompt.split(' ').length;
+      if (wordCount > 500) {
+        enhancedResult.enhancedPrompt = enhancedResult.enhancedPrompt.split(' ').slice(0, 400).join(' ') + '...';
+      }
+      
+      console.log('✅ Successfully parsed enhancement result:', {
+        projectName: enhancedResult.projectName,
+        enhancedLength: enhancedResult.enhancedPrompt.length,
+        wordCount: enhancedResult.enhancedPrompt.split(' ').length,
+      });
+      
+    } catch (error) {
+      console.error('Failed to parse enhancement result, using fallback format:', error);
+      console.error('Raw LLM response:', result.content);
+      
+      // Generate a simple project name from business idea
+      const words = businessIdea.trim().split(' ').slice(0, 3);
+      const fallbackProjectName = words.map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('');
+      
+      enhancedResult = {
+        projectName: fallbackProjectName || 'Growth Project',
+        enhancedPrompt: businessIdea, // Use original input as fallback
+      };
+    }
+
+    // Update session with project name
+    session.userInputs.projectName = enhancedResult.projectName;
+    session.userInputs.originalBusinessIdea = businessIdea;
+    session.userInputs.businessIdea = enhancedResult.enhancedPrompt;
+    session.lastActive = new Date().toISOString();
+
+    // Save updated session
+    await c.env.SESSION_STORE.put(
+      `session:${sessionId}`,
+      JSON.stringify(session)
+    );
+
+    console.log('✅ Prompt enhanced successfully:', {
+      projectName: enhancedResult.projectName,
+      originalLength: businessIdea.length,
+      enhancedLength: enhancedResult.enhancedPrompt.length,
+    });
+
+    return c.json(createAPIResponse({
+      projectName: enhancedResult.projectName,
+      enhancedPrompt: enhancedResult.enhancedPrompt,
+      session,
+    }));
+  } catch (error) {
+    console.error('Prompt enhancement error:', error);
+    return c.json(
+      createAPIError('ENHANCEMENT_FAILED', 'Failed to enhance prompt'),
       500
     );
   }
@@ -847,6 +1138,9 @@ app.delete('/api/sessions/:sessionId', async (c) => {
   }
 });
 
+// Agent Chat Routes - Delegated to dedicated handler
+app.route('/api/refine', agentChatHandler);
+
 // Helper functions for session management
 
 /**
@@ -944,6 +1238,29 @@ async function getUserSessions(
     return [];
   }
 }
+
+// Static Assets Handler - Serve React frontend
+// Handle all non-API routes by serving static assets
+app.all('*', async (c) => {
+  const url = new URL(c.req.url);
+  
+  // API routes are handled above, so this catches all frontend routes
+  if (url.pathname.startsWith('/api/')) {
+    return c.json({ 
+      error: 'API endpoint not found',
+      method: c.req.method,
+      path: url.pathname
+    }, 404);
+  }
+  
+  // Only serve static assets for GET requests (frontend routes)
+  if (c.req.method === 'GET') {
+    return c.env.ASSETS.fetch(c.req.raw);
+  }
+  
+  // For non-GET requests to non-API routes, return 405
+  return c.json({ error: 'Method not allowed for frontend routes' }, 405);
+});
 
 // Export for Cloudflare Workers
 export default {

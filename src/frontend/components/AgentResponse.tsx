@@ -240,9 +240,9 @@ export default function AgentResponse({
                           );
                         },
                         // Customize heading styling
-                        h1: ({ node, ...props }) => <h1 {...props} className="text-2xl font-bold mb-4 text-gray-900 dark:text-white" />,
-                        h2: ({ node, ...props }) => <h2 {...props} className="text-xl font-semibold mb-3 text-gray-900 dark:text-white" />,
-                        h3: ({ node, ...props }) => <h3 {...props} className="text-lg font-medium mb-2 text-gray-900 dark:text-white" />,
+                        h1: ({ node, ...props }) => <h1 {...props} className="text-3xl font-bold mb-6 text-gray-900 dark:text-white" />,
+                        h2: ({ node, ...props }) => <h2 {...props} className="text-2xl font-bold mb-4 text-gray-900 dark:text-white" />,
+                        h3: ({ node, ...props }) => <h3 {...props} className="text-xl font-semibold mb-3 text-gray-900 dark:text-white" />,
                         // Customize list styling
                         ul: ({ node, ...props }) => <ul {...props} className="list-disc pl-6 mb-4 space-y-2" />,
                         ol: ({ node, ...props }) => <ol {...props} className="list-decimal pl-6 mb-4 space-y-2" />,

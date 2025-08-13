@@ -22,3 +22,13 @@ Key Sections You Can Modify:
 - Business Context: How user inputs are presented
 - Previous Agent Outputs: How full context is shared between agents
 - Output Specifications: Required format and structure
+
+Lets keep working on the features. I want to the user to be able to talk to each agent after he has finished the strategy setup. In the /refine │
+│ remove drop down of the content of the reponses and create a button "Refine with Agent". This should open another page with the Chat open to each │
+│ individal agent. Each agent should have the summarized content from
+
+ Lets keep working on the PRDv3.md I am brainstorming some features right now and one thing I want to have implemented is a Q&A Chat with each │
+│ agent once the strategy was layed out. Can we implement this in the /refine page? For example instaed of showing the contetn in the dropdown, │
+│ lets have a button open another page with a 2 colum layout (3/4 and 1/4) on the bigger left side should be the chat and in the smaller right │
+│ column should be premade prompt buttons to prompt the LLM Like (create Facebok Ad Campaign with Copy and prompts for image generation, Create a │
+│ Brand Strategy Visual Guideline with Prompts,
